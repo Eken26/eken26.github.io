@@ -1,0 +1,67 @@
+[00:13, 05.05.2026] Mustafa Eken: <!DOCTYPE html>
+<html>
+<head>
+    <title>Eken26 Nexus Test</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>Pi.init({ version: "2.0", sandbox: true });</script>
+</head>
+<body>
+    <h1>Eken26 Nexus Odeme Testi</h1>
+    <button id="pay-btn" style="padding: 20px; background: purple; color: white;">1 Pi Odemesi Yap</button>
+
+    <script>
+        document.getElementById('pay-btn').onclick = function() {
+            const payment = Pi.createPayment({
+                amount: 1,
+                memo: "Test odemesi",
+                metadata: { test: "eken26" },
+            }, {
+                onReadyForServerApproval: (paymentId) => { console.log(paymentId); },
+                onReadyForServerCompletion: (paymentId, txid) => { consol…
+[00:18, 05.05.2026] Mustafa Eken: <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eken26 Nexus Test</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>Pi.init({ version: "2.0", sandbox: true });</script>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+
+    <h1 style="color: #673ab7;">Eken26 Nexus Uygulaması</h1>
+    <p>10. Adımı tamamlamak için aşağıdaki butona bas kanki.</p>
+    
+    <button id="pay-btn" style="padding: 20px 40px; background-color: #673ab7; color: white; border: none; border-radius: 15px; font-size: 22px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        1 Pi Ödemesi Yap (Testnet)
+    </button>
+
+    <script>
+        document.getElementById('pay-btn').onclick = function() {
+            // Ödeme oluşturma fonksiyonu
+            Pi.createPayment({
+                amount: 1,
+                memo: "Eken26 Nexus Doğrulama Testi",
+                metadata: { orderId: 1001 },
+            }, {
+                onReadyForServerApproval: (paymentId) => {
+                    console.log("Onay Bekliyor. ID:", paymentId);
+                    // Testnet olduğu için bu aşamada ödeme başarılı sayılabilir
+                },
+                onReadyForServerCompletion: (paymentId, txid) => {
+                    console.log("Ödeme Tamamlandı! TXID:", txid);
+                    alert("Ödeme Başarılı! Şimdi Pi Portal'a dönüp kontrol et.");
+                },
+                onCancel: (paymentId) => {
+                    alert("Ödeme iptal edildi.");
+                },
+                onError: (error, payment) => {
+                    console.error("Hata oluştu:", error);
+                    alert("Bir hata oluştu, tekrar dene.");
+                },
+            });
+        };
+    </script>
+
+</body>
+</html>
