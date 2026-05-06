@@ -1,67 +1,71 @@
-[00:13, 05.05.2026] Mustafa Eken: <!DOCTYPE html>
-<html>
-<head>
-    <title>Eken26 Nexus Test</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script>Pi.init({ version: "2.0", sandbox: true });</script>
-</head>
-<body>
-    <h1>Eken26 Nexus Odeme Testi</h1>
-    <button id="pay-btn" style="padding: 20px; background: purple; color: white;">1 Pi Odemesi Yap</button>
-
-    <script>
-        document.getElementById('pay-btn').onclick = function() {
-            const payment = Pi.createPayment({
-                amount: 1,
-                memo: "Test odemesi",
-                metadata: { test: "eken26" },
-            }, {
-                onReadyForServerApproval: (paymentId) => { console.log(paymentId); },
-                onReadyForServerCompletion: (paymentId, txid) => { consol…
-[00:18, 05.05.2026] Mustafa Eken: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eken26 Nexus Test</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script>Pi.init({ version: "2.0", sandbox: true });</script>
+    <title>Eken26 Nexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+<body class="bg-gray-100 font-sans">
 
-    <h1 style="color: #673ab7;">Eken26 Nexus Uygulaması</h1>
-    <p>10. Adımı tamamlamak için aşağıdaki butona bas kanki.</p>
-    
-    <button id="pay-btn" style="padding: 20px 40px; background-color: #673ab7; color: white; border: none; border-radius: 15px; font-size: 22px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        1 Pi Ödemesi Yap (Testnet)
-    </button>
+    <nav class="bg-black text-white p-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-2">
+            <div class="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center font-bold text-lg">π</div>
+            <span class="font-bold tracking-wider text-sm uppercase">Eken26 Nexus tr</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-xs font-semibold">EN</span>
+            <i class="fas fa-bars text-xl cursor-pointer"></i>
+        </div>
+    </nav>
 
-    <script>
-        document.getElementById('pay-btn').onclick = function() {
-            // Ödeme oluşturma fonksiyonu
-            Pi.createPayment({
-                amount: 1,
-                memo: "Eken26 Nexus Doğrulama Testi",
-                metadata: { orderId: 1001 },
-            }, {
-                onReadyForServerApproval: (paymentId) => {
-                    console.log("Onay Bekliyor. ID:", paymentId);
-                    // Testnet olduğu için bu aşamada ödeme başarılı sayılabilir
-                },
-                onReadyForServerCompletion: (paymentId, txid) => {
-                    console.log("Ödeme Tamamlandı! TXID:", txid);
-                    alert("Ödeme Başarılı! Şimdi Pi Portal'a dönüp kontrol et.");
-                },
-                onCancel: (paymentId) => {
-                    alert("Ödeme iptal edildi.");
-                },
-                onError: (error, payment) => {
-                    console.error("Hata oluştu:", error);
-                    alert("Bir hata oluştu, tekrar dene.");
-                },
-            });
-        };
-    </script>
+    <div class="bg-white border-b px-4 py-2 flex flex-col shadow-sm">
+        <div class="py-2 border-b border-gray-100 text-gray-600">Anasayfa</div>
+        <div class="py-2 border-b border-gray-100 text-gray-600">Kategoriler</div>
+        <div class="py-2 border-b border-gray-100 text-purple-700 font-bold">Profil</div>
+        <div class="py-2 text-gray-600">Mesajlar</div>
+    </div>
+
+    <div class="p-4">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 text-center">
+            <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden border-4 border-gray-50">
+                <i class="fas fa-user text-5xl text-gray-400"></i>
+            </div>
+            
+            <h2 class="text-2xl font-extrabold text-gray-800">Ahmet Yılmaz</h2>
+            <div class="flex justify-center items-center mt-2 text-sm text-gray-500">
+                <i class="fas fa-map-marker-alt text-red-500 mr-1"></i> <span>İstanbul</span>
+                <span class="mx-2">|</span>
+                <i class="fas fa-star text-yellow-500 mr-1"></i> <span>4.8 (42 Yorum)</span>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-3 uppercase tracking-tight">Katılma Tarihi: 2024-01-15</p>
+            
+            <button class="mt-6 bg-black text-white px-10 py-2.5 rounded-full font-bold text-sm shadow-md active:scale-95 transition-all">
+                Profili Düzenle
+            </button>
+
+            <div class="grid grid-cols-2 gap-0 mt-8 border-t border-gray-100 pt-6">
+                <div class="text-center border-r border-gray-100">
+                    <p class="text-[10px] text-gray-400 uppercase font-bold">Toplam Satış</p>
+                    <p class="text-2xl font-black text-gray-900">1</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] text-gray-400 uppercase font-bold">Siparişler</p>
+                    <p class="text-2xl font-black text-gray-900">1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="px-4 pb-10 space-y-3">
+        <button class="w-full bg-black text-white py-4 rounded-2xl font-black text-md shadow-lg active:scale-95 transition-all">
+            Ürünleri Tarama
+        </button>
+        <button class="w-full bg-white border-2 border-black text-black py-4 rounded-2xl font-black text-md shadow-sm active:scale-95 transition-all">
+            Şimdi Sat
+        </button>
+    </div>
 
 </body>
 </html>
