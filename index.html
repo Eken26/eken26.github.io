@@ -1,107 +1,122 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26 Nexus</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-  <script>
-    Pi.init({ version: "2.0", sandbox: true });
-  </script>
+<title>Eken26 Nexus TR</title>
 
-  <style>
-    body{
-      font-family: Arial;
-      background:#111827;
-      color:white;
-      margin:0;
-      padding:0;
-    }
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-    .header{
-      background:black;
-      padding:15px;
-      text-align:center;
-      font-size:24px;
-      font-weight:bold;
-    }
+<script>
+Pi.init({
+version: "2.0",
+sandbox: true
+});
+</script>
 
-    .card{
-      background:#1f2937;
-      margin:20px;
-      padding:20px;
-      border-radius:15px;
-      text-align:center;
-    }
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+}
 
-    button{
-      background:#7c3aed;
-      color:white;
-      border:none;
-      padding:15px 25px;
-      border-radius:10px;
-      font-size:18px;
-      cursor:pointer;
-    }
+.header{
+background:black;
+padding:20px;
+font-size:30px;
+font-weight:bold;
+}
 
-    img{
-      width:180px;
-      border-radius:20px;
-      margin-bottom:15px;
-    }
-  </style>
+.container{
+padding:40px 20px;
+}
+
+.card{
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+max-width:500px;
+margin:auto;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+button{
+background:#60a5fa;
+border:none;
+padding:15px 30px;
+font-size:20px;
+border-radius:12px;
+cursor:pointer;
+color:white;
+margin-top:20px;
+}
+
+button:hover{
+background:#3b82f6;
+}
+</style>
 </head>
 
 <body>
 
 <div class="header">
-  Eken26 Nexus TR
+Eken26 Nexus TR
 </div>
 
+<div class="container">
+
 <div class="card">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Pi-network.png">
 
-  <h2>Pi Marketplace</h2>
+<h1>Pi Marketplace</h1>
 
-  <p>
-    Global shopping and digital marketplace powered by Pi.
-  </p>
+<p>
+Global shopping and digital marketplace powered by Pi.
+</p>
 
-  <button id="paybtn">
-    Pi ile Ödeme Yap
-  </button>
+<button id="paybtn">
+Pi ile Ödeme Yap
+</button>
+
+</div>
+
 </div>
 
 <script>
 
 document.getElementById("paybtn").onclick = function () {
 
-  Pi.createPayment(
-    {
-      amount: 1,
-      memo: "Eken26 Nexus Demo",
-      metadata: { productId: "nexus1" }
-    },
+Pi.createPayment(
+{
+amount: 1,
+memo: "Eken26 Nexus Demo",
+metadata: {
+productId: "Nexus1"
+}
+},
 
-    {
-      onReadyForServerApproval: function(paymentId) {
-        console.log(paymentId);
-      },
+{
+onReadyForServerApproval: function(paymentId) {
+console.log(paymentId);
+},
 
-      onReadyForServerCompletion: function(paymentId, txid) {
-        console.log(paymentId, txid);
-      },
+onReadyForServerCompletion: function(paymentId, txid) {
+console.log(paymentId, txid);
+},
 
-      onCancel: function(paymentId) {
-        console.log("İptal edildi");
-      },
+onCancel: function(paymentId) {
+console.log("İptal edildi");
+},
 
-      onError: function(error) {
-        console.log(error);
-      }
-    }
-  );
+onError: function(error) {
+console.log(error);
+}
+}
+);
+
 };
 
 </script>
