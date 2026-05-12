@@ -14,13 +14,10 @@
 
     async function piLogin() {
       try {
-      const Kapsamlar = [];  
-        const authResult = await Pi.authenticate(scopes, function(payment) {});
-        document.getElementById("status").innerText =
-          "Pi giriş başarılı: " + authResult.user.username;
+        await Pi.authenticate([], function(payment) {});
+        document.getElementById("durum").innerText = "Pi giriş başarılı";
       } catch (err) {
-        document.getElementById("status").innerText =
-          "Pi giriş hatası";
+        document.getElementById("durum").innerText = "Pi giriş hatası";
         console.error(err);
       }
     }
@@ -30,9 +27,4 @@
     };
   </script>
 </head>
-<body style="font-family: Arial; text-align: center; background:#0f172a; color:white; padding-top:100px;">
-  <h1>Eken26 Nexus TR</h1>
-  <p>Pi doğrulama test uygulaması</p>
-  <p id="status">Pi girişi bekleniyor...</p>
-</body>
-</html>
+<body style="font-family: Arial; text-align:center; background:#0f172a; c…
