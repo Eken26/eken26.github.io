@@ -14,7 +14,7 @@
 
     async function piLogin() {
       try {
-        const scopes = ['username'];
+      const Kapsamlar = [];  
         const authResult = await Pi.authenticate(scopes, function(payment) {});
         document.getElementById("status").innerText =
           "Pi giriş başarılı: " + authResult.user.username;
