@@ -1,148 +1,35 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eken26 Nexus TR</title>
 
-<title>Eken26 Nexus TR</title>
-
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
-<script>
-Pi.init({
-version: "2.0",
-sandbox: true
-});
-</script>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
-text-align:center;
-}
-
-.header{
-background:black;
-padding:20px;
-font-size:30px;
-font-weight:bold;
-}
-
-.container{
-padding:40px 20px;
-}
-
-.card{
-background:#1e293b;
-padding:30px;
-border-radius:20px;
-max-width:500px;
-margin:auto;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
-}
-
-button{
-background:#60a5fa;
-border:none;
-padding:15px 30px;
-font-size:20px;
-border-radius:12px;
-cursor:pointer;
-color:white;
-margin-top:20px;
-}
-
-button:hover{
-background:#3b82f6;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-Eken26 Nexus TR
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<h1>Pi Marketplace</h1>
-
-<p>
-Global shopping and digital marketplace powered by Pi.
-</p>
-
-<button id="paybtn">
-Pi ile Ödeme Yap
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-document.getElementById("paybtn").onclick = function () {
-
-Pi.createPayment(
-{
-amount: 1,
-memo: "Eken26 Nexus Demo",
-metadata: {
-productId: "Nexus1"
-}
-},
-
-{
-onReadyForServerApproval: function(paymentId) {
-console.log(paymentId);
-},
-
-onReadyForServerCompletion: function(paymentId, txid) {
-console.log(paymentId, txid);
-},
-
-onCancel: function(paymentId) {
-console.log("İptal edildi");
-},
-
-onError: function(error) {
-console.log(error);
-}
-}
-);
-
-};
-
-</script>
-</script>
-
-<script>
-async function piLogin() {
-  try {
-    const scopes = ['username'];
-
-    const authResult = await Pi.authenticate(scopes, function(payment) {
-      console.log(payment);
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script>
+    Pi.init({
+      version: "2.0",
+      sandbox: true
     });
 
-    console.log("Signed in:", authResult.user);
-  } catch (err) {
-    console.error("Pi login failed:", err);
-  }
-}
+    async function piLogin() {
+      try {
+        const scopes = ['username'];
+        const authResult = await Pi.authenticate(scopes, function(payment) {});
+        console.log("Giriş başarılı:", authResult.user);
+      } catch (err) {
+        console.error("Pi giriş hatası:", err);
+      }
+    }
 
-window.onload = function() {
-  piLogin();
-};
-</script>
+    window.onload = function() {
+      piLogin();
+    };
+  </script>
+</head>
 
-</body>
-</html>
+<body style="font-family: Arial; text-align:center; background:#0f172a; color:white; padding-top:100px;">
+  <h1>Eken26 Nexus TR</h1>
+  <p>Pi doğrulama test uygulaması</p>
 </body>
 </html>
