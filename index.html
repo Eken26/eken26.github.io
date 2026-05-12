@@ -16,9 +16,12 @@
       try {
         const scopes = ['username'];
         const authResult = await Pi.authenticate(scopes, function(payment) {});
-        console.log("Giriş başarılı:", authResult.user);
+        document.getElementById("status").innerText =
+          "Pi giriş başarılı: " + authResult.user.username;
       } catch (err) {
-        console.error("Pi giriş hatası:", err);
+        document.getElementById("status").innerText =
+          "Pi giriş hatası";
+        console.error(err);
       }
     }
 
@@ -27,9 +30,9 @@
     };
   </script>
 </head>
-
-<body style="font-family: Arial; text-align:center; background:#0f172a; color:white; padding-top:100px;">
+<body style="font-family: Arial; text-align: center; background:#0f172a; color:white; padding-top:100px;">
   <h1>Eken26 Nexus TR</h1>
   <p>Pi doğrulama test uygulaması</p>
+  <p id="status">Pi girişi bekleniyor...</p>
 </body>
 </html>
