@@ -120,6 +120,29 @@ console.log(error);
 };
 
 </script>
+</script>
 
+<script>
+async function piLogin() {
+  try {
+    const scopes = ['username'];
+
+    const authResult = await Pi.authenticate(scopes, function(payment) {
+      console.log(payment);
+    });
+
+    console.log("Signed in:", authResult.user);
+  } catch (err) {
+    console.error("Pi login failed:", err);
+  }
+}
+
+window.onload = function() {
+  piLogin();
+};
+</script>
+
+</body>
+</html>
 </body>
 </html>
