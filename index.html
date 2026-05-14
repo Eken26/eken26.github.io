@@ -6,67 +6,217 @@
 <title>Eken26 Nexus Doriya</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f2f2f7;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f7;
 }
 
-.header{
-  background:#6f42c1;
-  color:white;
-  padding:20px;
+.header {
+  background: #6f42c1;
+  color: white;
+  padding: 20px;
 }
 
-.title{
-  font-size:22px;
-  font-weight:bold;
+.title {
+  font-size: 28px;
+  font-weight: bold;
 }
 
-.profile{
-  margin-top:12px;
-  background:rgba(255,255,255,0.2);
-  padding:12px;
-  border-radius:12px;
+.profile {
+  margin-top: 12px;
+  background: rgba(255,255,255,0.2);
+  padding: 12px;
+  border-radius: 12px;
 }
 
-.search{
-  width:100%;
-  margin-top:12px;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  box-sizing:border-box;
-  font-size:16px;
+.search {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
-#content{
-  padding:15px;
-  padding-bottom:100px;
+#content {
+  padding: 15px;
+  padding-bottom: 100px;
 }
 
-.card{
-  background:white;
-  padding:18px;
-  border-radius:16px;
-  margin-bottom:12px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
-  cursor:pointer;
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
 }
 
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:white;
-  border-top:1px solid #ddd;
-  display:flex;
-  justify-content:space-around;
-  padding:10px;
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
 }
 
-.bottom button{
-  background:#6f42c1;
-  color:white;
-  border
+.bottom button {
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.backbtn {
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">Eken26 Nexus Doriya</div>
+
+  <div class="profile">
+    👤 Hoş geldin <b>Mustafaeken26</b><br>
+    Eskişehir Turizm Platformu
+  </div>
+
+  <input class="search" placeholder="Otel, tur, restoran ara...">
+</div>
+
+<div id="content"></div>
+
+<div class="bottom">
+  <button onclick="home()">Ana Sayfa</button>
+  <button onclick="tours()">Turlar</button>
+  <button onclick="favorites()">Favoriler</button>
+  <button onclick="profile()">Profil</button>
+</div>
+
+<script>
+function setHTML(html) {
+  document.getElementById('content').innerHTML = html;
+}
+
+function home() {
+  setHTML(`
+    <div class="card" onclick="thermal()">
+      <h2>🏨 Termal Oteller</h2>
+      <p>Eskişehir konaklama seçenekleri</p>
+    </div>
+
+    <div class="card" onclick="boat()">
+      <h2>🛶 Porsuk Turları</h2>
+      <p>Tekne ve gondol deneyimi</p>
+    </div>
+
+    <div class="card" onclick="restaurants()">
+      <h2>🍽️ Restoranlar</h2>
+      <p>Popüler yemek noktaları</p>
+    </div>
+  `);
+}
+
+function tours() {
+  setHTML(`
+    <div class="card" onclick="citytour()">
+      <h2>🏛️ Şehir Turu</h2>
+      <p>Odunpazarı ve merkez rota</p>
+    </div>
+
+    <div class="card" onclick="museum()">
+      <h2>🖼️ Müze Turu</h2>
+      <p>Kültürel gezi deneyimi</p>
+    </div>
+  `);
+}
+
+function favorites() {
+  setHTML(`
+    <div class="card">
+      <h2>⭐ Favoriler</h2>
+      <p>Kaydedilmiş içerikler burada görünecek</p>
+    </div>
+  `);
+}
+
+function profile() {
+  setHTML(`
+    <div class="card">
+      <h2>👤 Profil</h2>
+      <p>Kullanıcı: Mustafaeken26</p>
+      <p>Şehir: Eskişehir</p>
+      <p>Platform: Doriya</p>
+    </div>
+  `);
+}
+
+function thermal() {
+  setHTML(`
+    <div class="card">
+      <h2>🏨 Termal Oteller</h2>
+      <p>Eskişehir termal konaklama detayları.</p>
+      <button class="backbtn" onclick="home()">Geri</button>
+    </div>
+  `);
+}
+
+function boat() {
+  setHTML(`
+    <div class="card">
+      <h2>🛶 Porsuk Turu</h2>
+      <p>Tekne ve gondol tur bilgileri.</p>
+      <button class="backbtn" onclick="home()">Geri</button>
+    </div>
+  `);
+}
+
+function restaurants() {
+  setHTML(`
+    <div class="card">
+      <h2>🍽️ Restoranlar</h2>
+      <p>Önerilen restoranlar.</p>
+      <button class="backbtn" onclick="home()">Geri</button>
+    </div>
+  `);
+}
+
+function citytour() {
+  setHTML(`
+    <div class="card">
+      <h2>🏛️ Şehir Turu</h2>
+      <p>Eskişehir gezi noktaları.</p>
+      <button class="backbtn" onclick="tours()">Geri</button>
+    </div>
+  `);
+}
+
+function museum() {
+  setHTML(`
+    <div class="card">
+      <h2>🖼️ Müze Turu</h2>
+      <p>Müze gezi detayları.</p>
+      <button class="backbtn" onclick="tours()">Geri</button>
+    </div>
+  `);
+}
+
+home();
+</script>
+
+</body>
+</html>
