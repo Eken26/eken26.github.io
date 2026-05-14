@@ -4,145 +4,82 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eken26 Nexus Doriya</title>
-
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #ececf1;
-}
-
-.header {
-  background: #6f42c1;
-  color: white;
-  padding: 20px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.profile {
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.2);
-  font-size: 18px;
-}
-
-.search {
-  width: 100%;
-  margin-top: 15px;
-  padding: 14px;
-  border: none;
-  border-radius: 15px;
-  font-size: 17px;
-  box-sizing: border-box;
-}
-
-.content {
-  padding: 15px;
-  padding-bottom: 120px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
-
-.card h2 {
-  margin-top: 0;
-}
-
-.bottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #ccc;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-}
-
-.bottom button, .backbtn {
-  background: #6f42c1;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 15px;
-  font-size: 16px;
-}
+body{margin:0;font-family:Arial;background:#f2f2f7;}
+.header{background:#6f42c1;color:#fff;padding:20px;}
+.header h1{margin:0;font-size:24px;}
+.profile{margin-top:12px;background:rgba(255,255,255,0.2);padding:12px;border-radius:12px;}
+.search{width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;box-sizing:border-box;}
+#content{padding:15px;padding-bottom:100px;}
+.card{background:#fff;padding:18px;border-radius:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:10px;}
+.bottom button{background:#6f42c1;color:#fff;border:none;padding:12px;border-radius:12px;}
+.back{background:#6f42c1;color:#fff;border:none;padding:10px 14px;border-radius:10px;}
 </style>
-</head>
+<script>
+function setHTML(v){document.getElementById('content').innerHTML=v;}
 
-<body>
+function home(){
+setHTML(
+'<div class="card" onclick="hotel()"><h2>🏨 Termal Oteller</h2><p>Eskişehir konaklama seçenekleri</p></div>'+
+'<div class="card" onclick="boat()"><h2>🚣 Porsuk Turları</h2><p>Tekne ve gondol deneyimi</p></div>'+
+'<div class="card" onclick="food()"><h2>🍽️ Restoranlar</h2><p>Yerel lezzetler</p></div>'
+);
+}
+
+function hotel(){
+setHTML(
+'<div class="card"><h2>🏨 Termal Oteller</h2><p>Sıcaksular ve çevresinde konaklama.</p><br><button class="back" onclick="home()">Geri</button></div>'
+);
+}
+
+function boat(){
+setHTML(
+'<div class="card"><h2>🚣 Porsuk Turları</h2><p>Porsuk Çayı tekne ve gondol turları.</p><br><button class="back" onclick="home()">Geri</button></div>'
+);
+}
+
+function food(){
+setHTML(
+'<div class="card"><h2>🍽️ Restoranlar</h2><p>Balaban köfte, çibörek ve öneriler.</p><br><button class="back" onclick="home()">Geri</button></div>'
+);
+}
+
+function tours(){
+setHTML(
+'<div class="card"><h2>🗺️ Turlar</h2><p>Odunpazarı ve müze turları.</p></div>'
+);
+}
+
+function fav(){
+setHTML(
+'<div class="card"><h2>❤️ Favoriler</h2><p>Henüz favori eklenmedi.</p></div>'
+);
+}
+
+function profile(){
+setHTML(
+'<div class="card"><h2>👤 Profil</h2><p>Kullanıcı: Mustafaeken26</p><p>Platform: Eken26 Nexus Doriya</p></div>'
+);
+}
+</script>
+</head>
+<body onload="home()">
 
 <div class="header">
-  <h1>Eken26 Nexus Doriya</h1>
-
-  <div class="profile">
-    👤 Hoş geldin <b>Mustafaeken26</b><br>
-    Eskişehir Turizm Platformu
-  </div>
-
-  <input class="search" placeholder="Otel, tur, restoran ara...">
+<h1>Eken26 Nexus Doriya</h1>
+<div class="profile">👤 Hoş geldin <b>Mustafaeken26</b><br>Eskişehir Turizm Platformu</div>
+<input class="search" placeholder="Ara...">
 </div>
 
-<div class="content" id="content"></div>
+<div id="content"></div>
 
 <div class="bottom">
-  <button onclick="showHome()">Ana Sayfa</button>
-  <button onclick="showTours()">Turlar</button>
-  <button onclick="showFav()">Favoriler</button>
-  <button onclick="showProfile()">Profil</button>
+<button onclick="home()">Ana Sayfa</button>
+<button onclick="tours()">Turlar</button>
+<button onclick="fav()">Favoriler</button>
+<button onclick="profile()">Profil</button>
 </div>
-
-<script>
-function showHome() {
-  document.getElementById('content').innerHTML =
-    '<div class="card" onclick="showHotel()"><h2>🏨 Termal Oteller</h2><p>En popüler konaklama seçenekleri</p></div>' +
-    '<div class="card" onclick="showBoat()"><h2>🚣 Porsuk Turları</h2><p>Şehir merkezinde eşsiz gezi</p></div>' +
-    '<div class="card" onclick="showFood()"><h2>🍽️ Restoranlar</h2><p>En iyi mekan önerileri</p></div>';
-}
-
-function showHotel() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>🏨 Termal Oteller</h2><p>Eskişehir termal konaklama detayları.</p><button class="backbtn" onclick="showHome()">Geri</button></div>';
-}
-
-function showBoat() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>🚣 Porsuk Turları</h2><p>Tekne ve gondol tur detayları.</p><button class="backbtn" onclick="showHome()">Geri</button></div>';
-}
-
-function showFood() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>🍽️ Restoranlar</h2><p>Balaban köfte ve çibörek önerileri.</p><button class="backbtn" onclick="showHome()">Geri</button></div>';
-}
-
-function showTours() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>🗺️ Turlar</h2><p>Eskişehir gezi rotaları burada.</p></div>';
-}
-
-function showFav() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>❤️ Favoriler</h2><p>Henüz favori eklenmedi.</p></div>';
-}
-
-function showProfile() {
-  document.getElementById('content').innerHTML =
-    '<div class="card"><h2>👤 Profil</h2><p>Kullanıcı: Mustafaeken26</p><p>Şehir: Eskişehir</p><p>Platform: Doriya</p></div>';
-}
-
-showHome();
-</script>
 
 </body>
 </html>
