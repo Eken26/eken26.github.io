@@ -10,7 +10,7 @@ body{
   font-family:Arial,sans-serif;
   background:#f7f7f7;
   text-align:center;
-  padding-top:80px;
+  padding-top:60px;
 }
 .box{
   background:white;
@@ -24,11 +24,12 @@ button{
   background:#6f42c1;
   color:white;
   border:none;
-  padding:14px 28px;
+  padding:14px 24px;
   font-size:18px;
   border-radius:10px;
+  margin:8px;
 }
-#result{
+#profile{
   margin-top:20px;
   font-size:18px;
 }
@@ -38,12 +39,14 @@ button{
 
 <div class="box">
   <h1>Eken26 Nexus doriya</h1>
-  <p>Pi kullanıcı doğrulama</p>
   <button id="loginBtn">Pi ile Giriş Yap</button>
-  <div id="result">Hazır</div>
+  <button id="payBtn" style="display:none;">Sandbox Ödeme Testi</button>
+  <div id="profile">Hazır</div>
 </div>
 
 <script>
+let currentUser = null;
+
 document.addEventListener("DOMContentLoaded", function () {
   Pi.init({
     version: "2.0",
@@ -53,11 +56,47 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("loginBtn").addEventListener("click", async function () {
     try {
       const auth = await Pi.authenticate(["username"], function(){});
-      document.getElementById("result").innerText =
-        "Giriş başarılı: " + auth.user.username;
+      currentUser = auth.user;
+
+      document.getElementById("profile").innerHTML =
+        "Kullanıcı: " + currentUser.username;
+
+      document.getElementById("payBtn").style.display = "inline-block";
+
     } catch (e) {
-      document.getElementById("result").innerText =
+      document.getElementById("profile").innerHTML =
         "Hata: " + e.message;
+    }
+  });
+
+  document.getElementById("payBtn").addEventListener("click", async function () {
+    try {
+      await Pi.createPayment({
+        amount: 0.01,
+        memo: "Sandbox test ödeme",
+        metadata: { type: "test" }
+      }, {
+        onReadyForServerApproval: function(paymentId) {
+          document.getElementById("profile").innerHTML =
+            "Ödeme hazır: " + paymentId;
+        },
+        onReadyForServerCompletion: function(paymentId, txid) {
+          document.getElementById("profile").innerHTML =
+            "Ödeme tamamlandı";
+        },
+        onCancel: function(paymentId) {
+          document.getElementById("profile").innerHTML =
+            "Ödeme iptal edildi";
+        },
+        onError: function(error) {
+          document.getElementById("profile").innerHTML =
+            "Ödeme hatası";
+        }
+      });
+
+    } catch (e) {
+      document.getElementById("profile").innerHTML =
+        "Ödeme başlatılamadı";
     }
   });
 });
