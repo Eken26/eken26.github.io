@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Eken26 Nexus TR</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eken26 Pi Doğrulama</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
-<body style="font-family: Arial; text-align:center; padding-top:100px;">
+<body style="font-family: Arial; text-align:center; padding-top:80px;">
   <h1>Pi Doğrulama Testi</h1>
-  <p id="status">Giriş bekleniyor...</p>
+  <p id="status">Pi giriş başlatılıyor...</p>
+  <button id="loginBtn" style="display:none;padding:12px 20px;font-size:16px;">
+    Pi ile Giriş Yap
+  </button>
 
   <script>
     Pi.init({ version: "2.0", sandbox: true });
 
-    async function login() {
+    async function loginPi() {
       try {
-        await Pi.authenticate([], function(payment) {});
-        document.getElementById("status").innerText = "Pi giriş başarılı";
-      } catch (e) {
-        document.getElementById("status").innerText = "Pi giriş hatası";
-        console.log(e);
+        document.getElementById("status").innerText = "Pi giriş ekranı açılıyor...";
+
+        const scopes = ['username'];
+
+        const auth = await Pi.authenticate(scopes, function(payment) {
+          console.log("Incomplete payment:", payment);
+        });
+
+        document.getElementById("status").innerText =
+          "Giriş başarılı: " + auth.user.username;
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText =
+          "Pi giriş hatası: " + err.message;
+        document.getElementById("loginBtn").style.display = "inline-block";
       }
     }
 
-    window.onload = login;
+    window.onload = function() {
+      loginPi();
+      document.getElementById("loginBtn").onclick = loginPi;
+    };
   </script>
 </body>
 </html>
