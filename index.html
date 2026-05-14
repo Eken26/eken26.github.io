@@ -3,17 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26 Nexus Doriya</title>
+  <title>Pi Doğrulama Testi</title>
 
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background: #f5f5f5;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #6b46c1;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
 </head>
-<body style="font-family: Arial; text-align:center; padding-top:100px;">
+<body>
 
   <h1>Pi Doğrulama Testi</h1>
-  <p id="status">Başlatılıyor...</p>
-  <button id="loginBtn" style="display:none; padding:12px 20px; font-size:16px;">
-    Pi ile Giriş Yap
-  </button>
+  <button onclick="loginPi()">Pi ile Giriş Yap</button>
+  <div id="status">Hazır</div>
 
   <script>
     Pi.init({
@@ -21,38 +43,18 @@
       sandbox: true
     });
 
-    const status = document.getElementById("status");
-    const loginBtn = document.getElementById("loginBtn");
-
-    loginBtn.onclick = async function () {
+    async function loginPi() {
       try {
-        const scopes = […
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eken26 Nexus Doriya</title>
+        const scopes = ['username'];
+        const authResult = await Pi.authenticate(scopes, function(payment) {});
+        document.getElementById("status").innerText =
+          "Giriş başarılı: " + authResult.user.username;
+      } catch (err) {
+        document.getElementById("status").innerText =
+          "Hata: " + err.message;
+      }
+    }
+  </script>
 
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-</head>
-<body style="font-family: Arial; text-align:center; padding-top:100px;">
-
-  <h1>Pi Doğrulama Testi</h1>
-  <p id="status">Başlatılıyor...</p>
-  <button id="loginBtn" style="display:none; padding:12px 20px; font-size:16px;">
-    Pi ile Giriş Yap
-  </button>
-
-  <script>
-    Pi.init({
-      version: "2.0",
-      sandbox: true
-    });
-
-    const status = document.getElementById("status");
-    const loginBtn = document.getElementById("loginBtn");
-
-    loginBtn.onclick = async function () {
-      try {
-        const scopes = […
+</body>
+</html>
