@@ -3,160 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Nexus Doriya - Eskişehir</title>
+<title>Eken26 Nexus Doriya</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-  color: #222;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6fb;
 }
-header {
-  background: linear-gradient(135deg, #6f42c1, #4b2a88);
-  color: white;
-  padding: 24px 18px;
-  text-align: center;
+.header{
+  background:#6f42c1;
+  color:white;
+  padding:18px;
+  text-align:center;
+  font-size:24px;
+  font-weight:bold;
 }
-header h1 {
-  margin: 0;
-  font-size: 28px;
+.nav{
+  display:flex;
+  overflow-x:auto;
+  background:white;
+  padding:10px;
+  gap:8px;
+  border-bottom:1px solid #ddd;
 }
-header p {
-  margin: 8px 0 0;
-  opacity: 0.9;
+.nav button{
+  border:none;
+  background:#6f42c1;
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  white-space:nowrap;
 }
-.container {
-  padding: 16px;
-  max-width: 900px;
-  margin: auto;
+.container{
+  padding:16px;
 }
-.hero {
-  background: white;
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  margin-bottom: 18px;
-  text-align: center;
+.card{
+  background:white;
+  padding:16px;
+  border-radius:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
-button {
-  background: #6f42c1;
-  color: white;
-  border: none;
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 6px;
+h2{
+  margin-top:0;
 }
-button.secondary {
-  background: #1f8b4c;
-}
-#status {
-  margin-top: 14px;
-  font-weight: bold;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
-.card h3 {
-  margin-top: 0;
-}
-.price {
-  color: #6f42c1;
-  font-weight: bold;
-}
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #666;
+.hidden{
+  display:none;
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Eken26 Nexus Doriya</h1>
-  <p>Eskişehir Turizm Platformu</p>
-</header>
+<div class="header">Eken26 Nexus Doriya - Eskişehir</div>
+
+<div class="nav">
+  <button onclick="showPage('home')">Ana Sayfa</button>
+  <button onclick="showPage('hotel')">Oteller</button>
+  <button onclick="showPage('tour')">Turlar</button>
+  <button onclick="showPage('food')">Restoranlar</button>
+  <button onclick="showPage('contact')">İletişim</button>
+</div>
 
 <div class="container">
 
-  <div class="hero">
-    <h2>Eskişehir'i Keşfet</h2>
-    <p>Turizm, rezervasyon ve Pi ödeme demo platformu</p>
-
-    <button id="loginBtn">Demo Giriş</button>
-    <button id="payBtn" class="secondary" style="display:none;">Demo Pi Ödeme</button>
-
-    <div id="status">Hazır</div>
+  <div id="home" class="card">
+    <h2>Hoş Geldiniz</h2>
+    <p>Eskişehir turizm platformuna hoş geldiniz.</p>
+    <p>Porsuk Çayı, Odunpazarı, termal oteller ve daha fazlası burada.</p>
   </div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>🏨 Termal Oteller</h3>
-      <p>Sıcaksular ve termal konaklama seçenekleri.</p>
-      <p class="price">999 ₺ / gece</p>
-    </div>
+  <div id="hotel" class="card hidden">
+    <h2>Oteller</h2>
+    <p>🏨 Termal Otel - 999 ₺</p>
+    <p>🏨 Şehir Merkezi Otel - 799 ₺</p>
+    <p>🏨 Butik Otel - 650 ₺</p>
+  </div>
 
-    <div class="card">
-      <h3>🚣 Porsuk Çayı Turu</h3>
-      <p>Eskişehir’in merkezinde gondol deneyimi.</p>
-      <p class="price">150 ₺</p>
-    </div>
+  <div id="tour" class="card hidden">
+    <h2>Turlar</h2>
+    <p>🚣 Porsuk Gondol Turu</p>
+    <p>🏛️ Odunpazarı Tarih Turu</p>
+    <p>🎭 Müze Paketi</p>
+  </div>
 
-    <div class="card">
-      <h3>🏛️ Odunpazarı Turu</h3>
-      <p>Tarihi evler ve kültürel gezi deneyimi.</p>
-      <p class="price">250 ₺</p>
-    </div>
+  <div id="food" class="card hidden">
+    <h2>Restoranlar</h2>
+    <p>🍽️ Balaban Köfte</p>
+    <p>🍽️ Çibörek</p>
+    <p>🍽️ Yerel Kahvaltı</p>
+  </div>
 
-    <div class="card">
-      <h3>🎭 Müze Paketi</h3>
-      <p>Balmumu ve modern sanat müzeleri.</p>
-      <p class="price">200 ₺</p>
-    </div>
-
-    <div class="card">
-      <h3>🍽️ Restoran Rehberi</h3>
-      <p>Balaban köfte ve yerel lezzetler.</p>
-      <p class="price">Rezervasyon</p>
-    </div>
-
-    <div class="card">
-      <h3>🚗 Araç Kiralama</h3>
-      <p>Günlük araç seçenekleri.</p>
-      <p class="price">1200 ₺ / gün</p>
-    </div>
+  <div id="contact" class="card hidden">
+    <h2>İletişim</h2>
+    <p>Developer: Mustafaeken26</p>
+    <p>Eken26 Nexus Doriya</p>
   </div>
 
 </div>
 
-<footer>
-  Eken26 Nexus Doriya • Demo Sürüm
-</footer>
-
 <script>
-const loginBtn = document.getElementById("loginBtn");
-const payBtn = document.getElementById("payBtn");
-const statusDiv = document.getElementById("status");
-
-loginBtn.addEventListener("click", function() {
-  statusDiv.innerHTML = "Hoş geldin Mustafaeken26";
-  payBtn.style.display = "inline-block";
-});
-
-payBtn.addEventListener("click", function() {
-  statusDiv.innerHTML = "Demo Pi ödeme başarılı (0.01 Pi test)";
-});
+function showPage(page){
+  const pages=['home','hotel','tour','food','contact'];
+  pages.forEach(function(id){
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById(page).classList.remove('hidden');
+}
 </script>
 
 </body>
