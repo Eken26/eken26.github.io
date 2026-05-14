@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Nexus doriya</title>
-<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<title>Eken26 Nexus doriya Demo</title>
 <style>
 body{
   font-family:Arial,sans-serif;
@@ -29,7 +28,7 @@ button{
   border-radius:10px;
   margin:8px;
 }
-#profile{
+#status{
   margin-top:20px;
   font-size:18px;
 }
@@ -39,66 +38,26 @@ button{
 
 <div class="box">
   <h1>Eken26 Nexus doriya</h1>
-  <button id="loginBtn">Pi ile Giriş Yap</button>
-  <button id="payBtn" style="display:none;">Sandbox Ödeme Testi</button>
-  <div id="profile">Hazır</div>
+  <p>Demo Uygulama</p>
+
+  <button id="loginBtn">Demo Giriş</button>
+  <button id="payBtn" style="display:none;">Demo Ödeme Testi</button>
+
+  <div id="status">Hazır</div>
 </div>
 
 <script>
-let currentUser = null;
+const statusDiv = document.getElementById("status");
+const loginBtn = document.getElementById("loginBtn");
+const payBtn = document.getElementById("payBtn");
 
-document.addEventListener("DOMContentLoaded", function () {
-  Pi.init({
-    version: "2.0",
-    sandbox: true
-  });
+loginBtn.addEventListener("click", function() {
+  statusDiv.innerHTML = "Kullanıcı: mustafaeken26";
+  payBtn.style.display = "inline-block";
+});
 
-  document.getElementById("loginBtn").addEventListener("click", async function () {
-    try {
-      const auth = await Pi.authenticate(["username"], function(){});
-      currentUser = auth.user;
-
-      document.getElementById("profile").innerHTML =
-        "Kullanıcı: " + currentUser.username;
-
-      document.getElementById("payBtn").style.display = "inline-block";
-
-    } catch (e) {
-      document.getElementById("profile").innerHTML =
-        "Hata: " + e.message;
-    }
-  });
-
-  document.getElementById("payBtn").addEventListener("click", async function () {
-    try {
-      await Pi.createPayment({
-        amount: 0.01,
-        memo: "Sandbox test ödeme",
-        metadata: { type: "test" }
-      }, {
-        onReadyForServerApproval: function(paymentId) {
-          document.getElementById("profile").innerHTML =
-            "Ödeme hazır: " + paymentId;
-        },
-        onReadyForServerCompletion: function(paymentId, txid) {
-          document.getElementById("profile").innerHTML =
-            "Ödeme tamamlandı";
-        },
-        onCancel: function(paymentId) {
-          document.getElementById("profile").innerHTML =
-            "Ödeme iptal edildi";
-        },
-        onError: function(error) {
-          document.getElementById("profile").innerHTML =
-            "Ödeme hatası";
-        }
-      });
-
-    } catch (e) {
-      document.getElementById("profile").innerHTML =
-        "Ödeme başlatılamadı";
-    }
-  });
+payBtn.addEventListener("click", function() {
+  statusDiv.innerHTML = "Demo ödeme başarılı (0.01 Pi test)";
 });
 </script>
 
