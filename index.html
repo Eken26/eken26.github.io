@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Eken26 Pi Doğrulama</title>
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pi Doğrulama Testi</title>
 </head>
 <body style="font-family: Arial; text-align:center; padding-top:80px;">
   <h1>Pi Doğrulama Testi</h1>
-  <p id="status">Pi giriş başlatılıyor...</p>
-  <button id="loginBtn" style="display:none;padding:12px 20px;font-size:16px;">
+  <p id="status">Hazırlanıyor...</p>
+  <button id="loginBtn" onclick="loginPi()" style="display:none;padding:12px 20px;">
     Pi ile Giriş Yap
   </button>
 
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
   <script>
-    Pi.init({ version: "2.0", sandbox: true });
+    let piReady = false;
+
+    window.addEventListener("load", function () {
+      if (typeof Pi !== "undefined") {
+        Pi.init({
+          version: "2.0",
+          sandbox: true
+        });
+        piReady = true;
+        loginPi();
+      } else {
+        document.getElementById("status").innerText = "Pi SDK yüklenemedi.";
+      }
+    });
 
     async function loginPi() {
+      if (!piReady) {
+        document.getElementById("status").innerText = "Pi henüz hazır değil...";
+        return;
+      }
+
       try {
-        document.getElementById("status").innerText = "Pi giriş ekranı açılıyor...";
-
-        const scopes = ['username'];
-
-        const auth = await Pi.authenticate(scopes, function(payment) {
-          console.log("Incomplete payment:", payment);
-        });
-
+        const auth = await Pi.authenticate(["username"], function() {});
         document.getElementById("status").innerText =
           "Giriş başarılı: " + auth.user.username;
-
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
         document.getElementById("status").innerText =
-          "Pi giriş hatası: " + err.message;
+          "Pi giriş hatası: " + e.message;
         document.getElementById("loginBtn").style.display = "inline-block";
       }
     }
-
-    window.onload = function() {
-      loginPi();
-      document.getElementById("loginBtn").onclick = loginPi;
-    };
   </script>
 </body>
 </html>
