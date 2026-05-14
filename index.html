@@ -16,6 +16,7 @@ body{margin:0;font-family:Arial;background:#f2f2f7;}
 .bottom button{background:#6f42c1;color:#fff;border:none;padding:12px;border-radius:12px;}
 .back{background:#6f42c1;color:#fff;border:none;padding:10px 14px;border-radius:10px;}
 </style>
+
 <script>
 function setHTML(v){document.getElementById('content').innerHTML=v;}
 
@@ -23,63 +24,4 @@ function home(){
 setHTML(
 '<div class="card" onclick="hotel()"><h2>🏨 Termal Oteller</h2><p>Eskişehir konaklama seçenekleri</p></div>'+
 '<div class="card" onclick="boat()"><h2>🚣 Porsuk Turları</h2><p>Tekne ve gondol deneyimi</p></div>'+
-'<div class="card" onclick="food()"><h2>🍽️ Restoranlar</h2><p>Yerel lezzetler</p></div>'
-);
-}
-
-function hotel(){
-setHTML(
-'<div class="card"><h2>🏨 Termal Oteller</h2><p>Sıcaksular ve çevresinde konaklama.</p><br><button class="back" onclick="home()">Geri</button></div>'
-);
-}
-
-function boat(){
-setHTML(
-'<div class="card"><h2>🚣 Porsuk Turları</h2><p>Porsuk Çayı tekne ve gondol turları.</p><br><button class="back" onclick="home()">Geri</button></div>'
-);
-}
-
-function food(){
-setHTML(
-'<div class="card"><h2>🍽️ Restoranlar</h2><p>Balaban köfte, çibörek ve öneriler.</p><br><button class="back" onclick="home()">Geri</button></div>'
-);
-}
-
-function tours(){
-setHTML(
-'<div class="card"><h2>🗺️ Turlar</h2><p>Odunpazarı ve müze turları.</p></div>'
-);
-}
-
-function fav(){
-setHTML(
-'<div class="card"><h2>❤️ Favoriler</h2><p>Henüz favori eklenmedi.</p></div>'
-);
-}
-
-function profile(){
-setHTML(
-'<div class="card"><h2>👤 Profil</h2><p>Kullanıcı: Mustafaeken26</p><p>Platform: Eken26 Nexus Doriya</p></div>'
-);
-}
-</script>
-</head>
-<body onload="home()">
-
-<div class="header">
-<h1>Eken26 Nexus Doriya</h1>
-<div class="profile">👤 Hoş geldin <b>Mustafaeken26</b><br>Eskişehir Turizm Platformu</div>
-<input class="search" placeholder="Ara...">
-</div>
-
-<div id="content"></div>
-
-<div class="bottom">
-<button onclick="home()">Ana Sayfa</button>
-<button onclick="tours()">Turlar</button>
-<button onclick="fav()">Favoriler</button>
-<button onclick="profile()">Profil</button>
-</div>
-
-</body>
-</html>
+'<div class="card"
