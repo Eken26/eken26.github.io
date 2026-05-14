@@ -5,111 +5,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eken26 Nexus Doriya</title>
 <style>
+*{box-sizing:border-box}
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#f4f6fb;
 }
 .header{
-  background:#6f42c1;
+  background:linear-gradient(135deg,#6f42c1,#4b2a88);
   color:white;
-  padding:18px;
-  text-align:center;
-  font-size:24px;
+  padding:20px;
+}
+.brand{
+  font-size:22px;
   font-weight:bold;
 }
-.nav{
-  display:flex;
-  overflow-x:auto;
-  background:white;
-  padding:10px;
-  gap:8px;
-  border-bottom:1px solid #ddd;
+.profile{
+  margin-top:14px;
+  background:rgba(255,255,255,0.15);
+  padding:14px;
+  border-radius:16px;
 }
-.nav button{
+.search{
+  margin-top:14px;
+}
+.search input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+}
+.content{
+  padding:16px;
+  padding-bottom:90px;
+}
+.card{
+  background:white;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  cursor:pointer;
+}
+.card h3{
+  margin:0 0 10px 0;
+}
+.hidden{
+  display:none;
+}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
+  border-top:1px solid #ddd;
+}
+.bottom-nav button{
+  border:none;
+  background:#6f42c1;
+  color:white;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:14px;
+}
+.detail{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+.backbtn{
   border:none;
   background:#6f42c1;
   color:white;
   padding:10px 14px;
   border-radius:10px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.container{
-  padding:16px;
-}
-.card{
-  background:white;
-  padding:16px;
-  border-radius:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-h2{
-  margin-top:0;
-}
-.hidden{
-  display:none;
+  margin-bottom:14px;
 }
 </style>
 </head>
 <body>
 
-<div class="header">Eken26 Nexus Doriya - Eskişehir</div>
+<div class="header">
+  <div class="brand">Eken26 Nexus Doriya</div>
 
-<div class="nav">
-  <button onclick="showPage('home')">Ana Sayfa</button>
-  <button onclick="showPage('hotel')">Oteller</button>
-  <button onclick="showPage('tour')">Turlar</button>
-  <button onclick="showPage('food')">Restoranlar</button>
-  <button onclick="showPage('contact')">İletişim</button>
+  <div class="profile">
+    👤 Hoş geldin <b>Mustafaeken26</b><br>
+    Eskişehir Turizm Platformu
+  </div>
+
+  <div class="search">
+    <input type="text" placeholder="Otel, tur, restoran ara...">
+  </div>
 </div>
 
-<div class="container">
+<div class="content">
 
-  <div id="home" class="card">
-    <h2>Hoş Geldiniz</h2>
-    <p>Eskişehir turizm platformuna hoş geldiniz.</p>
-    <p>Porsuk Çayı, Odunpazarı, termal oteller ve daha fazlası burada.</p>
+  <div id="homePage">
+    <div class="card" onclick="openDetail('Termal Oteller','Eskişehir termal konaklama seçenekleri. Fiyatlar 999 ₺ den başlar.')">
+      <h3>🏨 Termal Oteller</h3>
+      En popüler konaklama seçenekleri
+    </div>
+
+    <div class="card" onclick="openDetail('Porsuk Turları','Gondol ve tekne tur deneyimleri.')">
+      <h3>🚣 Porsuk Turları</h3>
+      Şehir merkezinde eşsiz gezi
+    </div>
+
+    <div class="card" onclick="openDetail('Restoranlar','Balaban köfte, çibörek ve yerel tatlar.')">
+      <h3>🍽️ Restoranlar</h3>
+      En iyi mekan önerileri
+    </div>
   </div>
 
-  <div id="hotel" class="card hidden">
-    <h2>Oteller</h2>
-    <p>🏨 Termal Otel - 999 ₺</p>
-    <p>🏨 Şehir Merkezi Otel - 799 ₺</p>
-    <p>🏨 Butik Otel - 650 ₺</p>
+  <div id="tourPage" class="hidden">
+    <div class="card" onclick="openDetail('Odunpazarı','Tarihi bölge gezi turu')">
+      🏛️ Odunpazarı Turu
+    </div>
+    <div class="card" onclick="openDetail('Müze Turu','Eskişehir kültür turu')">
+      🎭 Müze Paketi
+    </div>
   </div>
 
-  <div id="tour" class="card hidden">
-    <h2>Turlar</h2>
-    <p>🚣 Porsuk Gondol Turu</p>
-    <p>🏛️ Odunpazarı Tarih Turu</p>
-    <p>🎭 Müze Paketi</p>
+  <div id="favPage" class="hidden">
+    <div class="card">❤️ Favoriler henüz boş</div>
   </div>
 
-  <div id="food" class="card hidden">
-    <h2>Restoranlar</h2>
-    <p>🍽️ Balaban Köfte</p>
-    <p>🍽️ Çibörek</p>
-    <p>🍽️ Yerel Kahvaltı</p>
+  <div id="profilePage" class="hidden">
+    <div class="card">
+      Kullanıcı: Mustafaeken26<br><br>
+      Şehir: Eskişehir<br><br>
+      Üyelik: Demo Premium
+    </div>
   </div>
 
-  <div id="contact" class="card hidden">
-    <h2>İletişim</h2>
-    <p>Developer: Mustafaeken26</p>
-    <p>Eken26 Nexus Doriya</p>
+  <div id="detailPage" class="hidden">
+    <div class="detail">
+      <button class="backbtn" onclick="goHome()">← Geri</button>
+      <h2 id="detailTitle"></h2>
+      <p id="detailText"></p>
+    </div>
   </div>
 
+</div>
+
+<div class="bottom-nav">
+  <button onclick="showPage('home')">Ana Sayfa</button>
+  <button onclick="showPage('tour')">Turlar</button>
+  <button onclick="showPage('fav')">Favoriler</button>
+  <button onclick="showPage('profile')">Profil</button>
 </div>
 
 <script>
-function showPage(page){
-  const pages=['home','hotel','tour','food','contact'];
-  pages.forEach(function(id){
-    document.getElementById(id).classList.add('hidden');
-  });
-  document.getElementById(page).classList.remove('hidden');
+function hideAll(){
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('tourPage').classList.add('hidden');
+  document.getElementById('favPage').classList.add('hidden');
+  document.getElementById('profilePage').classList.add('hidden');
+  document.getElementById('detailPage').classList.add('hidden');
 }
-</script>
 
-</body>
-</html>
+function showPage(page){
+  hideAll();
+  if(page==='home') docu…
