@@ -3,61 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Nexus doriya Demo</title>
+<title>Eken26 Nexus Doriya - Eskişehir</title>
 <style>
-body{
-  font-family:Arial,sans-serif;
-  background:#f7f7f7;
-  text-align:center;
-  padding-top:60px;
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #222;
 }
-.box{
-  background:white;
-  max-width:420px;
-  margin:auto;
-  padding:30px;
-  border-radius:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,.1);
+header {
+  background: linear-gradient(135deg, #6f42c1, #4b2a88);
+  color: white;
+  padding: 24px 18px;
+  text-align: center;
 }
-button{
-  background:#6f42c1;
-  color:white;
-  border:none;
-  padding:14px 24px;
-  font-size:18px;
-  border-radius:10px;
-  margin:8px;
+header h1 {
+  margin: 0;
+  font-size: 28px;
 }
-#status{
-  margin-top:20px;
-  font-size:18px;
+header p {
+  margin: 8px 0 0;
+  opacity: 0.9;
+}
+.container {
+  padding: 16px;
+  max-width: 900px;
+  margin: auto;
+}
+.hero {
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  margin-bottom: 18px;
+  text-align: center;
+}
+button {
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 6px;
+}
+button.secondary {
+  background: #1f8b4c;
+}
+#status {
+  margin-top: 14px;
+  font-weight: bold;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+.card h3 {
+  margin-top: 0;
+}
+.price {
+  color: #6f42c1;
+  font-weight: bold;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
 }
 </style>
 </head>
 <body>
 
-<div class="box">
-  <h1>Eken26 Nexus doriya</h1>
-  <p>Demo Uygulama</p>
+<header>
+  <h1>Eken26 Nexus Doriya</h1>
+  <p>Eskişehir Turizm Platformu</p>
+</header>
 
-  <button id="loginBtn">Demo Giriş</button>
-  <button id="payBtn" style="display:none;">Demo Ödeme Testi</button>
+<div class="container">
 
-  <div id="status">Hazır</div>
+  <div class="hero">
+    <h2>Eskişehir'i Keşfet</h2>
+    <p>Turizm, rezervasyon ve Pi ödeme demo platformu</p>
+
+    <button id="loginBtn">Demo Giriş</button>
+    <button id="payBtn" class="secondary" style="display:none;">Demo Pi Ödeme</button>
+
+    <div id="status">Hazır</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🏨 Termal Oteller</h3>
+      <p>Sıcaksular ve termal konaklama seçenekleri.</p>
+      <p class="price">999 ₺ / gece</p>
+    </div>
+
+    <div class="card">
+      <h3>🚣 Porsuk Çayı Turu</h3>
+      <p>Eskişehir’in merkezinde gondol deneyimi.</p>
+      <p class="price">150 ₺</p>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ Odunpazarı Turu</h3>
+      <p>Tarihi evler ve kültürel gezi deneyimi.</p>
+      <p class="price">250 ₺</p>
+    </div>
+
+    <div class="card">
+      <h3>🎭 Müze Paketi</h3>
+      <p>Balmumu ve modern sanat müzeleri.</p>
+      <p class="price">200 ₺</p>
+    </div>
+
+    <div class="card">
+      <h3>🍽️ Restoran Rehberi</h3>
+      <p>Balaban köfte ve yerel lezzetler.</p>
+      <p class="price">Rezervasyon</p>
+    </div>
+
+    <div class="card">
+      <h3>🚗 Araç Kiralama</h3>
+      <p>Günlük araç seçenekleri.</p>
+      <p class="price">1200 ₺ / gün</p>
+    </div>
+  </div>
+
 </div>
 
+<footer>
+  Eken26 Nexus Doriya • Demo Sürüm
+</footer>
+
 <script>
-const statusDiv = document.getElementById("status");
 const loginBtn = document.getElementById("loginBtn");
 const payBtn = document.getElementById("payBtn");
+const statusDiv = document.getElementById("status");
 
 loginBtn.addEventListener("click", function() {
-  statusDiv.innerHTML = "Kullanıcı: mustafaeken26";
+  statusDiv.innerHTML = "Hoş geldin Mustafaeken26";
   payBtn.style.display = "inline-block";
 });
 
 payBtn.addEventListener("click", function() {
-  statusDiv.innerHTML = "Demo ödeme başarılı (0.01 Pi test)";
+  statusDiv.innerHTML = "Demo Pi ödeme başarılı (0.01 Pi test)";
 });
 </script>
 
