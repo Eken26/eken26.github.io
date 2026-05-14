@@ -4,178 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eken26 Nexus Doriya</title>
+
 <style>
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#ececf1;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f2f2f7;
 }
+
 .header{
-background:#5e35b1;
-padding:20px;
-color:white;
+  background:#6f42c1;
+  color:white;
+  padding:20px;
 }
-.header h1{
-margin:0;
-font-size:26px;
+
+.title{
+  font-size:22px;
+  font-weight:bold;
 }
-.welcome{
-margin-top:12px;
-background:rgba(255,255,255,0.18);
-padding:12px;
-border-radius:14px;
+
+.profile{
+  margin-top:12px;
+  background:rgba(255,255,255,0.2);
+  padding:12px;
+  border-radius:12px;
 }
+
 .search{
-width:100%;
-padding:14px;
-margin-top:12px;
-border:none;
-border-radius:14px;
-box-sizing:border-box;
-font-size:16px;
+  width:100%;
+  margin-top:12px;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  box-sizing:border-box;
+  font-size:16px;
 }
+
 #content{
-padding:18px;
-padding-bottom:100px;
+  padding:15px;
+  padding-bottom:100px;
 }
+
 .card{
-background:white;
-border-radius:20px;
-padding:20px;
-margin-bottom:16px;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-cursor:pointer;
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  cursor:pointer;
 }
+
 .bottom{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:white;
-display:flex;
-justify-content:space-around;
-padding:12px;
-border-top:1px solid #ddd;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid #ddd;
+  display:flex;
+  justify-content:space-around;
+  padding:10px;
 }
+
 .bottom button{
-background:#6f42c1;
-color:white;
-border:none;
-padding:14px 18px;
-border-radius:16px;
-font-size:15px;
-cursor:pointer;
-}
-.back{
-background:#6f42c1;
-color:white;
-border:none;
-padding:10px 16px;
-border-radius:12px;
-cursor:pointer;
-margin-top:10px;
-}
-</style>
-</head>
-<body>
-
-<div class="header">
-<h1>Eken26 Nexus Doriya</h1>
-<div class="welcome">
-👤 Hoş geldin <b>Mustafaeken26</b><br>
-Eskişehir Turizm Platformu
-</div>
-<input class="search" placeholder="Otel, tur, restoran ara...">
-</div>
-
-<div id="content"></div>
-
-<div class="bottom">
-<button onclick="home()">Ana Sayfa</button>
-<button onclick="tours()">Turlar</button>
-<button onclick="favorites()">Favoriler</button>
-<button onclick="profile()">Profil</button>
-</div>
-
-<script>
-function show(html){
-document.getElementById("content").innerHTML = html;
-}
-
-function home(){
-show(`
-<div class="card" onclick="hotel()">
-<h2>🏨 Termal Oteller</h2>
-<p>En popüler konaklama seçenekleri</p>
-</div>
-
-<div class="card" onclick="boat()">
-<h2>🛶 Porsuk Turları</h2>
-<p>Şehir merkezinde eşsiz gezi</p>
-</div>
-
-<div class="card" onclick="food()">
-<h2>🍽️ Restoranlar</h2>
-<p>En iyi mekan önerileri</p>
-</div>
-`);
-}
-
-function hotel(){
-show(`
-<div class="card">
-<h2>🏨 Termal Oteller</h2>
-<p>Eskişehir termal konaklama rehberi.</p>
-<button class="back" onclick="home()">Geri</button>
-</div>
-`);
-}
-
-function boat(){
-show(`
-<div class="card">
-<h2>🛶 Porsuk Turları</h2>
-<p>Gondol ve tekne tur detayları.</p>
-<button class="back" onclick="home()">Geri</button>
-</div>
-`);
-}
-
-function food(){
-show(`
-<div class="card">
-<h2>🍽️ Restoranlar</h2>
-<p>Balaban kebap, çibörek ve yerel lezzetler.</p>
-<button class="back" onclick="home()">Geri</button>
-</div>
-`);
-}
-
-function tours(){
-show(`
-<div class="card">
-<h2>🎯 Turlar</h2>
-<p>Eskişehir günlük gezi paketleri.</p>
-<button class="back" onclick="home()">Geri</button>
-</div>
-`);
-}
-
-function favorites(){
-show(`
-<div class="card">
-<h2>⭐ Favoriler</h2>
-<p>Henüz favori eklenmedi.</p>
-<button class="back" onclick="home()">Geri</button>
-</div>
-`);
-}
-
-function profile(){
-show(`
-<div class="card">
-<h2>👤 Profil</h2>
-<p>Kullanıcı: Mustafaeken26</p>
-<p>Şehir: Eskişehir</p>
-<p>Platform: Doriya</p>
-<button class="back" onclick="home()">G
+  background:#6f42c1;
+  color:white;
+  border
