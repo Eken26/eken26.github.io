@@ -3,156 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>EKEN26</title>
+<title>Eken26 Nexus Doriya</title>
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f3f5f7;
-    color: #17202a;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f3f4;
+  color: #18212b;
 }
 
 header {
-    background: linear-gradient(135deg, #006b63, #008b83);
-    color: white;
-    text-align: center;
-    padding: 30px 20px;
+  background: white;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 32px;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #087c73;
 }
 
-header p {
-    margin: 10px 0 0;
-    font-size: 16px;
+.logo span {
+  font-size: 28px;
 }
 
 .container {
-    max-width: 900px;
-    margin: 25px auto;
-    padding: 0 15px;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
 }
 
-.intro {
-    background: white;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-}
-
-.intro h2 {
-    margin-top: 0;
+.back {
+  display: inline-block;
+  background: white;
+  padding: 18px 25px;
+  border-radius: 20px;
+  color: #087c73;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.08);
 }
 
 .card {
-    display: flex;
-    align-items: center;
-    background: white;
-    margin: 16px 0;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    min-height: 125px;
+  background: white;
+  border-radius: 28px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
 }
 
-.card img {
-    width: 180px;
-    height: 125px;
-    object-fit: cover;
+.card h1 {
+  margin-top: 0;
+  font-size: 34px;
 }
 
-.card-content {
-    flex: 1;
-    padding: 18px;
+.card h2 {
+  font-size: 28px;
 }
 
-.card-content h3 {
-    margin: 0 0 8px;
-    font-size: 20px;
+.card p {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #555;
 }
 
-.card-content p {
-    margin: 0;
-    color: #555;
-    line-height: 1.4;
+.buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.ok {
-    width: 48px;
-    height: 48px;
-    margin-right: 20px;
-    border-radius: 50%;
-    background: #006b63;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: bold;
+button {
+  border: none;
+  background: #087c73;
+  color: white;
+  padding: 16px 28px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.menu {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 25px;
+button:hover {
+  opacity: .9;
 }
 
-.menu a {
-    background: white;
-    padding: 15px;
-    text-align: center;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #17202a;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+.service {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+
+.service-icon {
+  font-size: 45px;
+}
+
+.service h2 {
+  margin: 10px 0;
+  font-size: 28px;
+}
+
+.service p {
+  font-size: 19px;
+  color: #666;
+}
+
+.service a {
+  color: #087c73;
+  font-size: 19px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: white;
+  width: 100%;
+  max-width: 430px;
+  border-radius: 25px;
+  padding: 28px;
+}
+
+.modal-box h2 {
+  color: #087c73;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.input {
+  width: 100%;
+  padding: 15px;
+  margin: 8px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 17px;
+}
+
+.close {
+  float: right;
+  background: #ddd;
+  color: #333;
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.message {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  display: none;
+  font-weight: bold;
+}
+
+.success {
+  background: #d9f5e9;
+  color: #087c73;
+}
+
+.error {
+  background: #ffe0e0;
+  color: #a00000;
+}
+
+.account {
+  background: #087c73;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: bold;
 }
 
 footer {
-    text-align: center;
-    padding: 25px;
-    color: #666;
-    font-size: 14px;
-}
-
-@media (max-width: 600px) {
-    .card img {
-        width: 120px;
-        height: 110px;
-    }
-
-    .card {
-        min-height: 110px;
-    }
-
-    .card-content {
-        padding: 12px;
-    }
-
-    .card-content h3 {
-        font-size: 17px;
-    }
-
-    .card-content p {
-        font-size: 13px;
-    }
-
-    .ok {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-        font-size: 20px;
-    }
+  text-align: center;
+  padding: 30px;
+  color: #666;
 }
 </style>
 </head>
@@ -160,71 +214,417 @@ footer {
 <body>
 
 <header>
-    <h1>🌿 EKEN26</h1>
-    <p>Eskişehir'i keşfet, gez, konakla ve güzel yerleri kolayca bul.</p>
+  <div class="logo">
+    <span>🏨</span>
+    Eken26 Nexus Doriya
+  </div>
+
+  <div id="accountArea"></div>
 </header>
 
 <div class="container">
 
-    <div class="intro">
-        <h2>✨ Eken26'ya Hoş Geldiniz</h2>
-        <p>
-            Eken26; Eskişehir ve çevresindeki konaklama, tur,
-            restoran, gezi ve keşif seçeneklerini tek bir yerde
-            buluşturmayı amaçlayan bir tanıtım platformudur.
-            Beğendiğiniz bölümü seçin ve sağdaki oka dokunarak
-            ilgili sayfaya geçin.
-        </p>
-    </div>
+<a href="#" class="back" onclick="goHome()">← Ana Sayfaya Dön</a>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=700&q=80">
-        <div class="card-content">
-            <h3>🏨 Termal Oteller</h3>
-            <p>Eskişehir ve çevresindeki termal konaklama seçeneklerini keşfedin.</p>
-        </div>
-        <a class="ok" href="travel.html">➜</a>
-    </div>
+<div class="card">
+  <h1>👋 Hoş Geldiniz</h1>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80">
-        <div class="card-content">
-            <h3>🚤 Porsuk Turları</h3>
-            <p>Porsuk Çayı'nda tekne ve gondol turu seçeneklerini inceleyin.</p>
-        </div>
-        <a class="ok" href="travel.html">➜</a>
-    </div>
+  <p>
+    Eken26; Eskişehir ve çevresindeki konaklama,
+    ulaşım, tur ve seyahat seçeneklerini bir araya
+    getiren bir tanıtım platformudur.
+  </p>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700&q=80">
-        <div class="card-content">
-            <h3>🍽️ Restoranlar</h3>
-            <p>Eskişehir'deki popüler restoranları ve yemek noktalarını keşfedin.</p>
-        </div>
-        <a class="ok" href="travel.html">➜</a>
-    </div>
+  <p>
+    Günlük turlar, VIP havaalanı transferleri,
+    otel rezervasyonları ve özel seyahat paketlerini
+    inceleyebilirsiniz.
+  </p>
 
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=700&q=80">
-        <div class="card-content">
-            <h3>🏛️ Şehir Turları</h3>
-            <p>Eskişehir'in tarihi ve kültürel noktalarını keşfetmek için turlara göz atın.</p>
-        </div>
-        <a class="ok" href="travel.html">➜</a>
-    </div>
+  <div class="buttons">
+    <button onclick="openLogin()">🔐 Giriş</button>
+    <button onclick="openRegister()">📝 Kayıt</button>
+  </div>
+</div>
 
-    <div class="menu">
-        <a href="travel.html">🌐 Turlar</a>
-        <a href="travel.html">⭐ Favoriler</a>
-        <a href="travel.html">👤 Profil</a>
-        <a href="travel.html">📍 Keşfet</a>
-    </div>
+
+<div class="service">
+  <div class="service-icon">🚐</div>
+  <h2>VIP Transfer</h2>
+  <p>Özel havaalanı ve şehir içi ulaşım hizmetleri.</p>
+  <a href="#">Detayları Gör →</a>
+</div>
+
+
+<div class="service">
+  <div class="service-icon">🏨</div>
+  <h2>Hotel Rezervasyon</h2>
+  <p>
+    Eskişehir ve çevresindeki otel ve termal
+    konaklama seçeneklerini inceleyin.
+  </p>
+  <a href="#">Detayları Gör →</a>
+</div>
+
+
+<div class="service">
+  <div class="service-icon">♨️</div>
+  <h2>Termal Oteller</h2>
+  <p>
+    Eskişehir ve çevresindeki termal konaklama
+    seçeneklerini keşfedin.
+  </p>
+  <a href="#">Detayları Gör →</a>
+</div>
+
+
+<div class="service">
+  <div class="service-icon">🛶</div>
+  <h2>Porsuk Turları</h2>
+  <p>
+    Porsuk Çayı'nda tekne ve gondol turu
+    seçeneklerini inceleyin.
+  </p>
+  <a href="#">Detayları Gör →</a>
+</div>
+
+
+<div class="service">
+  <div class="service-icon">🍽️</div>
+  <h2>Restoranlar</h2>
+  <p>
+    Eskişehir'deki popüler restoranları ve
+    yemek noktalarını keşfedin.
+  </p>
+  <a href="#">Detayları Gör →</a>
+</div>
+
+
+<div class="service">
+  <div class="service-icon">🏛️</div>
+  <h2>Şehir Turları</h2>
+  <p>
+    Eskişehir'in tarihi ve kültürel noktalarını
+    keşfetmek için turlara göz atın.
+  </p>
+  <a href="#">Detayları Gör →</a>
+</div>
 
 </div>
 
+
 <footer>
-    © 2026 Eken26 – Eskişehir'i keşfet.
+  © 2026 Eken26 - Eskişehir
 </footer>
+
+
+<!-- KAYIT PENCERESİ -->
+
+<div class="modal" id="registerModal">
+
+  <div class="modal-box">
+
+    <button class="close" onclick="closeModals()">✕</button>
+
+    <h2>📝 Kayıt Ol</h2>
+
+    <input
+      class="input"
+      id="registerName"
+      type="text"
+      placeholder="Ad Soyad"
+    >
+
+    <input
+      class="input"
+      id="registerEmail"
+      type="email"
+      placeholder="E-posta"
+    >
+
+    <input
+      class="input"
+      id="registerPassword"
+      type="password"
+      placeholder="Şifre"
+    >
+
+    <button onclick="registerUser()">Kayıt Ol</button>
+
+    <div id="registerMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<!-- GİRİŞ PENCERESİ -->
+
+<div class="modal" id="loginModal">
+
+  <div class="modal-box">
+
+    <button class="close" onclick="closeModals()">✕</button>
+
+    <h2>🔐 Giriş Yap</h2>
+
+    <input
+      class="input"
+      id="loginEmail"
+      type="email"
+      placeholder="E-posta"
+    >
+
+    <input
+      class="input"
+      id="loginPassword"
+      type="password"
+      placeholder="Şifre"
+    >
+
+    <button onclick="loginUser()">Giriş Yap</button>
+
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+function openRegister() {
+  document.getElementById("registerModal").style.display = "flex";
+}
+
+function openLogin() {
+  document.getElementById("loginModal").style.display = "flex";
+}
+
+function closeModals() {
+  document.getElementById("registerModal").style.display = "none";
+  document.getElementById("loginModal").style.display = "none";
+}
+
+
+// KAYIT
+
+function registerUser() {
+
+  const name =
+    document.getElementById("registerName").value.trim();
+
+  const email =
+    document.getElementById("registerEmail").value.trim().toLowerCase();
+
+  const password =
+    document.getElementById("registerPassword").value;
+
+  const message =
+    document.getElementById("registerMessage");
+
+
+  if (!name || !email || !password) {
+
+    message.innerText =
+      "Lütfen bütün alanları doldurun.";
+
+    message.className =
+      "message error";
+
+    message.style.display = "block";
+
+    return;
+  }
+
+
+  if (password.length < 6) {
+
+    message.innerText =
+      "Şifre en az 6 karakter olmalıdır.";
+
+    message.className =
+      "message error";
+
+    message.style.display = "block";
+
+    return;
+  }
+
+
+  let users =
+    JSON.parse(localStorage.getItem("eken26Users") || "[]");
+
+
+  const existing =
+    users.find(user => user.email === email);
+
+
+  if (existing) {
+
+    message.innerText =
+      "Bu e-posta adresi zaten kayıtlı.";
+
+    message.className =
+      "message error";
+
+    message.style.display = "block";
+
+    return;
+  }
+
+
+  users.push({
+    name: name,
+    email: email,
+    password: password
+  });
+
+
+  localStorage.setItem(
+    "eken26Users",
+    JSON.stringify(users)
+  );
+
+
+  message.innerText =
+    "Kayıt başarılı! Şimdi giriş yapabilirsiniz.";
+
+  message.className =
+    "message success";
+
+  message.style.display = "block";
+
+
+  document.getElementById("registerName").value = "";
+  document.getElementById("registerEmail").value = "";
+  document.getElementById("registerPassword").value = "";
+
+}
+
+
+// GİRİŞ
+
+function loginUser() {
+
+  const email =
+    document.getElementById("loginEmail").value.trim().toLowerCase();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+
+  let users =
+    JSON.parse(localStorage.getItem("eken26Users") || "[]");
+
+
+  const user =
+    users.find(
+      u => u.email === email && u.password === password
+    );
+
+
+  if (!user) {
+
+    message.innerText =
+      "E-posta veya şifre hatalı.";
+
+    message.className =
+      "message error";
+
+    message.style.display = "block";
+
+    return;
+  }
+
+
+  localStorage.setItem(
+    "eken26LoggedUser",
+    JSON.stringify(user)
+  );
+
+
+  message.innerText =
+    "Giriş başarılı! Hoş geldiniz " + user.name;
+
+  message.className =
+    "message success";
+
+  message.style.display = "block";
+
+
+  setTimeout(function() {
+
+    closeModals();
+    showAccount();
+
+  }, 1000);
+
+}
+
+
+// HESAP ALANI
+
+function showAccount() {
+
+  const area =
+    document.getElementById("accountArea");
+
+  const user =
+    JSON.parse(
+      localStorage.getItem("eken26LoggedUser")
+    );
+
+
+  if (user) {
+
+    area.innerHTML =
+      '<div class="account">👤 ' +
+      user.name +
+      '</div>';
+
+  } else {
+
+    area.innerHTML = "";
+
+  }
+
+}
+
+
+// ÇIKIŞ
+
+function logoutUser() {
+
+  localStorage.removeItem("eken26LoggedUser");
+
+  showAccount();
+
+  alert("Çıkış yapıldı.");
+
+}
+
+
+// ANA SAYFA
+
+function goHome() {
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+// SAYFA AÇILINCA HESABI KONTROL ET
+
+showAccount();
+
+</script>
 
 </body>
 </html>
