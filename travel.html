@@ -3,63 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Nexus Travel</title>
+
+<title>Eken26 Nexus Doriya</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f2f7;
+    background: #f3f5f7;
+    color: #17202a;
 }
 
 .header {
-    background: #6f42c1;
+    background: linear-gradient(135deg, #006b63, #008b83);
     color: white;
-    padding: 20px;
     text-align: center;
+    padding: 30px 20px;
 }
 
-.title {
-    font-size: 24px;
+.header .title {
+    font-size: 30px;
     font-weight: bold;
 }
 
-.profile {
-    margin: 20px;
-    background: rgba(255,255,255,0.9);
-    padding: 20px;
+.header p {
+    margin: 10px 0 0;
+    font-size: 16px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.back {
+    display: inline-block;
+    background: white;
+    color: #006b63;
+    text-decoration: none;
+    padding: 12px 18px;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.profile {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 22px;
+}
+
+.profile h2 {
+    margin-top: 0;
+}
+
+.profile p {
+    line-height: 1.6;
+    color: #555;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
 }
 
 .button {
     display: inline-block;
-    background: #6f42c1;
+    background: #006b63;
     color: white;
-    padding: 12px 20px;
-    margin: 8px 5px;
-    border-radius: 10px;
     text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
     font-weight: bold;
 }
 
+.button.register {
+    background: #008b83;
+}
+
 .services {
-    margin: 20px;
     display: grid;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
 }
 
 .card {
     background: white;
-    padding: 18px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-.footer {
+.card-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    margin: 5px 0 10px;
+    font-size: 20px;
+}
+
+.card p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #006b63;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.info {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    margin-top: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.info h2 {
+    margin-top: 0;
+}
+
+.info p {
+    line-height: 1.6;
+    color: #555;
+}
+
+footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px 15px;
     color: #666;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+
+    .header .title {
+        font-size: 25px;
+    }
+
+    .services {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    .profile,
+    .card,
+    .info {
+        padding: 18px;
+    }
 }
 </style>
 </head>
@@ -67,43 +178,150 @@ body {
 <body>
 
 <div class="header">
-    <div class="title">Eken26 Nexus Travel & Tourism</div>
-    <p>Professional travel services powered by Pi</p>
+
+    <div class="title">
+        🌿 Eken26 Nexus Travel & Tourism
+    </div>
+
+    <p>
+        Professional travel services powered by Pi
+    </p>
+
 </div>
 
-<div class="profile">
-    <h2>Welcome</h2>
-    <p>Daily tours, VIP airport transfer, hotel booking and custom travel packages.</p>
+<div class="container">
 
-    <a href="#" class="button">Login</a>
-    <a href="#" class="button">Register</a>
+    <a class="back" href="index.html">
+        ← Ana Sayfaya Dön
+    </a>
+
+    <div class="profile">
+
+        <h2>👋 Hoş Geldiniz</h2>
+
+        <p>
+            Eken26; Eskişehir ve çevresindeki konaklama,
+            ulaşım, tur ve seyahat seçeneklerini bir araya
+            getiren bir tanıtım platformudur.
+        </p>
+
+        <p>
+            Günlük turlar, VIP havaalanı transferleri,
+            otel rezervasyonları ve özel seyahat paketlerini
+            inceleyebilirsiniz.
+        </p>
+
+        <div class="buttons">
+
+            <a href="#" class="button"
+               onclick="alert('Giriş bölümü yakında aktif olacaktır.'); return false;">
+                🔐 Giriş
+            </a>
+
+            <a href="#" class="button register"
+               onclick="alert('Kayıt bölümü yakında aktif olacaktır.'); return false;">
+                📝 Kayıt
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="services">
+
+        <div class="card">
+
+            <div class="card-icon">🚐</div>
+
+            <h3>VIP Transfer</h3>
+
+            <p>
+                Özel havaalanı ve şehir içi ulaşım
+                hizmetleri.
+            </p>
+
+            <a href="#" onclick="alert('VIP Transfer hizmeti için detaylar yakında eklenecektir.'); return false;">
+                Detayları Gör →
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">🏨</div>
+
+            <h3>Hotel Booking</h3>
+
+            <p>
+                Hızlı ve güvenli otel rezervasyonları.
+            </p>
+
+            <a href="#" onclick="alert('Otel rezervasyon bölümü yakında aktif olacaktır.'); return false;">
+                Otelleri Gör →
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">🚌</div>
+
+            <h3>Daily Tours</h3>
+
+            <p>
+                Rehberli günlük turlar ve yerel
+                destinasyonları keşfedin.
+            </p>
+
+            <a href="#" onclick="alert('Günlük turlar yakında eklenecektir.'); return false;">
+                Turları Gör →
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">🌍</div>
+
+            <h3>Custom Packages</h3>
+
+            <p>
+                Size özel turizm ve seyahat deneyimleri.
+            </p>
+
+            <a href="#" onclick="alert('Özel paketler yakında eklenecektir.'); return false;">
+                Paketleri Gör →
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="info">
+
+        <h2>✨ Eken26 Doriya</h2>
+
+        <p>
+            Eken26 Doriya; turizm, konaklama, ulaşım ve
+            seyahat hizmetlerini tek bir platform üzerinde
+            buluşturmayı amaçlamaktadır.
+        </p>
+
+        <p>
+            Beğendiğiniz hizmeti seçerek ilerleyen
+            aşamalarda rezervasyon ve Pi ödeme özelliklerine
+            ulaşabileceksiniz.
+        </p>
+
+    </div>
+
 </div>
 
-<div class="services">
-    <div class="card">
-        <h3>VIP Transfer</h3>
-        <p>Private airport and city transportation.</p>
-    </div>
-
-    <div class="card">
-        <h3>Hotel Booking</h3>
-        <p>Fast and secure hotel reservations.</p>
-    </div>
-
-    <div class="card">
-        <h3>Daily Tours</h3>
-        <p>Explore local destinations with guided tours.</p>
-    </div>
-
-    <div class="card">
-        <h3>Custom Packages</h3>
-        <p>Tailor-made tourism experiences.</p>
-    </div>
-</div>
-
-<div class="footer">
+<footer>
     Powered by Eken26 Nexus & Pi Network
-</div>
+    <br><br>
+    © 2026 Eken26 – Tüm hakları saklıdır.
+</footer>
 
 </body>
 </html>
