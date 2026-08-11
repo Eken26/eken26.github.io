@@ -3,288 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Nexus</title>
+
+<title>Eken26</title>
 
 <style>
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-    font-family:Arial,sans-serif;
-    background:#f2f2f7;
-    color:#222;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#222;
 }
 
-.header{
-    background:#6f42c1;
-    color:white;
-    padding:18px;
-    position:sticky;
-    top:0;
-    z-index:10;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
+header{
+  background:linear-gradient(135deg,#075e54,#128c7e);
+  color:white;
+  padding:28px 18px;
+  text-align:center;
 }
 
-.title{
-    font-size:26px;
-    font-weight:bold;
-    margin-bottom:8px;
+header h1{
+  font-size:30px;
+  margin-bottom:8px;
 }
 
-.profile{
-    font-size:14px;
-    background:rgba(255,255,255,.15);
-    padding:10px;
-    border-radius:10px;
-    margin-bottom:10px;
+header p{
+  font-size:15px;
+  line-height:1.5;
 }
 
-.search{
-    width:100%;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    outline:none;
-    font-size:15px;
+.container{
+  max-width:850px;
+  margin:auto;
+  padding:18px;
 }
 
-#content{
-    padding:15px;
-    padding-bottom:110px;
+.tanitim{
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.tanitim h2{
+  margin-bottom:10px;
+  font-size:22px;
+}
+
+.tanitim p{
+  line-height:1.6;
+  color:#555;
 }
 
 .card{
-    background:white;
-    padding:18px;
-    border-radius:16px;
-    margin-bottom:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.10);
-    cursor:pointer;
-    transition:.2s;
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:18px;
+  box-shadow:0 3px 12px rgba(0,0,0,.10);
+  display:flex;
+  align-items:center;
+  min-height:145px;
 }
 
-.card:hover{
-    transform:translateY(-2px);
-    box-shadow:0 4px 12px rgba(0,0,0,.15);
+.card img{
+  width:180px;
+  height:145px;
+  object-fit:cover;
 }
 
-.card h2{
-    margin-bottom:8px;
-    font-size:20px;
+.card-content{
+  padding:16px;
+  flex:1;
 }
 
-.card p{
-    color:#555;
-    line-height:1.5;
+.card-content h3{
+  font-size:20px;
+  margin-bottom:7px;
 }
 
-.category-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-    margin-top:10px;
+.card-content p{
+  color:#666;
+  font-size:14px;
+  line-height:1.4;
 }
 
-.category{
-    background:white;
-    padding:20px 10px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 2px 7px rgba(0,0,0,.1);
-    cursor:pointer;
-    font-weight:bold;
+.ok{
+  width:52px;
+  height:52px;
+  margin-right:16px;
+  border-radius:50%;
+  background:#075e54;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-size:28px;
+  transition:.2s;
 }
 
-.category span{
-    display:block;
-    font-size:28px;
-    margin-bottom:8px;
+.ok:hover{
+  transform:scale(1.08);
+  background:#128c7e;
 }
 
-.bottom{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:white;
-    border-top:1px solid #ddd;
-    display:flex;
-    justify-content:space-around;
-    padding:10px;
-    z-index:20;
+.menu{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:20px;
 }
 
-.bottom button{
-    background:#6f42c1;
-    color:white;
-    border:none;
-    padding:11px 13px;
-    border-radius:12px;
-    cursor:pointer;
+.menu a{
+  background:white;
+  padding:17px 12px;
+  border-radius:14px;
+  text-align:center;
+  text-decoration:none;
+  color:#222;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  font-weight:bold;
+}
+
+.menu a:hover{
+  background:#e9f7f4;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+
+  header h1{
+    font-size:26px;
+  }
+
+  .card{
+    min-height:120px;
+  }
+
+  .card img{
+    width:125px;
+    height:120px;
+  }
+
+  .card-content{
+    padding:12px;
+  }
+
+  .card-content h3{
+    font-size:17px;
+  }
+
+  .card-content p{
     font-size:13px;
-}
+  }
 
-.back{
-    background:#6f42c1;
-    color:white;
-    border:none;
-    padding:12px 16px;
-    border-radius:12px;
-    cursor:pointer;
-    margin-top:15px;
-}
-
-.section-title{
-    margin:5px 0 12px;
+  .ok{
+    width:42px;
+    height:42px;
     font-size:22px;
-}
+    margin-right:10px;
+  }
 
-.product{
-    background:white;
-    border-radius:15px;
-    padding:15px;
-    margin-bottom:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-.product h3{
-    margin-bottom:7px;
-}
-
-.price{
-    color:#6f42c1;
-    font-weight:bold;
-    margin-top:8px;
-}
-
-.empty{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
+  .menu{
+    grid-template-columns:1fr 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
+<header>
+  <h1>🌿 EKEN26</h1>
+  <p>Eskişehir'i keşfet, gez, konakla ve güzel yerleri kolayca bul.</p>
+</header>
 
-    <div class="title">
-        Eken26 Nexus
+<div class="container">
+
+  <section class="tanitim">
+    <h2>✨ Eken26'ya Hoş Geldiniz</h2>
+    <p>
+      Eken26; Eskişehir ve çevresindeki konaklama,
+      tur, restoran, gezi ve keşif seçeneklerini
+      tek bir yerde buluşturmayı amaçlayan bir tanıtım platformudur.
+      Beğendiğiniz bölümü seçin ve sağdaki oka dokunarak
+      ilgili sayfaya geçin.
+    </p>
+  </section>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1596395819057-e37f55a8516a?auto=format&fit=crop&w=700&q=80">
+    <div class="card-content">
+      <h3>🏨 Termal Oteller</h3>
+      <p>Eskişehir ve çevresindeki termal konaklama seçeneklerini keşfedin.</p>
     </div>
+    <a class="ok" href="travel.html">➜</a>
+  </div>
 
-    <div class="profile">
-        👤 Hoş geldin <b>Mustafaeken26</b><br>
-        Eskişehir Platformu
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80">
+    <div class="card-content">
+      <h3>🚤 Porsuk Turları</h3>
+      <p>Porsuk Çayı'nda tekne ve gondol turu seçeneklerini inceleyin.</p>
     </div>
+    <a class="ok" href="travel.html">➜</a>
+  </div>
 
-    <input
-        id="search"
-        class="search"
-        type="text"
-        placeholder="Otel, tur, restoran, ürün veya hizmet ara..."
-        oninput="searchContent()"
-    >
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80">
+    <div class="card-content">
+      <h3>🍽️ Restoranlar</h3>
+      <p>Eskişehir'deki popüler restoranları ve yemek noktalarını keşfedin.</p>
+    </div>
+    <a class="ok" href="travel.html">➜</a>
+  </div>
+
+  <div class="card">
+    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=700&q=80">
+    <div class="card-content">
+      <h3>🧭 Şehir Turları</h3>
+      <p>Eskişehir'in tarihi ve kültürel noktalarını keşfetmek için turlara göz atın.</p>
+    </div>
+    <a class="ok" href="travel.html">➜</a>
+  </div>
+
+  <div class="menu">
+    <a href="travel.html">🌍 Turlar</a>
+    <a href="travel.html">⭐ Favoriler</a>
+    <a href="travel.html">👤 Profil</a>
+    <a href="travel.html">📍 Keşfet</a>
+  </div>
 
 </div>
 
-<div id="content"></div>
+<footer>
+  © 2026 Eken26 — Eskişehir'i keşfet.
+</footer>
 
-<div class="bottom">
-    <button onclick="home()">🏠 Ana Sayfa</button>
-    <button onclick="categories()">📂 Kategoriler</button>
-    <button onclick="favorites()">⭐ Favoriler</button>
-    <button onclick="profilePage()">👤 Profil</button>
-</div>
-
-<script>
-
-const products = [
-
-{
-    name:"Elektronik",
-    category:"Elektronik",
-    description:"Telefon, bilgisayar ve elektronik ürünler."
-},
-
-{
-    name:"Giyim",
-    category:"Giyim",
-    description:"Kadın, erkek ve çocuk giyim ürünleri."
-},
-
-{
-    name:"Gıda",
-    category:"Gıda",
-    description:"Yöresel ürünler, yiyecek ve içecekler."
-},
-
-{
-    name:"Bar & Cafe",
-    category:"Bar & Cafe",
-    description:"Cafe, kahve, tatlı ve sosyal mekanlar."
-},
-
-{
-    name:"Mücevherat",
-    category:"Mücevherat",
-    description:"Takı, mücevher ve aksesuar ürünleri."
-},
-
-{
-    name:"Ev & Yaşam",
-    category:"Ev & Yaşam",
-    description:"Ev ürünleri, dekorasyon ve yaşam ürünleri."
-},
-
-{
-    name:"Otomotiv",
-    category:"Otomotiv",
-    description:"Otomobil, motosiklet, yedek parça ve aksesuar."
-},
-
-{
-    name:"Bilgisayar",
-    category:"Bilgisayar",
-    description:"Bilgisayar, donanım ve teknoloji ürünleri."
-},
-
-{
-    name:"Kozmetik",
-    category:"Kozmetik",
-    description:"Kozmetik, bakım ve kişisel bakım ürünleri."
-},
-
-{
-    name:"Turizm & Konaklama",
-    category:"Turizm",
-    description:"Otel, tatil, tur ve konaklama seçenekleri."
-},
-
-{
-    name:"Hizmetler",
-    category:"Hizmetler",
-    description:"Profesyonel hizmetler ve yerel hizmet sağlayıcıları."
-},
-
-{
-    name:"Diğer / Keşfet",
-    category:"Diğer",
-    description:"Diğer ürün, hizmet ve keşfedilecek alanlar."
-}
-
-];
-
-function setPage(html){
-    document.getElementById("content").innerHTML = html;
-}
-
-function home(){
-
-    setPage(`
-
-        <h
+</body>
+</html>
