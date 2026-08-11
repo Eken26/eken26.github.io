@@ -4,181 +4,155 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Eken26</title>
+<title>EKEN26</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+    box-sizing: border-box;
 }
 
-body{
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-  color:#222;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    color: #17202a;
 }
 
-header{
-  background:linear-gradient(135deg,#075e54,#128c7e);
-  color:white;
-  padding:28px 18px;
-  text-align:center;
+header {
+    background: linear-gradient(135deg, #006b63, #008b83);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
 }
 
-header h1{
-  font-size:30px;
-  margin-bottom:8px;
+header h1 {
+    margin: 0;
+    font-size: 32px;
 }
 
-header p{
-  font-size:15px;
-  line-height:1.5;
+header p {
+    margin: 10px 0 0;
+    font-size: 16px;
 }
 
-.container{
-  max-width:850px;
-  margin:auto;
-  padding:18px;
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px;
 }
 
-.tanitim{
-  background:white;
-  padding:20px;
-  border-radius:16px;
-  margin-bottom:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
+.intro {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
 }
 
-.tanitim h2{
-  margin-bottom:10px;
-  font-size:22px;
+.intro h2 {
+    margin-top: 0;
 }
 
-.tanitim p{
-  line-height:1.6;
-  color:#555;
+.card {
+    display: flex;
+    align-items: center;
+    background: white;
+    margin: 16px 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    min-height: 125px;
 }
 
-.card{
-  background:white;
-  border-radius:16px;
-  overflow:hidden;
-  margin-bottom:18px;
-  box-shadow:0 3px 12px rgba(0,0,0,.10);
-  display:flex;
-  align-items:center;
-  min-height:145px;
+.card img {
+    width: 180px;
+    height: 125px;
+    object-fit: cover;
 }
 
-.card img{
-  width:180px;
-  height:145px;
-  object-fit:cover;
+.card-content {
+    flex: 1;
+    padding: 18px;
 }
 
-.card-content{
-  padding:16px;
-  flex:1;
+.card-content h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
 }
 
-.card-content h3{
-  font-size:20px;
-  margin-bottom:7px;
+.card-content p {
+    margin: 0;
+    color: #555;
+    line-height: 1.4;
 }
 
-.card-content p{
-  color:#666;
-  font-size:14px;
-  line-height:1.4;
+.ok {
+    width: 48px;
+    height: 48px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background: #006b63;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
 }
 
-.ok{
-  width:52px;
-  height:52px;
-  margin-right:16px;
-  border-radius:50%;
-  background:#075e54;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  font-size:28px;
-  transition:.2s;
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 25px;
 }
 
-.ok:hover{
-  transform:scale(1.08);
-  background:#128c7e;
+.menu a {
+    background: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #17202a;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
 }
 
-.menu{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:20px;
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #666;
+    font-size: 14px;
 }
 
-.menu a{
-  background:white;
-  padding:17px 12px;
-  border-radius:14px;
-  text-align:center;
-  text-decoration:none;
-  color:#222;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-  font-weight:bold;
-}
+@media (max-width: 600px) {
+    .card img {
+        width: 120px;
+        height: 110px;
+    }
 
-.menu a:hover{
-  background:#e9f7f4;
-}
+    .card {
+        min-height: 110px;
+    }
 
-footer{
-  text-align:center;
-  padding:25px;
-  color:#777;
-  font-size:13px;
-}
+    .card-content {
+        padding: 12px;
+    }
 
-@media(max-width:600px){
+    .card-content h3 {
+        font-size: 17px;
+    }
 
-  header h1{
-    font-size:26px;
-  }
+    .card-content p {
+        font-size: 13px;
+    }
 
-  .card{
-    min-height:120px;
-  }
-
-  .card img{
-    width:125px;
-    height:120px;
-  }
-
-  .card-content{
-    padding:12px;
-  }
-
-  .card-content h3{
-    font-size:17px;
-  }
-
-  .card-content p{
-    font-size:13px;
-  }
-
-  .ok{
-    width:42px;
-    height:42px;
-    font-size:22px;
-    margin-right:10px;
-  }
-
-  .menu{
-    grid-template-columns:1fr 1fr;
-  }
+    .ok {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+        font-size: 20px;
+    }
 }
 </style>
 </head>
@@ -186,70 +160,70 @@ footer{
 <body>
 
 <header>
-  <h1>🌿 EKEN26</h1>
-  <p>Eskişehir'i keşfet, gez, konakla ve güzel yerleri kolayca bul.</p>
+    <h1>🌿 EKEN26</h1>
+    <p>Eskişehir'i keşfet, gez, konakla ve güzel yerleri kolayca bul.</p>
 </header>
 
 <div class="container">
 
-  <section class="tanitim">
-    <h2>✨ Eken26'ya Hoş Geldiniz</h2>
-    <p>
-      Eken26; Eskişehir ve çevresindeki konaklama,
-      tur, restoran, gezi ve keşif seçeneklerini
-      tek bir yerde buluşturmayı amaçlayan bir tanıtım platformudur.
-      Beğendiğiniz bölümü seçin ve sağdaki oka dokunarak
-      ilgili sayfaya geçin.
-    </p>
-  </section>
-
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1596395819057-e37f55a8516a?auto=format&fit=crop&w=700&q=80">
-    <div class="card-content">
-      <h3>🏨 Termal Oteller</h3>
-      <p>Eskişehir ve çevresindeki termal konaklama seçeneklerini keşfedin.</p>
+    <div class="intro">
+        <h2>✨ Eken26'ya Hoş Geldiniz</h2>
+        <p>
+            Eken26; Eskişehir ve çevresindeki konaklama, tur,
+            restoran, gezi ve keşif seçeneklerini tek bir yerde
+            buluşturmayı amaçlayan bir tanıtım platformudur.
+            Beğendiğiniz bölümü seçin ve sağdaki oka dokunarak
+            ilgili sayfaya geçin.
+        </p>
     </div>
-    <a class="ok" href="travel.html">➜</a>
-  </div>
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80">
-    <div class="card-content">
-      <h3>🚤 Porsuk Turları</h3>
-      <p>Porsuk Çayı'nda tekne ve gondol turu seçeneklerini inceleyin.</p>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=700&q=80">
+        <div class="card-content">
+            <h3>🏨 Termal Oteller</h3>
+            <p>Eskişehir ve çevresindeki termal konaklama seçeneklerini keşfedin.</p>
+        </div>
+        <a class="ok" href="travel.html">➜</a>
     </div>
-    <a class="ok" href="travel.html">➜</a>
-  </div>
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80">
-    <div class="card-content">
-      <h3>🍽️ Restoranlar</h3>
-      <p>Eskişehir'deki popüler restoranları ve yemek noktalarını keşfedin.</p>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80">
+        <div class="card-content">
+            <h3>🚤 Porsuk Turları</h3>
+            <p>Porsuk Çayı'nda tekne ve gondol turu seçeneklerini inceleyin.</p>
+        </div>
+        <a class="ok" href="travel.html">➜</a>
     </div>
-    <a class="ok" href="travel.html">➜</a>
-  </div>
 
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=700&q=80">
-    <div class="card-content">
-      <h3>🧭 Şehir Turları</h3>
-      <p>Eskişehir'in tarihi ve kültürel noktalarını keşfetmek için turlara göz atın.</p>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1515003197210-e0cd71810b7f?auto=format&fit=crop&w=700&q=80">
+        <div class="card-content">
+            <h3>🍽️ Restoranlar</h3>
+            <p>Eskişehir'deki popüler restoranları ve yemek noktalarını keşfedin.</p>
+        </div>
+        <a class="ok" href="travel.html">➜</a>
     </div>
-    <a class="ok" href="travel.html">➜</a>
-  </div>
 
-  <div class="menu">
-    <a href="travel.html">🌍 Turlar</a>
-    <a href="travel.html">⭐ Favoriler</a>
-    <a href="travel.html">👤 Profil</a>
-    <a href="travel.html">📍 Keşfet</a>
-  </div>
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=700&q=80">
+        <div class="card-content">
+            <h3>🏛️ Şehir Turları</h3>
+            <p>Eskişehir'in tarihi ve kültürel noktalarını keşfetmek için turlara göz atın.</p>
+        </div>
+        <a class="ok" href="travel.html">➜</a>
+    </div>
+
+    <div class="menu">
+        <a href="travel.html">🌐 Turlar</a>
+        <a href="travel.html">⭐ Favoriler</a>
+        <a href="travel.html">👤 Profil</a>
+        <a href="travel.html">📍 Keşfet</a>
+    </div>
 
 </div>
 
 <footer>
-  © 2026 Eken26 — Eskişehir'i keşfet.
+    © 2026 Eken26 – Eskişehir'i keşfet.
 </footer>
 
 </body>
