@@ -74,10 +74,6 @@ header {
   font-size: 34px;
 }
 
-.card h2 {
-  font-size: 28px;
-}
-
 .card p {
   font-size: 20px;
   line-height: 1.6;
@@ -88,6 +84,7 @@ header {
   display: flex;
   gap: 15px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 button {
@@ -201,12 +198,18 @@ button:hover {
   padding: 12px 18px;
   border-radius: 12px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 footer {
   text-align: center;
   padding: 30px;
   color: #666;
+}
+
+.loading {
+  opacity: .6;
+  pointer-events: none;
 }
 </style>
 </head>
@@ -224,7 +227,9 @@ footer {
 
 <div class="container">
 
-<a href="#" class="back" onclick="goHome()">← Ana Sayfaya Dön</a>
+<a href="#" class="back" onclick="goHome(); return false;">
+  ← Ana Sayfaya Dön
+</a>
 
 <div class="card">
   <h1>👋 Hoş Geldiniz</h1>
@@ -247,14 +252,12 @@ footer {
   </div>
 </div>
 
-
 <div class="service">
   <div class="service-icon">🚐</div>
   <h2>VIP Transfer</h2>
   <p>Özel havaalanı ve şehir içi ulaşım hizmetleri.</p>
   <a href="#">Detayları Gör →</a>
 </div>
-
 
 <div class="service">
   <div class="service-icon">🏨</div>
@@ -266,7 +269,6 @@ footer {
   <a href="#">Detayları Gör →</a>
 </div>
 
-
 <div class="service">
   <div class="service-icon">♨️</div>
   <h2>Termal Oteller</h2>
@@ -276,7 +278,6 @@ footer {
   </p>
   <a href="#">Detayları Gör →</a>
 </div>
-
 
 <div class="service">
   <div class="service-icon">🛶</div>
@@ -288,7 +289,6 @@ footer {
   <a href="#">Detayları Gör →</a>
 </div>
 
-
 <div class="service">
   <div class="service-icon">🍽️</div>
   <h2>Restoranlar</h2>
@@ -298,7 +298,6 @@ footer {
   </p>
   <a href="#">Detayları Gör →</a>
 </div>
-
 
 <div class="service">
   <div class="service-icon">🏛️</div>
@@ -311,7 +310,6 @@ footer {
 </div>
 
 </div>
-
 
 <footer>
   © 2026 Eken26 - Eskişehir
@@ -349,7 +347,9 @@ footer {
       placeholder="Şifre"
     >
 
-    <button onclick="registerUser()">Kayıt Ol</button>
+    <button onclick="registerUser()" id="registerButton">
+      Kayıt Ol
+    </button>
 
     <div id="registerMessage" class="message"></div>
 
@@ -382,7 +382,9 @@ footer {
       placeholder="Şifre"
     >
 
-    <button onclick="loginUser()">Giriş Yap</button>
+    <button onclick="loginUser()" id="loginButton">
+      Giriş Yap
+    </button>
 
     <div id="loginMessage" class="message"></div>
 
@@ -391,7 +393,33 @@ footer {
 </div>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+/* =====================================================
+   SUPABASE AYARLARI
+   ===================================================== */
+
+const SUPABASE_URL =
+  "https://lxbcjmwibocypmvqthok.supabase.co";
+
+const SUPABASE_KEY =
+  "BURAYA_PUBLISHABLE_KEY_YAPISTIR";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================================
+   MODAL
+   ===================================================== */
 
 function openRegister() {
   document.getElementById("registerModal").style.display = "flex";
@@ -407,15 +435,32 @@ function closeModals() {
 }
 
 
-// KAYIT
+/* =====================================================
+   MESAJ
+   ===================================================== */
 
-function registerUser() {
+function showMessage(element, text, type) {
+
+  element.innerText = text;
+  element.className = "message " + type;
+  element.style.display = "block";
+
+}
+
+
+/* =====================================================
+   KAYIT
+   ===================================================== */
+
+async function registerUser() {
 
   const name =
     document.getElementById("registerName").value.trim();
 
   const email =
-    document.getElementById("registerEmail").value.trim().toLowerCase();
+    document.getElementById("registerEmail")
+      .value.trim()
+      .toLowerCase();
 
   const password =
     document.getElementById("registerPassword").value;
@@ -423,16 +468,17 @@ function registerUser() {
   const message =
     document.getElementById("registerMessage");
 
+  const button =
+    document.getElementById("registerButton");
+
 
   if (!name || !email || !password) {
 
-    message.innerText =
-      "Lütfen bütün alanları doldurun.";
-
-    message.className =
-      "message error";
-
-    message.style.display = "block";
+    showMessage(
+      message,
+      "Lütfen bütün alanları doldurun.",
+      "error"
+    );
 
     return;
   }
@@ -440,191 +486,18 @@ function registerUser() {
 
   if (password.length < 6) {
 
-    message.innerText =
-      "Şifre en az 6 karakter olmalıdır.";
-
-    message.className =
-      "message error";
-
-    message.style.display = "block";
-
-    return;
-  }
-
-
-  let users =
-    JSON.parse(localStorage.getItem("eken26Users") || "[]");
-
-
-  const existing =
-    users.find(user => user.email === email);
-
-
-  if (existing) {
-
-    message.innerText =
-      "Bu e-posta adresi zaten kayıtlı.";
-
-    message.className =
-      "message error";
-
-    message.style.display = "block";
-
-    return;
-  }
-
-
-  users.push({
-    name: name,
-    email: email,
-    password: password
-  });
-
-
-  localStorage.setItem(
-    "eken26Users",
-    JSON.stringify(users)
-  );
-
-
-  message.innerText =
-    "Kayıt başarılı! Şimdi giriş yapabilirsiniz.";
-
-  message.className =
-    "message success";
-
-  message.style.display = "block";
-
-
-  document.getElementById("registerName").value = "";
-  document.getElementById("registerEmail").value = "";
-  document.getElementById("registerPassword").value = "";
-
-}
-
-
-// GİRİŞ
-
-function loginUser() {
-
-  const email =
-    document.getElementById("loginEmail").value.trim().toLowerCase();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  const message =
-    document.getElementById("loginMessage");
-
-
-  let users =
-    JSON.parse(localStorage.getItem("eken26Users") || "[]");
-
-
-  const user =
-    users.find(
-      u => u.email === email && u.password === password
+    showMessage(
+      message,
+      "Şifre en az 6 karakter olmalıdır.",
+      "error"
     );
 
-
-  if (!user) {
-
-    message.innerText =
-      "E-posta veya şifre hatalı.";
-
-    message.className =
-      "message error";
-
-    message.style.display = "block";
-
     return;
   }
 
 
-  localStorage.setItem(
-    "eken26LoggedUser",
-    JSON.stringify(user)
-  );
+  button.disabled = true;
+  button.innerText = "Kayıt yapılıyor...";
 
 
-  message.innerText =
-    "Giriş başarılı! Hoş geldiniz " + user.name;
-
-  message.className =
-    "message success";
-
-  message.style.display = "block";
-
-
-  setTimeout(function() {
-
-    closeModals();
-    showAccount();
-
-  }, 1000);
-
-}
-
-
-// HESAP ALANI
-
-function showAccount() {
-
-  const area =
-    document.getElementById("accountArea");
-
-  const user =
-    JSON.parse(
-      localStorage.getItem("eken26LoggedUser")
-    );
-
-
-  if (user) {
-
-    area.innerHTML =
-      '<div class="account">👤 ' +
-      user.name +
-      '</div>';
-
-  } else {
-
-    area.innerHTML = "";
-
-  }
-
-}
-
-
-// ÇIKIŞ
-
-function logoutUser() {
-
-  localStorage.removeItem("eken26LoggedUser");
-
-  showAccount();
-
-  alert("Çıkış yapıldı.");
-
-}
-
-
-// ANA SAYFA
-
-function goHome() {
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-}
-
-
-// SAYFA AÇILINCA HESABI KONTROL ET
-
-showAccount();
-
-</script>
-
-</body>
-</html>
+  try {
