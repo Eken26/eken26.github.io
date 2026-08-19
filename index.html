@@ -400,17 +400,24 @@ footer {
 <script>
 
 /* =====================================================
+/* ==========================================
    SUPABASE AYARLARI
-   =====================================================
+========================================== */
+
 const SUPABASE_URL = "https://lxbcjmwibocypmvqthok.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m";
 
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-/* =====================================================
+/* ==========================================
    MODAL
-   ===================================================== */
+========================================== */
 
 function openRegister() {
   document.getElementById("registerModal").style.display = "flex";
