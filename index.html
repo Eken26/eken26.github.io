@@ -496,3 +496,382 @@ async function registerUser() {
 
 
   try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          name: name
+        }
+      }
+    });
+
+    if (error) {
+      showMessage(message, error.message, "error");
+      return;
+    }
+
+    showMessage(
+      message,
+      "Kayıt başarılı. E-posta doğrulamanız gerekiyorsa e-postanızı kontrol edin.",
+      "success"
+    );
+
+    document.getElementById("registerForm").reset();
+
+    setTimeout(() => {
+      closeModals();
+    }, 2000);
+
+  } catch (error) {
+    console.error(error);
+    showMessage(
+      message,
+      "Kayıt sırasında bir hata oluştu.",
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.innerText = "📝 Kayıt Ol";
+  }
+}
+
+
+/* =========================
+   GİRİŞ
+   ========================= */
+
+async function loginUser() {
+
+  const email =
+    document.getElementById("loginEmail").value.trim().toLowerCase();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  const button =
+    document.getElementById("loginButton");
+
+  if (!email || !password) {
+    showMessage(
+      message,
+      "Lütfen e-posta ve şifrenizi girin.",
+      "error"
+    );
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = "Giriş yapılıyor...";
+
+  try {
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    if (error) {
+      showMessage(
+        message,
+        error.message,
+        "error"
+      );
+      return;
+    }
+
+    showMessage(
+      message,
+      "Giriş başarılı.",
+      "success"
+    );
+
+    setTimeout(() => {
+      closeModals();
+      updateAccountArea();
+    }, 1000);
+
+  } catch (error) {
+
+    console.error(error);
+
+    showMessage(
+      message,
+      "Giriş sırasında bir hata oluştu.",
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+    button.innerText = "🔐 Giriş Yap";
+
+  }
+}
+
+
+/* =========================
+   MODALLARI OLUŞTUR
+   ========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const modalContainer = document.createElement("div");
+
+  modalContainer.innerHTML = `
+
+    <div id="registerModal" class="modal">
+
+      <div class="modal-box">
+
+        <button class="close" onclick="closeModals()">✕</button>
+
+        <h2>📝 Kayıt Ol</h2>
+
+        <form id="registerForm" onsubmit="registerUser(); return false;">
+
+          <input
+            id="registerName"
+            class="input"
+            type="text"
+            placeholder="Ad Soyad"
+          >
+
+          <input
+            id="registerEmail"
+            class="input"
+            type="email"
+            placeholder="E-posta"
+          >
+
+          <input
+            id="registerPassword"
+            class="input"
+            type="password"
+            placeholder="Şifre"
+          >
+
+          <div
+            id="registerMessage"
+            class="message">
+          </div>
+
+          <button
+            id="registerButton"
+            type="submit">
+            📝 Kayıt Ol
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+
+    <div id="loginModal" class="modal">
+
+      <div class="modal-box">
+
+        <button class="close" onclick="closeModals()">✕</button>
+
+        <h2>🔐 Giriş Yap</h2>
+
+        <form id="loginForm" onsubmit="loginUser(); return false;">
+
+          <input
+            id="loginEmail"
+            class="input"
+            type="email"
+            placeholder="E-posta"
+          >
+
+          <input
+            id="loginPassword"
+            class="input"
+            type="password"
+            placeholder="Şifre"
+          >
+
+          <div
+            id="loginMessage"
+            class="message">
+          </div>
+
+          <button
+            id="loginButton"
+            type="submit">
+            🔐 Giriş Yap
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(modalContainer);
+
+});
+
+
+/* =========================
+   GİRİŞ / KAYIT PENCERELERİ
+   ========================= */
+
+function openRegister() {
+
+  const modal =
+    document.getElementById("registerModal");
+
+  const form =
+    document.getElementById("registerForm");
+
+  if (modal) {
+
+    if (form) {
+      form.reset();
+    }
+
+    modal.style.display = "flex";
+  }
+}
+
+
+function openLogin() {
+
+  const modal =
+    document.getElementById("loginModal");
+
+  const form =
+    document.getElementById("loginForm");
+
+  if (modal) {
+
+    if (form) {
+      form.reset();
+    }
+
+    modal.style.display = "flex";
+  }
+}
+
+
+function closeModals() {
+
+  const registerModal =
+    document.getElementById("registerModal");
+
+  const loginModal =
+    document.getElementById("loginModal");
+
+  if (registerModal) {
+    registerModal.style.display = "none";
+  }
+
+  if (loginModal) {
+    loginModal.style.display = "none";
+  }
+}
+
+
+/* =========================
+   HESAP DURUMU
+   ========================= */
+
+async function updateAccountArea() {
+
+  const accountArea =
+    document.getElementById("accountArea");
+
+  if (!accountArea) {
+    return;
+  }
+
+  try {
+
+    const { data } =
+      await supabaseClient.auth.getSession();
+
+    const session = data.session;
+
+    if (session) {
+
+      const email =
+        session.user.email || "";
+
+      accountArea.innerHTML = `
+        <div class="account">
+          👤 ${email}
+        </div>
+      `;
+
+    } else {
+
+      accountArea.innerHTML = "";
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+}
+
+
+/* =========================
+   ÇIKIŞ
+   ========================= */
+
+async function logoutUser() {
+
+  try {
+
+    await supabaseClient.auth.signOut();
+
+    updateAccountArea();
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   SAYFA AÇILINCA HESABI KONTROL ET
+   ========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  updateAccountArea();
+
+});
+
+
+/* =========================
+   MODAL DIŞINA TIKLAYINCA KAPAT
+   ========================= */
+
+document.addEventListener("click", function (event) {
+
+  if (event.target.classList.contains("modal")) {
+    event.target.style.display = "none";
+  }
+
+});
+
+
+</script>
+
+</body>
+</html>
