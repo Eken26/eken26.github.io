@@ -6,885 +6,607 @@
 <title>Eken26 Nexus Doriya</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f3f4;
-  color: #18212b;
-}
-
-header {
-  background: white;
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #087c73;
-}
-
-.logo span {
-  font-size: 28px;
-}
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
-
-.back {
-  display: inline-block;
-  background: white;
-  padding: 18px 25px;
-  border-radius: 20px;
-  color: #087c73;
-  font-size: 20px;
-  font-weight: bold;
-  text-decoration: none;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.08);
-}
-
-.card {
-  background: white;
-  border-radius: 28px;
-  padding: 28px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.08);
-}
-
-.card h1 {
-  margin-top: 0;
-  font-size: 34px;
-}
-
-.card p {
-  font-size: 20px;
-  line-height: 1.6;
-  color: #555;
-}
-
-.buttons {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-button {
-  border: none;
-  background: #087c73;
-  color: white;
-  padding: 16px 28px;
-  border-radius: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: .9;
-}
-
-.service {
-  background: white;
-  border-radius: 25px;
-  padding: 25px;
-  margin-bottom: 18px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.08);
-}
-
-.service-icon {
-  font-size: 45px;
-}
-
-.service h2 {
-  margin: 10px 0;
-  font-size: 28px;
-}
-
-.service p {
-  font-size: 19px;
-  color: #666;
-}
-
-.service a {
-  color: #087c73;
-  font-size: 19px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.6);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal-box {
-  background: white;
-  width: 100%;
-  max-width: 430px;
-  border-radius: 25px;
-  padding: 28px;
-}
-
-.modal-box h2 {
-  color: #087c73;
-  margin-top: 0;
-  font-size: 28px;
-}
-
-.input {
-  width: 100%;
-  padding: 15px;
-  margin: 8px 0 15px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  font-size: 17px;
-}
-
-.close {
-  float: right;
-  background: #ddd;
-  color: #333;
-  padding: 8px 13px;
-  border-radius: 10px;
-  font-size: 15px;
-}
-
-.message {
-  margin-top: 15px;
-  padding: 12px;
-  border-radius: 10px;
-  display: none;
-  font-weight: bold;
-}
-
-.success {
-  background: #d9f5e9;
-  color: #087c73;
-}
-
-.error {
-  background: #ffe0e0;
-  color: #a00000;
-}
-
-.account {
-  background: #087c73;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-footer {
-  text-align: center;
-  padding: 30px;
-  color: #666;
-}
-
-.loading {
-  opacity: .6;
-  pointer-events: none;
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f3f4;color:#18212b}
+header{background:white;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.12);position:sticky;top:0;z-index:10}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:bold;color:#087c73}
+.logo span{font-size:28px}
+.container{max-width:900px;margin:auto;padding:20px}
+.back{display:inline-block;background:white;padding:18px 25px;border-radius:20px;color:#087c73;font-size:20px;font-weight:bold;text-decoration:none;margin-bottom:20px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.card{background:white;border-radius:28px;padding:28px;margin-bottom:20px;box-shadow:0 4px 15px rgba(0,0,0,.08)}
+.card h1{margin-top:0;font-size:34px}
+.card p{font-size:20px;line-height:1.6;color:#555}
+.buttons{display:flex;gap:15px;margin-top:20px;flex-wrap:wrap}
+button{border:none;background:#087c73;color:white;padding:16px 28px;border-radius:15px;font-size:18px;font-weight:bold;cursor:pointer}
+button:hover{opacity:.9}
+button:disabled{opacity:.6;cursor:not-allowed}
+.service{background:white;border-radius:25px;padding:25px;margin-bottom:18px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.service-icon{font-size:45px}
+.service h2{margin:10px 0;font-size:28px}
+.service p{font-size:19px;color:#666}
+.service a{color:#087c73;font-size:19px;font-weight:bold;text-decoration:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:white;width:100%;max-width:430px;border-radius:25px;padding:28px}
+.modal-box h2{color:#087c73;margin-top:0;font-size:28px}
+.input{width:100%;padding:15px;margin:8px 0 15px;border:1px solid #ccc;border-radius:12px;font-size:17px}
+.close{float:right;background:#ddd;color:#333;padding:8px 13px;border-radius:10px;font-size:15px}
+.message{margin-top:15px;padding:12px;border-radius:10px;display:none;font-weight:bold}
+.success{background:#d9f5e9;color:#087c73}
+.error{background:#ffe0e0;color:#a00000}
+.account{background:#087c73;color:white;padding:12px 18px;border-radius:12px;font-weight:bold;cursor:pointer;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+footer{text-align:center;padding:30px;color:#666}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    <span>🏨</span>
-    Eken26 Nexus Doriya
-  </div>
-
-  <div id="accountArea"></div>
+<div class="logo">
+<span>🏨</span>
+Eken26 Nexus Doriya
+</div>
+<div id="accountArea"></div>
 </header>
 
 <div class="container">
 
-<a href="#" class="back" onclick="goHome(); return false;">
-  ← Ana Sayfaya Dön
+<a href="#" class="back" onclick="goHome();return false;">
+← Ana Sayfaya Dön
 </a>
 
 <div class="card">
-  <h1>👋 Hoş Geldiniz</h1>
+<h1>👋 Hoş Geldiniz</h1>
 
-  <p>
-    Eken26; Eskişehir ve çevresindeki konaklama,
-    ulaşım, tur ve seyahat seçeneklerini bir araya
-    getiren bir tanıtım platformudur.
-  </p>
+<p>
+Eken26; Eskişehir ve çevresindeki konaklama,
+ulaşım, tur ve seyahat seçeneklerini bir araya
+getiren bir tanıtım platformudur.
+</p>
 
-  <p>
-    Günlük turlar, VIP havaalanı transferleri,
-    otel rezervasyonları ve özel seyahat paketlerini
-    inceleyebilirsiniz.
-  </p>
+<p>
+Günlük turlar, VIP havaalanı transferleri,
+otel rezervasyonları ve özel seyahat paketlerini
+inceleyebilirsiniz.
+</p>
 
-  <div class="buttons">
-    <button onclick="openLogin()">🔐 Giriş</button>
-    <button onclick="openRegister()">📝 Kayıt</button>
-  </div>
+<div class="buttons">
+<button type="button" onclick="openLogin()">🔐 Giriş</button>
+<button type="button" onclick="openRegister()">📝 Kayıt</button>
+</div>
 </div>
 
 <div class="service">
-  <div class="service-icon">🚐</div>
-  <h2>VIP Transfer</h2>
-  <p>Özel havaalanı ve şehir içi ulaşım hizmetleri.</p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">🚐</div>
+<h2>VIP Transfer</h2>
+<p>Özel havaalanı ve şehir içi ulaşım hizmetleri.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 <div class="service">
-  <div class="service-icon">🏨</div>
-  <h2>Hotel Rezervasyon</h2>
-  <p>
-    Eskişehir ve çevresindeki otel ve termal
-    konaklama seçeneklerini inceleyin.
-  </p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">🏨</div>
+<h2>Hotel Rezervasyon</h2>
+<p>Eskişehir ve çevresindeki otel ve termal konaklama seçeneklerini inceleyin.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 <div class="service">
-  <div class="service-icon">♨️</div>
-  <h2>Termal Oteller</h2>
-  <p>
-    Eskişehir ve çevresindeki termal konaklama
-    seçeneklerini keşfedin.
-  </p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">♨️</div>
+<h2>Termal Oteller</h2>
+<p>Eskişehir ve çevresindeki termal konaklama seçeneklerini keşfedin.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 <div class="service">
-  <div class="service-icon">🛶</div>
-  <h2>Porsuk Turları</h2>
-  <p>
-    Porsuk Çayı'nda tekne ve gondol turu
-    seçeneklerini inceleyin.
-  </p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">🛶</div>
+<h2>Porsuk Turları</h2>
+<p>Porsuk Çayı'nda tekne ve gondol turu seçeneklerini inceleyin.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 <div class="service">
-  <div class="service-icon">🍽️</div>
-  <h2>Restoranlar</h2>
-  <p>
-    Eskişehir'deki popüler restoranları ve
-    yemek noktalarını keşfedin.
-  </p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">🍽️</div>
+<h2>Restoranlar</h2>
+<p>Eskişehir'deki popüler restoranları ve yemek noktalarını keşfedin.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 <div class="service">
-  <div class="service-icon">🏛️</div>
-  <h2>Şehir Turları</h2>
-  <p>
-    Eskişehir'in tarihi ve kültürel noktalarını
-    keşfetmek için turlara göz atın.
-  </p>
-  <a href="#">Detayları Gör →</a>
+<div class="service-icon">🏛️</div>
+<h2>Şehir Turları</h2>
+<p>Eskişehir'in tarihi ve kültürel noktalarını keşfetmek için turlara göz atın.</p>
+<a href="#" onclick="return false;">Detayları Gör →</a>
 </div>
 
 </div>
 
 <footer>
-  © 2026 Eken26 - Eskişehir
+© 2026 Eken26 - Eskişehir
 </footer>
 
-
-<!-- KAYIT PENCERESİ -->
-
 <div class="modal" id="registerModal">
+<div class="modal-box">
 
-  <div class="modal-box">
+<button type="button" class="close" onclick="closeModals()">✕</button>
 
-    <button class="close" onclick="closeModals()">✕</button>
+<h2>📝 Kayıt Ol</h2>
 
-    <h2>📝 Kayıt Ol</h2>
+<form id="registerForm" onsubmit="registerUser(event);return false;">
 
-    <input
-      class="input"
-      id="registerName"
-      type="text"
-      placeholder="Ad Soyad"
-    >
+<input class="input" id="registerName" type="text"
+placeholder="Ad Soyad" autocomplete="name" required>
 
-    <input
-      class="input"
-      id="registerEmail"
-      type="email"
-      placeholder="E-posta"
-    >
+<input class="input" id="registerEmail" type="email"
+placeholder="E-posta" autocomplete="email" required>
 
-    <input
-      class="input"
-      id="registerPassword"
-      type="password"
-      placeholder="Şifre"
-    >
+<input class="input" id="registerPassword" type="password"
+placeholder="Şifre" autocomplete="new-password"
+minlength="6" required>
 
-    <button onclick="registerUser()" id="registerButton">
-      Kayıt Ol
-    </button>
+<div id="registerMessage" class="message"></div>
 
-    <div id="registerMessage" class="message"></div>
+<button type="submit" id="registerButton">
+📝 Kayıt Ol
+</button>
 
-  </div>
-
+</form>
 </div>
-
-
-<!-- GİRİŞ PENCERESİ -->
+</div>
 
 <div class="modal" id="loginModal">
+<div class="modal-box">
 
-  <div class="modal-box">
+<button type="button" class="close" onclick="closeModals()">✕</button>
 
-    <button class="close" onclick="closeModals()">✕</button>
+<h2>🔐 Giriş Yap</h2>
 
-    <h2>🔐 Giriş Yap</h2>
+<form id="loginForm" onsubmit="loginUser(event);return false;">
 
-    <input
-      class="input"
-      id="loginEmail"
-      type="email"
-      placeholder="E-posta"
-    >
+<input class="input" id="loginEmail" type="email"
+placeholder="E-posta" autocomplete="email" required>
 
-    <input
-      class="input"
-      id="loginPassword"
-      type="password"
-      placeholder="Şifre"
-    >
+<input class="input" id="loginPassword" type="password"
+placeholder="Şifre" autocomplete="current-password" required>
 
-    <button onclick="loginUser()" id="loginButton">
-      Giriş Yap
-    </button>
+<div id="loginMessage" class="message"></div>
 
-    <div id="loginMessage" class="message"></div>
+<button type="submit" id="loginButton">
+🔐 Giriş Yap
+</button>
 
-  </div>
-
+</form>
 </div>
-
-
-<!-- SUPABASE -->
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/*
-========================================
-    SUPABASE AYARLARI
-======================================== */
-
-const SUPABASE_URL = "https://lxbcjmwibocypmvqthok.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m";
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
-const SUPABASE_URL = "https://lxbcjmwibocypmvqthok.supabase.co";
+const SUPABASE_URL =
+"https://lxbcjmwibocypmvqthok.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m";
 
 const supabaseClient =
 window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-/* ==========================================
-   MODAL
-========================================== */
-
-function openRegister() {
-  document.getElementById("registerModal").style.display = "flex";
+function goHome(){
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 }
 
-function openLogin() {
-  document.getElementById("loginModal").style.display = "flex";
+function openRegister(){
+
+const modal =
+document.getElementById("registerModal");
+
+const form =
+document.getElementById("registerForm");
+
+if(form){
+form.reset();
 }
 
+clearMessage("registerMessage");
 
-function closeModals() {
-  document.getElementById("registerModal").style.display = "none";
-  document.getElementById("loginModal").style.display = "none";
+if(modal){
+modal.style.display="flex";
+}
 }
 
+function openLogin(){
 
-/* =====================================================
-   MESAJ
-   ===================================================== */
+const modal =
+document.getElementById("loginModal");
 
-function showMessage(element, text, type) {
+const form =
+document.getElementById("loginForm");
 
-  element.innerText = text;
-  element.className = "message " + type;
-  element.style.display = "block";
-
+if(form){
+form.reset();
 }
 
+clearMessage("loginMessage");
 
-/* =====================================================
-   KAYIT
-   ===================================================== */
-
-async function registerUser() {
-
-  const name =
-    document.getElementById("registerName").value.trim();
-
-  const email =
-    document.getElementById("registerEmail")
-      .value.trim()
-      .toLowerCase();
-
-  const password =
-    document.getElementById("registerPassword").value;
-
-  const message =
-    document.getElementById("registerMessage");
-
-  const button =
-    document.getElementById("registerButton");
-
-
-  if (!name || !email || !password) {
-
-    showMessage(
-      message,
-      "Lütfen bütün alanları doldurun.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (password.length < 6) {
-
-    showMessage(
-      message,
-      "Şifre en az 6 karakter olmalıdır.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  button.disabled = true;
-  button.innerText = "Kayıt yapılıyor...";
-
-
-  try {
-    const { data, error } = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          name: name
-        }
-      }
-    });
-
-    if (error) {
-      showMessage(message, error.message, "error");
-      return;
-    }
-
-    showMessage(
-      message,
-      "Kayıt başarılı. E-posta doğrulamanız gerekiyorsa e-postanızı kontrol edin.",
-      "success"
-    );
-
-    document.getElementById("registerForm").reset();
-
-    setTimeout(() => {
-      closeModals();
-    }, 2000);
-
-  } catch (error) {
-    console.error(error);
-    showMessage(
-      message,
-      "Kayıt sırasında bir hata oluştu.",
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-    button.innerText = "📝 Kayıt Ol";
-  }
+if(modal){
+modal.style.display="flex";
+}
 }
 
+function closeModals(){
 
-/* =========================
-   GİRİŞ
-   ========================= */
+const registerModal =
+document.getElementById("registerModal");
 
-async function loginUser() {
+const loginModal =
+document.getElementById("loginModal");
 
-  const email =
-    document.getElementById("loginEmail").value.trim().toLowerCase();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  const message =
-    document.getElementById("loginMessage");
-
-  const button =
-    document.getElementById("loginButton");
-
-  if (!email || !password) {
-    showMessage(
-      message,
-      "Lütfen e-posta ve şifrenizi girin.",
-      "error"
-    );
-    return;
-  }
-
-  button.disabled = true;
-  button.innerText = "Giriş yapılıyor...";
-
-  try {
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    if (error) {
-      showMessage(
-        message,
-        error.message,
-        "error"
-      );
-      return;
-    }
-
-    showMessage(
-      message,
-      "Giriş başarılı.",
-      "success"
-    );
-
-    setTimeout(() => {
-      closeModals();
-      updateAccountArea();
-    }, 1000);
-
-  } catch (error) {
-
-    console.error(error);
-
-    showMessage(
-      message,
-      "Giriş sırasında bir hata oluştu.",
-      "error"
-    );
-
-  } finally {
-
-    button.disabled = false;
-    button.innerText = "🔐 Giriş Yap";
-
-  }
+if(registerModal){
+registerModal.style.display="none";
 }
 
+if(loginModal){
+loginModal.style.display="none";
+}
+}
 
-/* =========================
-   MODALLARI OLUŞTUR
-   ========================= */
+function clearMessage(id){
 
-document.addEventListener("DOMContentLoaded", function () {
+const element =
+document.getElementById(id);
 
-  const modalContainer = document.createElement("div");
+if(element){
 
-  modalContainer.innerHTML = `
+element.innerText="";
+element.className="message";
+element.style.display="none";
 
-    <div id="registerModal" class="modal">
+}
+}
 
-      <div class="modal-box">
+function showMessage(element,text,type){
 
-        <button class="close" onclick="closeModals()">✕</button>
+if(!element){
+return;
+}
 
-        <h2>📝 Kayıt Ol</h2>
+element.innerText=text;
+element.className="message "+type;
+element.style.display="block";
+}
 
-        <form id="registerForm" onsubmit="registerUser(); return false;">
+async function registerUser(event){
 
-          <input
-            id="registerName"
-            class="input"
-            type="text"
-            placeholder="Ad Soyad"
-          >
+if(event){
+event.preventDefault();
+}
 
-          <input
-            id="registerEmail"
-            class="input"
-            type="email"
-            placeholder="E-posta"
-          >
+const name =
+document.getElementById("registerName")
+.value.trim();
 
-          <input
-            id="registerPassword"
-            class="input"
-            type="password"
-            placeholder="Şifre"
-          >
+const email =
+document.getElementById("registerEmail")
+.value.trim()
+.toLowerCase();
 
-          <div
-            id="registerMessage"
-            class="message">
-          </div>
+const password =
+document.getElementById("registerPassword")
+.value;
 
-          <button
-            id="registerButton"
-            type="submit">
-            📝 Kayıt Ol
-          </button>
+const message =
+document.getElementById("registerMessage");
 
-        </form>
+const button =
+document.getElementById("registerButton");
 
-      </div>
+if(!name || !email || !password){
 
-    </div>
+showMessage(
+message,
+"Lütfen bütün alanları doldurun.",
+"error"
+);
 
+return;
+}
 
-    <div id="loginModal" class="modal">
+if(password.length<6){
 
-      <div class="modal-box">
+showMessage(
+message,
+"Şifre en az 6 karakter olmalıdır.",
+"error"
+);
 
-        <button class="close" onclick="closeModals()">✕</button>
+return;
+}
 
-        <h2>🔐 Giriş Yap</h2>
+button.disabled=true;
+button.innerText="Kayıt yapılıyor...";
 
-        <form id="loginForm" onsubmit="loginUser(); return false;">
+try{
 
-          <input
-            id="loginEmail"
-            class="input"
-            type="email"
-            placeholder="E-posta"
-          >
+const {data,error} =
+await supabaseClient.auth.signUp({
 
-          <input
-            id="loginPassword"
-            class="input"
-            type="password"
-            placeholder="Şifre"
-          >
+email:email,
+password:password,
 
-          <div
-            id="loginMessage"
-            class="message">
-          </div>
-
-          <button
-            id="loginButton"
-            type="submit">
-            🔐 Giriş Yap
-          </button>
-
-        </form>
-
-      </div>
-
-    </div>
-
-  `;
-
-  document.body.appendChild(modalContainer);
+options:{
+data:{
+name:name
+}
+}
 
 });
 
+if(error){
 
-/* =========================
-   GİRİŞ / KAYIT PENCERELERİ
-   ========================= */
+console.error("Kayıt hatası:",error);
 
-function openRegister() {
+showMessage(
+message,
+error.message,
+"error"
+);
 
-  const modal =
-    document.getElementById("registerModal");
-
-  const form =
-    document.getElementById("registerForm");
-
-  if (modal) {
-
-    if (form) {
-      form.reset();
-    }
-
-    modal.style.display = "flex";
-  }
+return;
 }
 
+showMessage(
+message,
+"Kayıt başarılı. E-posta doğrulamanızı kontrol edin.",
+"success"
+);
 
-function openLogin() {
+const form =
+document.getElementById("registerForm");
 
-  const modal =
-    document.getElementById("loginModal");
-
-  const form =
-    document.getElementById("loginForm");
-
-  if (modal) {
-
-    if (form) {
-      form.reset();
-    }
-
-    modal.style.display = "flex";
-  }
+if(form){
+form.reset();
 }
 
+setTimeout(
+function(){
+closeModals();
+},
+2500
+);
 
-function closeModals() {
+}catch(error){
 
-  const registerModal =
-    document.getElementById("registerModal");
+console.error(
+"Kayıt sırasında hata:",
+error
+);
 
-  const loginModal =
-    document.getElementById("loginModal");
+showMessage(
+message,
+"Kayıt sırasında bir hata oluştu.",
+"error"
+);
 
-  if (registerModal) {
-    registerModal.style.display = "none";
-  }
+}finally{
 
-  if (loginModal) {
-    loginModal.style.display = "none";
-  }
-}
-
-
-/* =========================
-   HESAP DURUMU
-   ========================= */
-
-async function updateAccountArea() {
-
-  const accountArea =
-    document.getElementById("accountArea");
-
-  if (!accountArea) {
-    return;
-  }
-
-  try {
-
-    const { data } =
-      await supabaseClient.auth.getSession();
-
-    const session = data.session;
-
-    if (session) {
-
-      const email =
-        session.user.email || "";
-
-      accountArea.innerHTML = `
-        <div class="account">
-          👤 ${email}
-        </div>
-      `;
-
-    } else {
-
-      accountArea.innerHTML = "";
-
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
-}
-
-
-/* =========================
-   ÇIKIŞ
-   ========================= */
-
-async function logoutUser() {
-
-  try {
-
-    await supabaseClient.auth.signOut();
-
-    updateAccountArea();
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
+button.disabled=false;
+button.innerText="📝 Kayıt Ol";
 
 }
 
+}
 
-/* =========================
-   SAYFA AÇILINCA HESABI KONTROL ET
-   ========================= */
+async function loginUser(event){
 
-document.addEventListener("DOMContentLoaded", function () {
+if(event){
+event.preventDefault();
+}
 
-  updateAccountArea();
+const email =
+document.getElementById("loginEmail")
+.value.trim()
+.toLowerCase();
+
+const password =
+document.getElementById("loginPassword")
+.value;
+
+const message =
+document.getElementById("loginMessage");
+
+const button =
+document.getElementById("loginButton");
+
+if(!email || !password){
+
+showMessage(
+message,
+"Lütfen e-posta ve şifrenizi girin.",
+"error"
+);
+
+return;
+}
+
+button.disabled=true;
+button.innerText="Giriş yapılıyor...";
+
+try{
+
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+password:password
 
 });
 
+if(error){
 
-/* =========================
-   MODAL DIŞINA TIKLAYINCA KAPAT
-   ========================= */
+console.error("Giriş hatası:",error);
 
-document.addEventListener("click", function (event) {
+showMessage(
+message,
+error.message,
+"error"
+);
 
-  if (event.target.classList.contains("modal")) {
-    event.target.style.display = "none";
-  }
+return;
+}
 
-});
+showMessage(
+message,
+"Giriş başarılı.",
+"success"
+);
 
+setTimeout(
+function(){
+
+closeModals();
+updateAccountArea();
+
+},
+1000
+);
+
+}catch(error){
+
+console.error(
+"Giriş sırasında hata:",
+error
+);
+
+showMessage(
+message,
+"Giriş sırasında bir hata oluştu.",
+"error"
+);
+
+}finally{
+
+button.disabled=false;
+button.innerText="🔐 Giriş Yap";
+
+}
+
+}
+
+async function updateAccountArea(){
+
+const accountArea =
+document.getElementById("accountArea");
+
+if(!accountArea){
+return;
+}
+
+try{
+
+const {data,error} =
+await supabaseClient.auth.getSession();
+
+if(error){
+
+console.error(error);
+return;
+
+}
+
+const session =
+data.session;
+
+if(session){
+
+const email =
+session.user.email || "";
+
+accountArea.innerHTML=`
+<div
+class="account"
+title="Çıkış yapmak için tıklayın"
+onclick="logoutUser()"
+>
+👤 ${email}
+</div>
+`;
+
+}else{
+
+accountArea.innerHTML="";
+
+}
+
+}catch(error){
+
+console.error(
+"Hesap durumu kontrol hatası:",
+error
+);
+
+}
+
+}
+
+async function logoutUser(){
+
+try{
+
+const {error} =
+await supabaseClient.auth.signOut();
+
+if(error){
+
+console.error(error);
+return;
+
+}
+
+updateAccountArea();
+
+}catch(error){
+
+console.error(
+"Çıkış sırasında hata:",
+error
+);
+
+}
+
+}
+
+supabaseClient.auth.onAuthStateChange(
+function(){
+updateAccountArea();
+}
+);
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+updateAccountArea();
+}
+);
+
+document.addEventListener(
+"click",
+function(event){
+
+if(
+event.target.classList.contains("modal")
+){
+
+event.target.style.display="none";
+
+}
+
+}
+);
 
 </script>
 
