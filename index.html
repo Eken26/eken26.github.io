@@ -97,15 +97,31 @@
       version: "2.0",
       sandbox: false
     });
+let piAuth = null;
 
+async function ensurePiAuth() {
+  await piReady;
+
+  if (!piAuth) {
+    piAuth = await Pi.authenticate(
+      ["username", "payments"],
+      onIncompletePaymentFound
+    );
+  }
+
+  return piAuth;
+}
+
+function onIncompletePaymentFound(payment) {
+  console.log("Tamamlanmamış ödeme:", payment);
+}
     async function makePiPayment() {
       const status = document.getElementById("status");
 
       try {
         status.textContent = "Pi bağlantısı hazırlanıyor...";
-
-        await piReady;
-
+await ensurePiAuth():     
+awaid piReady:
         const paymentData = {
           amount: 1,
           memo: "Eken26 Nexus Hizmet Bedeli",
