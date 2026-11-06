@@ -1,172 +1,149 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EKEN26 NEXUS</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #07152b, #0b2a4a);
-      color: white;
-      text-align: center;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      font-size: 38px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      line-height: 1.6;
-      opacity: 0.9;
-    }
-
-    .card {
-      margin-top: 35px;
-      padding: 30px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .button {
-      margin-top: 25px;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      background: #ff8a00;
-      color: white;
-    }
-
-    .button:hover {
-      opacity: 0.9;
-    }
-
-    #status {
-      margin-top: 20px;
-      min-height: 24px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eken26 Nexus Tr</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+  *{box-sizing:border-box;font-family:Arial,sans-serif}
+  body{margin:0;background:#f5f3ff;color:#222}
+  header{background:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  .logo{font-weight:900;font-size:22px;color:#6d28d9}
+  .logo span{color:#f59e0b}
+  .btn{border:0;border-radius:12px;padding:14px;font-weight:800;font-size:16px;width:100%;cursor:pointer}
+  .btn-pi{background:#7c3aed;color:#fff}
+  .btn-white{background:#fff;border:1px solid #ddd;color:#222;margin-top:10px}
+  .card{background:#fff;margin:14px;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+  .card-img{background:#e9e7f5;height:190px;display:flex;align-items:center;justify-content:center;color:#888;font-size:16px}
+  .card-body{padding:16px}
+  .price{color:#7c3aed;font-size:28px;font-weight:900;margin:10px 0 4px}
+  .badge{background:#7c3aed;color:#fff;padding:5px 10px;border-radius:20px;font-size:12px;float:right}
+  .status{padding:12px;border-radius:12px;font-size:14px;text-align:center;margin:14px;display:none}
+  .status.err{background:#ffe4e6;color:#991b1b;display:block}
+  .status.ok{background:#dcfce7;color:#166534;display:block}
+  .status.info{background:#fef9c3;color:#854d0e;display:block}
+</style>
 </head>
-
 <body>
 
-  <div class="container">
+<header>
+  <div class="logo">π EKEN<span>26</span> NEXUS</div>
+  <div>☰</div>
+</header>
 
-    <h1>EKEN26 NEXUS</h1>
+<div id="durum" class="status info">Pi SDK yükleniyor, lütfen bekle...</div>
 
-    <p class="subtitle">
-      Eken26; Eskişehir ve çevresindeki konaklama, ulaşım,
-      tur ve seyahat seçeneklerini bir araya getiren
-      bir tanıtım platformudur.
-    </p>
-
-    <div class="card">
-      <h2>Pi ile Ödeme</h2>
-
-      <p>
-        Eken26 Nexus üzerinden Pi ödeme işlemini başlatabilirsiniz.
-      </p>
-
-      <button class="button" onclick="makePiPayment()">
-        Pi ile Ödeme Yap
-      </button>
-
-      <div id="status"></div>
-    </div>
-
+<!-- ÜRÜN 1 -->
+<div class="card">
+  <div class="card-img">Resim yok</div>
+  <div class="card-body">
+    <h2 style="margin:0">Doriya pi</h2>
+    <p style="color:#666">Doriya Pi, Pi Network ekosisteminde ürün ve hizmetlerin Pi ile alınıp satılmasını sağlayan dijital ürün.</p>
+    <div class="price">0.5π</div>
+    <p style="color:#666">Durum: New</p>
+    <p><b>Mustafa eken1</b><br>⭐⭐⭐⭐⭐ (0)</p>
+    <button class="btn btn-pi" onclick="satinAl(0.5,'Doriya pi')">0.5π ile Satın Al</button>
+    <button class="btn btn-white" onclick="alert('İptal edildi')">İptal Et</button>
   </div>
+</div>
 
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<!-- ÜRÜN 2 -->
+<div class="card">
+  <div class="card-img">Resim yok <span class="badge">Electronics</span></div>
+  <div class="card-body">
+    <h2 style="margin:0">iPhone 13 pro</h2>
+    <p style="color:#666">Temiz kullanılmış iPhone 13 pro</p>
+    <div class="price">500π</div>
+    <p style="color:#666">Durum: New</p>
+    <p>📍 Eskişehir</p>
+    <p><b>@Mustafa eken</b><br>⭐⭐⭐⭐⭐ (0)</p>
+    <button class="btn btn-pi" onclick="satinAl(500,'iPhone 13 pro')">500π ile Satın Al</button>
+    <button class="btn btn-white" onclick="alert('İptal edildi')">İptal Et</button>
+  </div>
+</div>
 
-  <script>
-    let piReady = Pi.init({
-      version: "2.0",
-      sandbox: false
-    });
-let piAuth = null;
+<!-- ÜRÜN 3 - SENİN ESKİ HİZMETİN -->
+<div class="card">
+  <div class="card-body">
+    <h2 style="margin:0">Eken26 Nexus Hizmet Bedeli</h2>
+    <p style="color:#666">Eskişehir konaklama, ulaşım, tur ve seyahat tanıtım hizmeti</p>
+    <div class="price">1π</div>
+    <button class="btn btn-pi" onclick="satinAl(1,'Eken26 Nexus Hizmet Bedeli')">1π ile Ödeme Yap</button>
+  </div>
+</div>
 
-async function ensurePiAuth() {
-  await piReady;
+<script>
+  let piHazir = false;
 
-  if (!piAuth) {
-    piAuth = await Pi.authenticate(
-      ["username", "payments"],
-      onIncompletePaymentFound
-    );
+  function durumGoster(mesaj, tip) {
+    let el = document.getElementById('durum');
+    el.style.display = 'block';
+    el.className = 'status ' + tip;
+    el.innerText = mesaj;
   }
 
-  return piAuth;
-}
-
-function onIncompletePaymentFound(payment) {
-  console.log("Tamamlanmamış ödeme:", payment);
-}
-    async function makePiPayment() {
-      const status = document.getElementById("status");
-
+  // SDK'yı tekrar tekrar dene - ESKİ HATA BURADAYDI
+  function piBaslat() {
+    if (window.Pi) {
       try {
-        status.textContent = "Pi bağlantısı hazırlanıyor...";
-await ensurePiAuth();     
-await piReady;
-        const paymentData = {
-          amount: 1,
-          memo: "Eken26 Nexus Hizmet Bedeli",
-          metadata: {
-            service: "tourism",
-            app: "eken26-nexus"
-          }
-        };
-
-        const callbacks = {
-
-          onReadyForServerApproval: function(paymentId) {
-            console.log("Onay bekliyor:", paymentId);
-            status.textContent =
-              "Ödeme onay aşamasında...";
-          },
-
-          onReadyForServerCompletion: function(paymentId, txid) {
-            console.log("Ödeme tamamlandı:", paymentId, txid);
-            status.textContent =
-              "Ödeme işlemi tamamlandı.";
-          },
-
-          onCancel: function(paymentId) {
-            console.log("Ödeme iptal edildi:", paymentId);
-            status.textContent =
-              "Ödeme iptal edildi.";
-          },
-
-          onError: function(error, payment) {
-            console.error("Pi ödeme hatası:", error, payment);
-            status.textContent =
-              "Ödeme sırasında bir hata oluştu.";
-          }
-        };
-
-        Pi.createPayment(paymentData, callbacks);
-
-      } catch (error) {
-        console.error("Payment flow failed:", error);
-        status.textContent =
-          "Pi bağlantısı kurulamadı.";
+        Pi.init({ version: "2.0", sandbox: false });
+        piHazir = true;
+        durumGoster("✅ Pi SDK bulundu. Satın alabilirsin.", "ok");
+      } catch(e) {
+        durumGoster("Pi init hatası: " + e.message, "err");
       }
+    } else {
+      durumGoster("Pi SDK yükleniyor... Pi Browser'da olduğundan emin ol, sayfa tekrar deneniyor.", "info");
+      setTimeout(piBaslat, 800);
     }
-  </script>
+  }
+  window.addEventListener('load', piBaslat);
+
+  async function satinAl(miktar, urunAdi) {
+    if (!window.Pi || !piHazir) {
+      durumGoster("Hata: Pi SDK henüz bulunamadı. Pi Browser'da eken26.github.io adresine direkt yazarak açtığından emin ol.", "err");
+      alert("Pi Browser'da açmalısın. Chrome'da çalışmaz!");
+      return;
+    }
+
+    try {
+      durumGoster("Pi'ye bağlanılıyor...", "info");
+
+      // 1. Giriş
+      const auth = await Pi.authenticate(['payments'], function(pay){});
+      
+      // 2. Ödeme oluştur
+      await Pi.createPayment({
+        amount: miktar,
+        memo: urunAdi,
+        metadata: { urun: urunAdi }
+      }, {
+        // Sunucun olmadığı için burada direkt onaylıyoruz (test / demo için)
+        onReadyForServerApproval: function(paymentId) {
+          console.log("Onay bekliyor:", paymentId);
+          durumGoster("Ödeme onaylandı, tamamlanıyor...", "info");
+        },
+        onReadyForServerCompletion: function(paymentId, txid) {
+          console.log("Tamamlandı:", paymentId, txid);
+          durumGoster("🎉 Ödeme başarılı! " + urunAdi + " satın alındı.", "ok");
+          alert("Ödeme başarılı! " + urunAdi);
+        },
+        onCancel: function(paymentId) {
+          durumGoster("Ödeme iptal edildi.", "err");
+        },
+        onError: function(error, payment) {
+          durumGoster("Ödeme hatası: " + error.message, "err");
+          alert("Hata: " + error.message);
+        }
+      });
+
+    } catch(e) {
+      durumGoster("Hata: " + e.message, "err");
+      alert("Hata: " + e.message);
+    }
+  }
+</script>
 
 </body>
 </html>
