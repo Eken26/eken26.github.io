@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eken26 Doriya</title>
+<title>EKEN26 NEXUS TR</title>
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 <style>
   *{box-sizing:border-box;font-family:Arial,sans-serif}
@@ -28,7 +30,7 @@
 <body>
 
 <header>
-  <div class="logo">π EKEN<span>26</span> DORİYA</div>
+  <div class="logo">π EKEN<span>26</span> NEXUS TR</div>
   <div>☰</div>
 </header>
 
@@ -38,12 +40,12 @@
 <div class="card">
   <div class="card-img">Resim yok</div>
   <div class="card-body">
-    <h2 style="margin:0">Doriya pi</h2>
-    <p style="color:#666">Doriya Pi, Pi Network ekosisteminde ürün ve hizmetlerin Pi ile alınıp satılmasını sağlayan dijital ürün.</p>
+    <h2 style="margin:0">Eken26 Nexus</h2>
+    <p style="color:#666">Eken26 Nexus, Pi Network ekosisteminde ürün ve hizmetlerin Pi ile alınıp satılmasını sağlayan dijital platformdur.</p>
     <div class="price">0.5π</div>
     <p style="color:#666">Durum: New</p>
     <p><b>Mustafa eken1</b><br>⭐⭐⭐⭐⭐ (0)</p>
-    <button class="btn btn-pi" onclick="satinAl(0.5,'Doriya pi')">0.5π ile Satın Al</button>
+    <button class="btn btn-pi" onclick="satinAl(0.5,'Eken26 Nexus')">0.5π ile Satın Al</button>
     <button class="btn btn-white" onclick="alert('İptal edildi')">İptal Et</button>
   </div>
 </div>
@@ -63,13 +65,13 @@
   </div>
 </div>
 
-<!-- ÜRÜN 3 - SENİN ESKİ HİZMETİN -->
+<!-- ÜRÜN 3 - NEXUS HİZMETİ -->
 <div class="card">
   <div class="card-body">
-    <h2 style="margin:0">Eken26 Doriya Hizmet Bedeli</h2>
+    <h2 style="margin:0">Eken26 Nexus Hizmet Bedeli</h2>
     <p style="color:#666">Eskişehir konaklama, ulaşım, tur ve seyahat tanıtım hizmeti</p>
     <div class="price">1π</div>
-    <button class="btn btn-pi" onclick="satinAl(1,'Eken26 Doriya Hizmet Bedeli')">1π ile Ödeme Yap</button>
+    <button class="btn btn-pi" onclick="satinAl(1,'Eken26 Nexus Hizmet Bedeli')">1π ile Ödeme Yap</button>
   </div>
 </div>
 
@@ -112,14 +114,14 @@
 
       // 1. Giriş
       const auth = await Pi.authenticate(['payments'], function(pay){});
-      
+
       // 2. Ödeme oluştur
       await Pi.createPayment({
         amount: miktar,
         memo: urunAdi,
         metadata: { urun: urunAdi }
       }, {
-        // Sunucun olmadığı için burada direkt onaylıyoruz (test / demo için)
+        // Mevcut demo onay akışı korunmuştur.
         onReadyForServerApproval: function(paymentId) {
           console.log("Onay bekliyor:", paymentId);
           durumGoster("Ödeme onaylandı, tamamlanıyor...", "info");
