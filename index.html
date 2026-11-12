@@ -26,6 +26,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .err{background:#fee2e2}
 label{font-weight:bold;font-size:14px;display:block}
 a{color:#6d28d9}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button{width:50%;margin:0}
+.delete{background:#dc2626}
+.edit{background:#2563eb}
 </style>
 </head>
 <body>
@@ -33,14 +37,17 @@ a{color:#6d28d9}
 <h1>π EKEN26 NEXUS TR</h1>
 <span>Marketplace</span>
 </header>
+
 <main>
 <div id="status" class="status">Pi SDK kontrol ediliyor...</div>
+
 <section class="panel">
 <h2>Pi hesabı</h2>
 <button id="login">Pi ile giriş yap</button>
 <p id="user" class="small">Henüz giriş yapılmadı.</p>
 <p class="small">Ağ: Mainnet</p>
 </section>
+
 <section class="panel">
 <h2>Ürün ara</h2>
 <input id="search" placeholder="Ürün veya açıklama ara">
@@ -59,15 +66,19 @@ a{color:#6d28d9}
 <option>Diğer</option>
 </select>
 </section>
+
 <section class="panel">
 <h2>Ürün ekle</h2>
 <form id="form">
 <label>Ürün adı</label>
 <input id="name" required maxlength="100">
+
 <label>Açıklama</label>
 <textarea id="desc" required maxlength="600"></textarea>
+
 <label>Pi fiyatı</label>
 <input id="price" type="number" min="0.01" step="0.01" required>
+
 <label>Kategori</label>
 <select id="category">
 <option>Elektronik</option>
@@ -81,49 +92,71 @@ a{color:#6d28d9}
 <option>Hizmetler</option>
 <option>Diğer</option>
 </select>
+
 <label>Şehir</label>
 <input id="city" maxlength="80" placeholder="Eskişehir">
+
 <button type="submit">Ürünü ekle</button>
 </form>
 <p class="small">Ürünler şimdilik yalnızca bu cihazda saklanır. Ortak ürün sistemi için Supabase bağlantısı gereklidir.</p>
 </section>
+
 <h2>Ürünler <span id="count">(0)</span></h2>
 <div id="products" class="grid"></div>
+
 <section class="panel">
 <h2>EKEN26 NEXUS Turizm</h2>
 <p>Eskişehir konaklama, ulaşım, turizm ve seyahat hizmetleri.</p>
 <a href="travel.html">Turizm ve seyahat sayfasını aç</a>
 </section>
 </main>
+
 <script>
 'use strict';
+
 const $=id=>document.getElementById(id);
 const STORAGE_KEY='eken26_nexus_products_v2';
+
 let items=[];
 let piReady=false;
 let piUser=null;
+
 try{
  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
  if(Array.isArray(saved))items=saved;
-}catch(e){console.error('Kayıt okunamadı',e);}
+}catch(e){
+ console.error('Kayıt okunamadı',e);
+}
+
 function showStatus(message,type=''){
  const el=$('status');
  el.textContent=message;
  el.className='status '+type;
 }
+
 function initPi(attempt=0){
  if(window.Pi&&typeof Pi.init==='function'){
   try{
    Pi.init({version:'2.0',sandbox:false});
    piReady=true;
    showStatus('Pi SDK bulundu. Mainnet bağlantısı hazır.','ok');
-  }catch(e){showStatus('Pi SDK hatası: '+e.message,'err');}
- }else if(attempt<15){setTimeout(()=>initPi(attempt+1),800);}
- else{showStatus('Pi SDK bulunamadı. Pi Browser üzerinden aç.','err');}
+  }catch(e){
+   showStatus('Pi SDK hatası: '+e.message,'err');
+  }
+ }else if(attempt<15){
+  setTimeout(()=>initPi(attempt+1),800);
+ }else{
+  showStatus('Pi SDK bulunamadı. Pi Browser üzerinden aç.','err');
+ }
 }
+
 window.addEventListener('load',()=>initPi());
+
 $('login').addEventListener('click',async()=>{
- if(!piReady){showStatus('Pi SDK henüz hazır değil.','err');return;}
+ if(!piReady){
+  showStatus('Pi SDK henüz hazır değil.','err');
+  return;
+ }
  try{
   const auth=await Pi.authenticate(['username','payments'],payment=>{
    console.log('Bekleyen ödeme:',payment?.identifier);
@@ -131,54 +164,147 @@ $('login').addEventListener('click',async()=>{
   piUser=auth.user;
   $('user').textContent='Giriş: @'+(piUser.username||'Pi kullanıcısı');
   showStatus('Pi kullanıcı girişi başarılı.','ok');
- }catch(e){showStatus('Giriş hatası: '+e.message,'err');}
+ }catch(e){
+  showStatus('Giriş hatası: '+e.message,'err');
+ }
 });
+
 function saveItems(){
  localStorage.setItem(STORAGE_KEY,JSON.stringify(items));
 }
+
+function editItem(id){
+ const item=items.find(x=>x.id===id);
+ if(!item)return;
+
+ const name=prompt('Ürün adı:',item.name);
+ if(name===null)return;
+
+ const desc=prompt('Ürün açıklaması:',item.desc);
+ if(desc===null)return;
+
+ const price=prompt('Pi fiyatı:',item.price);
+ if(price===null)return;
+
+ const city=prompt('Şehir:',item.city||'');
+ if(city===null)return;
+
+ const newPrice=Number(price);
+
+ if(!name.trim()||!desc.trim()||!Number.isFinite(newPrice)||newPrice<=0){
+  showStatus('Lütfen geçerli ürün bilgileri gir.','err');
+  return;
+ }
+
+ const oldItem={...item};
+
+ item.name=name.trim();
+ item.desc=desc.trim();
+ item.price=newPrice;
+ item.city=city.trim();
+
+ try{
+  saveItems();
+  render();
+  showStatus('Ürün başarıyla güncellendi.','ok');
+ }catch(e){
+  Object.assign(item,oldItem);
+  showStatus('Güncelleme başarısız: '+e.message,'err');
+ }
+}
+
+function deleteItem(id){
+ const item=items.find(x=>x.id===id);
+ if(!item)return;
+
+ if(!confirm('"'+item.name+'" ürününü silmek istiyor musun?')){
+  return;
+ }
+
+ const oldItems=[...items];
+ items=items.filter(x=>x.id!==id);
+
+ try{
+  saveItems();
+  render();
+  showStatus('Ürün silindi.','ok');
+ }catch(e){
+  items=oldItems;
+  showStatus('Silme işlemi başarısız: '+e.message,'err');
+ }
+}
+
 function render(){
  const query=$('search').value.trim().toLocaleLowerCase('tr');
  const category=$('filter').value;
+
  const filtered=items.filter(item=>
   (!category||item.category===category)&&
   [item.name,item.desc,item.city].join(' ').toLocaleLowerCase('tr').includes(query)
  );
+
  $('products').replaceChildren();
  $('count').textContent='('+filtered.length+')';
+
  if(!filtered.length){
   const empty=document.createElement('p');
   empty.textContent='Bu filtrede ürün bulunamadı.';
   $('products').append(empty);
   return;
  }
+
  filtered.forEach(item=>{
   const card=document.createElement('article');
   card.className='card';
+
   const title=document.createElement('h3');
   title.textContent=item.name;
+
   const desc=document.createElement('p');
   desc.textContent=item.desc;
+
   const price=document.createElement('p');
   price.className='price';
   price.textContent=item.price+' π';
+
   const meta=document.createElement('p');
   meta.className='small';
   meta.textContent=item.category+(item.city?' • '+item.city:'');
+
   const seller=document.createElement('p');
   seller.className='small';
   seller.textContent='Satıcı: '+(item.seller||'Misafir');
+
   const payment=document.createElement('button');
   payment.textContent='Pi ile satın al';
   payment.disabled=true;
   payment.title='Güvenli sunucu onayı henüz bağlanmadı';
-  card.append(title,desc,price,meta,seller,payment);
+
+  const actions=document.createElement('div');
+  actions.className='actions';
+
+  const edit=document.createElement('button');
+  edit.className='edit';
+  edit.textContent='Düzenle';
+  edit.addEventListener('click',()=>editItem(item.id));
+
+  const del=document.createElement('button');
+  del.className='delete';
+  del.textContent='Sil';
+  del.addEventListener('click',()=>deleteItem(item.id));
+
+  actions.append(edit,del);
+  card.append(title,desc,price,meta,seller,payment,actions);
   $('products').append(card);
  });
 }
+
 $('search').addEventListener('input',render);
 $('filter').addEventListener('change',render);
+
 $('form').addEventListener('submit',event=>{
  event.preventDefault();
+
  const item={
   id:Date.now().toString(),
   name:$('name').value.trim(),
@@ -188,16 +314,27 @@ $('form').addEventListener('submit',event=>{
   city:$('city').value.trim(),
   seller:piUser?.username||'Misafir'
  };
+
  if(!item.name||!item.desc||!Number.isFinite(item.price)||item.price<=0){
-  showStatus('Lütfen ürün bilgilerini kontrol et.','err');return;
+  showStatus('Lütfen ürün bilgilerini kontrol et.','err');
+  return;
  }
+
  items.unshift(item);
- try{saveItems();}
- catch(e){items.shift();showStatus('Ürün kaydedilemedi: '+e.message,'err');return;}
+
+ try{
+  saveItems();
+ }catch(e){
+  items.shift();
+  showStatus('Ürün kaydedilemedi: '+e.message,'err');
+  return;
+ }
+
  $('form').reset();
  render();
  showStatus('Ürün bu cihazda kaydedildi.','ok');
 });
+
 render();
 </script>
 </body>
