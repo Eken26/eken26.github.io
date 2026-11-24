@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -25,6 +26,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .err{background:#fee2e2}
 label{font-weight:bold;font-size:14px;display:block}
 a{color:#6d28d9}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button{width:50%;margin:0}
+.delete{background:#dc2626}
+.edit{background:#2563eb}
 </style>
 </head>
 <body>
@@ -37,7 +42,7 @@ a{color:#6d28d9}
 
 <section class="panel">
 <h2>Pi hesabı</h2>
-<button id="login" type="button">Pi ile giriş yap</button>
+<button id="login">Pi ile giriş yap</button>
 <p id="user" class="small">Henüz giriş yapılmadı.</p>
 <p class="small">Ağ: Mainnet</p>
 </section>
@@ -93,207 +98,261 @@ a{color:#6d28d9}
 <script>
 'use strict';
 
+// Supabase Project URL ve Publishable Key
 const SUPABASE_URL = 'https://lxbcjmwibocypmvqthok.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m';
+const PI_FUNCTION_URL = 'https://lxbcjmwibocypmvqthok.supabase.co/functions/v1/pi-payment';
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 let piReady = false;
 let piUser = null;
-let piAccessToken = null;
 let items = [];
+let busyPurchase = false;
 
-function showStatus(message, type = '') {
+function showStatus(message,type=''){
   $('status').textContent = message;
-  $('status').className = 'status ' + type;
+  $('status').className = 'status '+type;
 }
 
-function initPi(attempt = 0) {
-  if (window.Pi && typeof Pi.init === 'function') {
-    try {
-      Pi.init({ version: '2.0', sandbox: false });
-      piReady = true;
-    } catch (e) {
-      showStatus('Pi SDK hatası: ' + (e?.message || String(e)), 'err');
-    }
-  } else if (attempt < 15) {
-    setTimeout(() => initPi(attempt + 1), 800);
+async function callPiPaymentFunction(payload){
+  const response = await fetch(PI_FUNCTION_URL,{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'apikey':SUPABASE_KEY,
+      'Authorization':'Bearer '+SUPABASE_KEY
+    },
+    body:JSON.stringify(payload)
+  });
+
+  const data = await response.json().catch(()=>({}));
+  if(!response.ok){
+    throw new Error(data.error || 'Ödeme sunucu işlemi başarısız oldu.');
+  }
+  return data;
+}
+
+async function decreaseProductStock(productId, currentStock){
+  if(!productId || typeof currentStock !== 'number') return;
+  const nextStock = Math.max(0, currentStock - 1);
+  const {error} = await db.from('urunlar')
+    .update({stok:nextStock})
+    .eq('id',productId);
+  if(error){
+    console.warn('Stok güncellenemedi:', error.message);
   }
 }
 
-window.addEventListener('load', () => {
+function initPi(attempt=0){
+  if(window.Pi && typeof Pi.init==='function'){
+    try{
+      Pi.init({version:'2.0',sandbox:false});
+      piReady=true;
+    }catch(e){ showStatus('Pi SDK hatası: '+e.message,'err'); }
+  }else if(attempt<15){
+    setTimeout(()=>initPi(attempt+1),800);
+  }
+}
+
+window.addEventListener('load',()=>{
   initPi();
   loadProducts();
 });
 
-async function ensurePiAuth() {
-  if (!piReady || !window.Pi) {
-    throw new Error('Pi SDK hazır değil. Pi Browser üzerinden aç.');
-  }
-  const auth = await Pi.authenticate(['username', 'payments'], payment => {
-    console.log('Bekleyen ödeme:', payment?.identifier);
-  });
-  piUser = auth?.user || null;
-  piAccessToken = auth?.accessToken || null;
-  $('user').textContent = 'Giriş: @' + (piUser?.username || 'Pi kullanıcısı');
-  return auth;
-}
-
-$('login').addEventListener('click', async () => {
-  try {
-    await ensurePiAuth();
-    showStatus('Pi kullanıcı girişi başarılı.', 'ok');
-  } catch (e) {
-    showStatus('Giriş hatası: ' + (e?.message || String(e)), 'err');
-  }
+$('login').addEventListener('click',async()=>{
+  if(!piReady){ showStatus('Pi SDK hazır değil. Pi Browser üzerinden aç.','err'); return; }
+  try{
+    const auth=await Pi.authenticate(['username','payments'],payment=>{
+      console.log('Bekleyen ödeme:',payment?.identifier);
+    });
+    piUser=auth.user;
+    $('user').textContent='Giriş: @'+(piUser.username||'Pi kullanıcısı');
+    showStatus('Pi kullanıcı girişi başarılı.','ok');
+  }catch(e){ showStatus('Giriş hatası: '+e.message,'err'); }
 });
 
-async function startPayment(item) {
-  const rawPrice = Number(item?.fiyat);
-  const amount = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : 0.01;
+async function buyProduct(item){
+  if(busyPurchase) return;
+  if(!piReady || !window.Pi || typeof Pi.createPayment !== 'function'){
+    showStatus('Pi SDK hazır değil. Lütfen Pi Browser üzerinden aç.','err');
+    return;
+  }
+  if(!piUser){
+    showStatus('Ödeme yapmadan önce "Pi ile giriş yap" butonuna bas.','err');
+    return;
+  }
 
-  try {
-    await ensurePiAuth();
-    showStatus('Pi ödeme ekranı açılıyor (' + amount + ' π)...', '');
+  const amount = Number(item.fiyat);
+  const stock = Number(item.stok ?? 0);
+  if(!Number.isFinite(amount) || amount <= 0){
+    showStatus('Bu ürünün Pi fiyatı geçersiz.','err');
+    return;
+  }
+  if(stock <= 0){
+    showStatus('Bu ürün stokta kalmadı.','err');
+    return;
+  }
 
-    Pi.createPayment(
+  busyPurchase = true;
+  render();
+  showStatus(`"${item.urun_adi || 'Ürün'}" için ödeme penceresi açılıyor...`);
+
+  try{
+    await Pi.createPayment(
       {
         amount: amount,
-        memo: (item?.urun_adi || 'EKEN26 NEXUS ürün') + ' satın alımı',
+        memo: `EKEN26 NEXUS TR: ${item.urun_adi || 'Ürün'}`,
         metadata: {
-          productId: item?.id ?? null,
-          productName: item?.urun_adi || 'Ürün',
-          buyer: piUser?.username || null
+          productId: item.id ?? null,
+          productName: item.urun_adi || '',
+          buyerUsername: piUser.username || ''
         }
       },
       {
-        onReadyForServerApproval(paymentId) {
-          showStatus('Ödeme onay bekliyor (paymentId: ' + paymentId + ').', '');
+        onReadyForServerApproval: async function(paymentId){
+          showStatus('Ödeme sunucu tarafından onaylanıyor...');
+          await callPiPaymentFunction({
+            action: 'approve',
+            paymentId: paymentId
+          });
         },
-        onReadyForServerCompletion(paymentId, txid) {
-          showStatus('Ödeme işlemi alındı (txid: ' + txid + ').', 'ok');
+        onReadyForServerCompletion: async function(paymentId, txid){
+          showStatus('Ödeme blokzincir üzerinde tamamlanıyor...');
+          await callPiPaymentFunction({
+            action: 'complete',
+            paymentId: paymentId,
+            txid: txid
+          });
+          await decreaseProductStock(item.id, stock);
+          await loadProducts();
+          showStatus(`Ödeme tamamlandı! (${item.urun_adi || 'Ürün'})`,'ok');
         },
-        onCancel(paymentId) {
-          showStatus('Ödeme iptal edildi (' + paymentId + ').', '');
+        onCancel: function(paymentId){
+          console.log('Ödeme iptal edildi:', paymentId);
+          showStatus('Ödeme işlemi iptal edildi.','err');
         },
-        onError(error, payment) {
-          console.error('Pi ödeme hatası:', error, payment);
-          showStatus('Ödeme hatası: ' + (error?.message || String(error)), 'err');
+        onError: function(error, payment){
+          console.error('Ödeme hatası:', error, payment);
+          showStatus('Ödeme hatası: '+(error?.message || 'İşlem tamamlanamadı.'),'err');
         }
       }
     );
-  } catch (e) {
-    showStatus('Ödeme başlatılamadı: ' + (e?.message || String(e)), 'err');
-  }
-}
-
-async function loadProducts() {
-  showStatus('Ortak ürün listesi yükleniyor...');
-  try {
-    const { data, error } = await db
-      .from('urunlar')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    items = data || [];
-    render();
-    showStatus('Supabase bağlantısı başarılı. Ürünler ortak listeden yüklendi.', 'ok');
-  } catch (e) {
+  }catch(e){
     console.error(e);
-    showStatus('Ürünler yüklenemedi: ' + (e?.message || String(e)), 'err');
+    showStatus('Ödeme başlatılamadı: '+(e?.message || e),'err');
+  }finally{
+    busyPurchase = false;
+    render();
   }
 }
 
-function render() {
-  const query = $('search').value.trim().toLocaleLowerCase('tr');
-  const category = $('filter').value;
-  const filtered = items.filter(item => {
-    const name = item.urun_adi || '';
-    const desc = item.aciklama || '';
-    const city = item.sehir || '';
-    return (!category || item.kategori === category) &&
-      [name, desc, city].join(' ').toLocaleLowerCase('tr').includes(query);
+async function loadProducts(){
+  showStatus('Ortak ürün listesi yükleniyor...');
+  try{
+    const {data,error}=await db.from('urunlar')
+      .select('*')
+      .order('created_at',{ascending:false});
+    if(error) throw error;
+    items=data||[];
+    render();
+    showStatus('Supabase bağlantısı başarılı. Ürünler ortak listeden yüklendi.','ok');
+  }catch(e){
+    console.error(e);
+    showStatus('Ürünler yüklenemedi: '+e.message,'err');
+  }
+}
+
+function render(){
+  const query=$('search').value.trim().toLocaleLowerCase('tr');
+  const category=$('filter').value;
+  const filtered=items.filter(item=>{
+    const name=item.urun_adi||'';
+    const desc=item.aciklama||'';
+    const city=item.sehir||'';
+    return (!category||item.kategori===category) &&
+      [name,desc,city].join(' ').toLocaleLowerCase('tr').includes(query);
   });
 
   $('products').replaceChildren();
-  $('count').textContent = '(' + filtered.length + ')';
-  if (!filtered.length) {
-    const empty = document.createElement('p');
-    empty.textContent = 'Bu filtrede ürün bulunamadı.';
+  $('count').textContent='('+filtered.length+')';
+  if(!filtered.length){
+    const empty=document.createElement('p');
+    empty.textContent='Bu filtrede ürün bulunamadı.';
     $('products').append(empty);
     return;
   }
 
-  filtered.forEach(item => {
-    const card = document.createElement('article');
-    card.className = 'card';
-    const title = document.createElement('h3');
-    title.textContent = item.urun_adi || 'Ürün';
-    const desc = document.createElement('p');
-    desc.textContent = item.aciklama || '';
-    const price = document.createElement('p');
-    price.className = 'price';
-    price.textContent = (item.fiyat ?? 0) + ' π';
-    const meta = document.createElement('p');
-    meta.className = 'small';
-    meta.textContent = (item.kategori || 'Kategori belirtilmemiş') + (item.sehir ? ' • ' + item.sehir : '');
-    const stock = document.createElement('p');
-    stock.className = 'small';
-    stock.textContent = 'Stok: ' + (item.stok ?? 0);
-    card.append(title, desc, price, meta, stock);
+  filtered.forEach(item=>{
+    const card=document.createElement('article');
+    card.className='card';
+    const title=document.createElement('h3');
+    title.textContent=item.urun_adi||'Ürün';
+    const desc=document.createElement('p');
+    desc.textContent=item.aciklama||'';
+    const price=document.createElement('p');
+    price.className='price';
+    price.textContent=(item.fiyat??0)+' π';
+    const meta=document.createElement('p');
+    meta.className='small';
+    meta.textContent=(item.kategori||'Kategori belirtilmemiş')+(item.sehir?' • '+item.sehir:'');
+    const stock=document.createElement('p');
+    stock.className='small';
+    const stockCount=Number(item.stok??0);
+    stock.textContent='Stok: '+stockCount;
+    card.append(title,desc,price,meta,stock);
 
-    if (item.resim_url) {
-      const img = document.createElement('img');
-      img.src = item.resim_url;
-      img.alt = item.urun_adi || 'Ürün görseli';
-      img.loading = 'lazy';
-      img.style.width = '100%';
-      img.style.borderRadius = '10px';
+    if(item.resim_url){
+      const img=document.createElement('img');
+      img.src=item.resim_url;
+      img.alt=item.urun_adi||'Ürün görseli';
+      img.loading='lazy';
+      img.style.width='100%';
+      img.style.borderRadius='10px';
       card.append(img);
     }
 
-    const payment = document.createElement('button');
-    payment.type = 'button';
-    payment.textContent = 'Pi ile satın al';
-    payment.disabled = false;
-    payment.addEventListener('click', () => startPayment(item));
+    const payment=document.createElement('button');
+    payment.textContent=stockCount>0?'Pi ile satın al':'Stokta yok';
+    payment.disabled=busyPurchase || stockCount<=0;
+    payment.addEventListener('click',()=>buyProduct(item));
     card.append(payment);
     $('products').append(card);
   });
 }
 
-$('search').addEventListener('input', render);
-$('filter').addEventListener('change', render);
+$('search').addEventListener('input',render);
+$('filter').addEventListener('change',render);
 
-$('form').addEventListener('submit', async event => {
+$('form').addEventListener('submit',async event=>{
   event.preventDefault();
-  const product = {
-    urun_adi: $('name').value.trim(),
-    aciklama: $('desc').value.trim(),
-    fiyat: Number($('price').value),
-    stok: Number($('stock').value),
-    kategori: $('category').value,
-    sehir: $('city').value.trim(),
-    resim_url: $('image').value.trim() || null
+  const product={
+    urun_adi:$('name').value.trim(),
+    aciklama:$('desc').value.trim(),
+    fiyat:Number($('price').value),
+    stok:Number($('stock').value),
+    kategori:$('category').value,
+    sehir:$('city').value.trim(),
+    resim_url:$('image').value.trim()||null
   };
 
-  if (!product.urun_adi || !product.aciklama ||
-      !Number.isFinite(product.fiyat) || product.fiyat <= 0 ||
-      !Number.isInteger(product.stok) || product.stok < 0) {
-    showStatus('Lütfen ürün bilgilerini kontrol et.', 'err');
+  if(!product.urun_adi||!product.aciklama||
+     !Number.isFinite(product.fiyat)||product.fiyat<=0||
+     !Number.isInteger(product.stok)||product.stok<0){
+    showStatus('Lütfen ürün bilgilerini kontrol et.','err');
     return;
   }
 
   showStatus('Ürün kaydediliyor...');
-  try {
-    const { error } = await db.from('urunlar').insert(product);
-    if (error) throw error;
+  try{
+    const {error}=await db.from('urunlar').insert(product);
+    if(error) throw error;
     $('form').reset();
     await loadProducts();
-    showStatus('Ürün Supabase ortak tablosuna kaydedildi.', 'ok');
-  } catch (e) {
+    showStatus('Ürün Supabase ortak tablosuna kaydedildi.','ok');
+  }catch(e){
     console.error(e);
-    showStatus('Ürün kaydedilemedi: ' + (e?.message || String(e)) + ' — Supabase RLS izinleri ve sütun adlarını kontrol et.', 'err');
+    showStatus('Ürün kaydedilemedi: '+e.message+' — Supabase RLS izinleri ve sütun adlarını kontrol et.','err');
   }
 });
 </script>
