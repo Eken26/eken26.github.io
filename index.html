@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -109,6 +110,10 @@ let piUser = null;
 let items = [];
 let busyPurchase = false;
 
+function canManageProducts(){
+  return Boolean(piUser);
+}
+
 function showStatus(message,type=''){
   $('status').textContent = message;
   $('status').className = 'status '+type;
@@ -144,6 +149,10 @@ async function decreaseProductStock(productId, currentStock){
 }
 
 async function updateProductStock(item){
+  if(!canManageProducts()){
+    showStatus('Stok düzenlemek için önce Pi ile giriş yap.','err');
+    return;
+  }
   if(!item?.id) return;
   const current = Number(item.stok ?? 0);
   const input = prompt(`"${item.urun_adi || 'Ürün'}" için yeni stok adedini girin:`, String(current));
@@ -169,6 +178,10 @@ async function updateProductStock(item){
 }
 
 async function deleteProduct(item){
+  if(!canManageProducts()){
+    showStatus('Ürün silmek için önce Pi ile giriş yap.','err');
+    return;
+  }
   if(!item?.id) return;
   const confirmed = confirm(`"${item.urun_adi || 'Bu ürün'}" kalıcı olarak silinsin mi?`);
   if(!confirmed) return;
@@ -211,7 +224,8 @@ $('login').addEventListener('click',async()=>{
     });
     piUser=auth.user;
     $('user').textContent='Giriş: @'+(piUser.username||'Pi kullanıcısı');
-    showStatus('Pi kullanıcı girişi başarılı.','ok');
+    render();
+    showStatus('Pi kullanıcı girişi başarılı. Yönetim tuşları aktif.','ok');
   }catch(e){ showStatus('Giriş hatası: '+e.message,'err'); }
 });
 
@@ -352,6 +366,7 @@ function render(){
       img.loading='lazy';
       img.style.width='100%';
       img.style.borderRadius='10px';
+      img.addEventListener('error',()=>img.remove());
       card.append(img);
     }
 
@@ -361,23 +376,25 @@ function render(){
     payment.addEventListener('click',()=>buyProduct(item));
     card.append(payment);
 
-    const actions=document.createElement('div');
-    actions.className='actions';
+    if(canManageProducts()){
+      const actions=document.createElement('div');
+      actions.className='actions';
 
-    const editBtn=document.createElement('button');
-    editBtn.type='button';
-    editBtn.className='edit';
-    editBtn.textContent='Stok düzenle';
-    editBtn.addEventListener('click',()=>updateProductStock(item));
+      const editBtn=document.createElement('button');
+      editBtn.type='button';
+      editBtn.className='edit';
+      editBtn.textContent='Stok düzenle';
+      editBtn.addEventListener('click',()=>updateProductStock(item));
 
-    const delBtn=document.createElement('button');
-    delBtn.type='button';
-    delBtn.className='delete';
-    delBtn.textContent='Sil';
-    delBtn.addEventListener('click',()=>deleteProduct(item));
+      const delBtn=document.createElement('button');
+      delBtn.type='button';
+      delBtn.className='delete';
+      delBtn.textContent='Sil';
+      delBtn.addEventListener('click',()=>deleteProduct(item));
 
-    actions.append(editBtn,delBtn);
-    card.append(actions);
+      actions.append(editBtn,delBtn);
+      card.append(actions);
+    }
 
     $('products').append(card);
   });
