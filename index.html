@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -26,8 +25,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .err{background:#fee2e2}
 label{font-weight:bold;font-size:14px;display:block}
 a{color:#6d28d9}
-.actions{display:flex;gap:8px;margin-top:12px}
-.actions button{width:50%;margin:0}
+.actions{display:flex;gap:8px;margin-top:8px}
+.actions button{width:50%;margin:0;padding:10px;font-size:14px}
 .delete{background:#dc2626}
 .edit{background:#2563eb}
 </style>
@@ -141,6 +140,50 @@ async function decreaseProductStock(productId, currentStock){
     .eq('id',productId);
   if(error){
     console.warn('Stok güncellenemedi:', error.message);
+  }
+}
+
+async function updateProductStock(item){
+  if(!item?.id) return;
+  const current = Number(item.stok ?? 0);
+  const input = prompt(`"${item.urun_adi || 'Ürün'}" için yeni stok adedini girin:`, String(current));
+  if(input === null) return;
+  const nextStock = Number(input.trim());
+  if(!Number.isInteger(nextStock) || nextStock < 0){
+    showStatus('Geçerli bir tam sayı stok adedi girin (0 veya daha büyük).','err');
+    return;
+  }
+
+  showStatus('Stok güncelleniyor...');
+  try{
+    const {error} = await db.from('urunlar')
+      .update({stok:nextStock})
+      .eq('id',item.id);
+    if(error) throw error;
+    await loadProducts();
+    showStatus(`"${item.urun_adi || 'Ürün'}" stoğu ${nextStock} olarak güncellendi.`,'ok');
+  }catch(e){
+    console.error(e);
+    showStatus('Stok güncellenemedi: '+e.message+' — Supabase UPDATE iznini kontrol et.','err');
+  }
+}
+
+async function deleteProduct(item){
+  if(!item?.id) return;
+  const confirmed = confirm(`"${item.urun_adi || 'Bu ürün'}" kalıcı olarak silinsin mi?`);
+  if(!confirmed) return;
+
+  showStatus('Ürün siliniyor...');
+  try{
+    const {error} = await db.from('urunlar')
+      .delete()
+      .eq('id',item.id);
+    if(error) throw error;
+    await loadProducts();
+    showStatus(`"${item.urun_adi || 'Ürün'}" silindi.`,'ok');
+  }catch(e){
+    console.error(e);
+    showStatus('Ürün silinemedi: '+e.message+' — Supabase DELETE iznini kontrol et.','err');
   }
 }
 
@@ -317,6 +360,25 @@ function render(){
     payment.disabled=busyPurchase || stockCount<=0;
     payment.addEventListener('click',()=>buyProduct(item));
     card.append(payment);
+
+    const actions=document.createElement('div');
+    actions.className='actions';
+
+    const editBtn=document.createElement('button');
+    editBtn.type='button';
+    editBtn.className='edit';
+    editBtn.textContent='Stok düzenle';
+    editBtn.addEventListener('click',()=>updateProductStock(item));
+
+    const delBtn=document.createElement('button');
+    delBtn.type='button';
+    delBtn.className='delete';
+    delBtn.textContent='Sil';
+    delBtn.addEventListener('click',()=>deleteProduct(item));
+
+    actions.append(editBtn,delBtn);
+    card.append(actions);
+
     $('products').append(card);
   });
 }
