@@ -101,6 +101,10 @@ a{color:#6d28d9}
 const SUPABASE_URL = 'https://lxbcjmwibocypmvqthok.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m';
 
+// İsteğe bağlı sunucu onay/tamamlama uçları (hazırsa buraya Edge Function URL'lerini yaz)
+const APPROVE_URL = '';
+const COMPLETE_URL = '';
+
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 let piReady = false;
@@ -131,23 +135,97 @@ window.addEventListener('load', () => {
   loadProducts();
 });
 
-$('login').addEventListener('click', async () => {
+async function ensurePiAuth() {
   if (!piReady || !window.Pi) {
-    showStatus('Pi SDK hazır değil. Pi Browser ve HTTPS üzerinden aç.', 'err');
-    return;
+    throw new Error('Pi SDK hazır değil. Pi Browser ve HTTPS üzerinden aç.');
   }
+  const auth = await Pi.authenticate(['username', 'payments'], payment => {
+    console.log('Bekleyen ödeme:', payment?.identifier);
+  });
+  piUser = auth?.user || null;
+  piAccessToken = auth?.accessToken || null;
+  $('user').textContent = 'Giriş: @' + (piUser?.username || 'Pi kullanıcısı');
+  return auth;
+}
+
+$('login').addEventListener('click', async () => {
   try {
-    const auth = await Pi.authenticate(['username', 'payments'], payment => {
-      console.log('Bekleyen ödeme:', payment?.identifier);
-    });
-    piUser = auth?.user || null;
-    piAccessToken = auth?.accessToken || null;
-    $('user').textContent = 'Giriş: @' + (piUser?.username || 'Pi kullanıcısı');
+    await ensurePiAuth();
     showStatus('Pi kullanıcı girişi başarılı.', 'ok');
   } catch (e) {
     showStatus('Giriş hatası: ' + (e?.message || String(e)), 'err');
   }
 });
+
+async function startPayment(item) {
+  const amount = Number(item?.fiyat);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showStatus('Bu ürün için geçerli bir Pi fiyatı tanımlı değil.', 'err');
+    return;
+  }
+
+  try {
+    await ensurePiAuth();
+    showStatus('Pi ödeme penceresi açılıyor...', '');
+
+    Pi.createPayment(
+      {
+        amount: amount,
+        memo: (item.urun_adi || 'EKEN26 NEXUS ürün') + ' satın alımı',
+        metadata: {
+          productId: item.id ?? null,
+          productName: item.urun_adi || 'Ürün',
+          buyer: piUser?.username || null
+        }
+      },
+      {
+        async onReadyForServerApproval(paymentId) {
+          if (!APPROVE_URL) {
+            showStatus('Ödeme onay bekliyor (paymentId: ' + paymentId + '). Sunucu onay URL henüz bağlı değil.', '');
+            return;
+          }
+          try {
+            const res = await fetch(APPROVE_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentId, accessToken: piAccessToken })
+            });
+            if (!res.ok) throw new Error('Sunucu onay yanıtı başarısız (' + res.status + ')');
+            showStatus('Ödeme sunucu tarafından onaylandı: ' + paymentId, 'ok');
+          } catch (err) {
+            showStatus('Onay hatası: ' + (err?.message || String(err)), 'err');
+          }
+        },
+        async onReadyForServerCompletion(paymentId, txid) {
+          if (!COMPLETE_URL) {
+            showStatus('Ödeme tamamlanmayı bekliyor (txid: ' + txid + '). Sunucu tamamlama URL henüz bağlı değil.', 'ok');
+            return;
+          }
+          try {
+            const res = await fetch(COMPLETE_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentId, txid, accessToken: piAccessToken })
+            });
+            if (!res.ok) throw new Error('Sunucu tamamlama yanıtı başarısız (' + res.status + ')');
+            showStatus('Ödeme tamamlandı! İşlem no: ' + txid, 'ok');
+          } catch (err) {
+            showStatus('Tamamlama hatası: ' + (err?.message || String(err)), 'err');
+          }
+        },
+        onCancel(paymentId) {
+          showStatus('Ödeme iptal edildi (' + paymentId + ').', '');
+        },
+        onError(error, payment) {
+          console.error('Pi ödeme hatası:', error, payment);
+          showStatus('Ödeme hatası: ' + (error?.message || String(error)), 'err');
+        }
+      }
+    );
+  } catch (e) {
+    showStatus('Ödeme başlatılamadı: ' + (e?.message || String(e)), 'err');
+  }
+}
 
 async function loadProducts() {
   showStatus('Ortak ürün listesi yükleniyor...');
@@ -201,7 +279,8 @@ function render() {
     meta.textContent = (item.kategori || 'Kategori belirtilmemiş') + (item.sehir ? ' • ' + item.sehir : '');
     const stock = document.createElement('p');
     stock.className = 'small';
-    stock.textContent = 'Stok: ' + (item.stok ?? 0);
+    const stockVal = Number(item.stok ?? 0);
+    stock.textContent = 'Stok: ' + stockVal;
     card.append(title, desc, price, meta, stock);
 
     if (item.resim_url) {
@@ -217,8 +296,8 @@ function render() {
     const payment = document.createElement('button');
     payment.type = 'button';
     payment.textContent = 'Pi ile satın al';
-    payment.disabled = true;
-    payment.title = 'Güvenli sunucu onayı henüz bağlanmadı';
+    payment.disabled = stockVal <= 0;
+    payment.addEventListener('click', () => startPayment(item));
     card.append(payment);
     $('products').append(card);
   });
