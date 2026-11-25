@@ -15,20 +15,20 @@ main{max-width:850px;margin:auto;padding:12px}
 .panel,.card{background:white;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 2px 10px #ddd}
 input,select,textarea,button{font:inherit;padding:13px;border-radius:10px;border:1px solid #d8d3e0;width:100%;margin:5px 0 12px}
 button{background:#7c3aed;color:white;border:0;font-weight:bold;cursor:pointer}
-button:hover{background:#6d28d9}
 button:disabled{opacity:.5;cursor:not-allowed}
-button.secondary{background:#475569}
-button.secondary:hover{background:#334155}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .grid .card{margin:0}
 .price{font-size:25px;color:#6d28d9;font-weight:bold}
 .small{font-size:13px;color:#666}
-.status{padding:12px;border-radius:10px;background:#fef3c7;margin:12px 0;white-space:pre-wrap;line-height:1.45}
-.ok{background:#dcfce7;color:#14532d}
-.err{background:#fee2e2;color:#7f1d1d}
+.status{padding:12px;border-radius:10px;background:#fef3c7;margin:12px 0}
+.ok{background:#dcfce7}
+.err{background:#fee2e2}
 label{font-weight:bold;font-size:14px;display:block}
 a{color:#6d28d9}
-pre{background:#1e1b4b;color:#f5f3ff;padding:14px;border-radius:12px;overflow-x:auto;font-size:12.5px;line-height:1.45;margin:10px 0 0}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button{width:50%;margin:0}
+.delete{background:#dc2626}
+.edit{background:#2563eb}
 </style>
 </head>
 <body>
@@ -49,7 +49,7 @@ pre{background:#1e1b4b;color:#f5f3ff;padding:14px;border-radius:12px;overflow-x:
 <section class="panel">
 <h2>Ürün ara</h2>
 <input id="search" placeholder="Ürün veya açıklama ara">
-<label for="filter">Kategori</label>
+<label>Kategori</label>
 <select id="filter">
 <option value="">Tüm kategoriler</option>
 <option>Elektronik</option><option>Giyim</option><option>Kuyumcu</option>
@@ -61,23 +61,23 @@ pre{background:#1e1b4b;color:#f5f3ff;padding:14px;border-radius:12px;overflow-x:
 <section class="panel">
 <h2>Ürün ekle</h2>
 <form id="form">
-<label for="name">Ürün adı</label>
+<label>Ürün adı</label>
 <input id="name" required maxlength="100">
-<label for="desc">Açıklama</label>
+<label>Açıklama</label>
 <textarea id="desc" required maxlength="600"></textarea>
-<label for="price">Pi fiyatı</label>
+<label>Pi fiyatı</label>
 <input id="price" type="number" min="0.01" step="0.01" required>
-<label for="stock">Stok</label>
+<label>Stok</label>
 <input id="stock" type="number" min="0" step="1" value="1" required>
-<label for="category">Kategori</label>
+<label>Kategori</label>
 <select id="category">
 <option>Elektronik</option><option>Giyim</option><option>Kuyumcu</option>
 <option>Gıda</option><option>Turizm</option><option>Restoran</option>
 <option>Spor</option><option>Oto Galeri</option><option>Hizmetler</option><option>Diğer</option>
 </select>
-<label for="city">Şehir</label>
+<label>Şehir</label>
 <input id="city" maxlength="80" placeholder="Eskişehir">
-<label for="image">Resim URL (isteğe bağlı)</label>
+<label>Resim URL (isteğe bağlı)</label>
 <input id="image" type="url" placeholder="https://...">
 <button type="submit">Ürünü ekle</button>
 </form>
@@ -92,54 +92,6 @@ pre{background:#1e1b4b;color:#f5f3ff;padding:14px;border-radius:12px;overflow-x:
 <p>Eskişehir konaklama, ulaşım, turizm ve seyahat hizmetleri.</p>
 <a href="travel.html">Turizm ve seyahat sayfasını aç</a>
 </section>
-
-<section class="panel">
-<h2>Supabase RLS ve Sütun Kontrolü (SQL)</h2>
-<p class="small"><code>new row violates row-level security policy for table "urunlar"</code> hatası alırsanız bu SQL bloğunu Supabase → SQL Editor üzerinde çalıştırın.</p>
-<button id="copySql" type="button" class="secondary">SQL kodunu kopyala</button>
-<pre id="sqlBlock">-- 1. Tablo ve sütun kontrolü (urunlar tablosu)
-ALTER TABLE public.urunlar
-  ADD COLUMN IF NOT EXISTS urun_adi text,
-  ADD COLUMN IF NOT EXISTS aciklama text,
-  ADD COLUMN IF NOT EXISTS fiyat numeric,
-  ADD COLUMN IF NOT EXISTS stok integer DEFAULT 1,
-  ADD COLUMN IF NOT EXISTS kategori text,
-  ADD COLUMN IF NOT EXISTS sehir text,
-  ADD COLUMN IF NOT EXISTS resim_url text,
-  ADD COLUMN IF NOT EXISTS created_at timestamptz DEFAULT now();
-
--- 2. RLS aktif et
-ALTER TABLE public.urunlar ENABLE ROW LEVEL SECURITY;
-
--- 3. Mevcut çakışan politikaları temizle
-DROP POLICY IF EXISTS "urunlar_select_policy" ON public.urunlar;
-DROP POLICY IF EXISTS "urunlar_insert_policy" ON public.urunlar;
-DROP POLICY IF EXISTS "urunlar_update_policy" ON public.urunlar;
-
--- 4. Ortak listeleme (SELECT), ürün ekleme (INSERT) ve stok güncelleme (UPDATE) politikaları
-CREATE POLICY "urunlar_select_policy"
-ON public.urunlar
-FOR SELECT
-TO anon, authenticated
-USING (true);
-
-CREATE POLICY "urunlar_insert_policy"
-ON public.urunlar
-FOR INSERT
-TO anon, authenticated
-WITH CHECK (
-  urun_adi IS NOT NULL AND length(trim(urun_adi)) > 0
-  AND fiyat IS NOT NULL AND fiyat > 0
-  AND COALESCE(stok, 0) >= 0
-);
-
-CREATE POLICY "urunlar_update_policy"
-ON public.urunlar
-FOR UPDATE
-TO anon, authenticated
-USING (true)
-WITH CHECK (COALESCE(stok, 0) >= 0);</pre>
-</section>
 </main>
 
 <script>
@@ -150,20 +102,6 @@ const SUPABASE_URL = 'https://lxbcjmwibocypmvqthok.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m';
 const PI_FUNCTION_URL = 'https://lxbcjmwibocypmvqthok.supabase.co/functions/v1/pi-payment';
 
-// Tablo ve sütun adları (Supabase urunlar tablosuyla birebir uyumlu)
-const TABLE_NAME = 'urunlar';
-const COLS = {
-  id: 'id',
-  urun_adi: 'urun_adi',
-  aciklama: 'aciklama',
-  fiyat: 'fiyat',
-  stok: 'stok',
-  kategori: 'kategori',
-  sehir: 'sehir',
-  resim_url: 'resim_url',
-  created_at: 'created_at'
-};
-
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 let piReady = false;
@@ -171,25 +109,9 @@ let piUser = null;
 let items = [];
 let busyPurchase = false;
 
-function showStatus(message, type=''){
+function showStatus(message,type=''){
   $('status').textContent = message;
-  $('status').className = 'status ' + type;
-}
-
-function formatSupabaseError(err){
-  if(!err) return 'Bilinmeyen hata oluştu.';
-  const code = err.code || '';
-  const msg = err.message || '';
-  if(code === '42501' || msg.toLowerCase().includes('row-level security')){
-    return `RLS Politikası Engelledi (${code || 'RLS'}): "${TABLE_NAME}" tablosunda bu işlem için izin yok. Sayfanın altındaki SQL kodunu Supabase SQL Editor'da çalıştırın.`;
-  }
-  if(code === '42703' || msg.toLowerCase().includes('column')){
-    return `Sütun Adı Uyuşmazlığı (${code || 'COLUMN'}): Kodundaki sütun adları (${Object.values(COLS).join(', ')}) ile "${TABLE_NAME}" tablosundaki sütunları kontrol edin.`;
-  }
-  if(code === '23502'){
-    return `Eksik Zorunlu Sütun (${code}): "${TABLE_NAME}" tablosunda boş olamaz (NOT NULL) işaretli bir sütun eksik gönderildi.`;
-  }
-  return `${msg}${code ? ' ['+code+']' : ''}`;
+  $('status').className = 'status '+type;
 }
 
 async function callPiPaymentFunction(payload){
@@ -213,11 +135,12 @@ async function callPiPaymentFunction(payload){
 async function decreaseProductStock(productId, currentStock){
   if(!productId || typeof currentStock !== 'number') return;
   const nextStock = Math.max(0, currentStock - 1);
-  const {error} = await db.from(TABLE_NAME)
-    .update({[COLS.stok]: nextStock})
-    .eq(COLS.id, productId);
+  const {error} = await db.from('urunlar')
+    .update({stok:nextStock})
+    .eq('id',productId);
   if(error){
-    console.warn('Stok güncellenemedi:', formatSupabaseError(error));
+    console.warn('Stok güncellenemedi:', error.message);
+    throw error;
   }
 }
 
@@ -238,7 +161,10 @@ window.addEventListener('load',()=>{
 });
 
 $('login').addEventListener('click',async()=>{
-  if(!piReady){ showStatus('Pi SDK hazır değil. Pi Browser üzerinden aç.','err'); return; }
+  if(!piReady && window.Pi && typeof Pi.init==='function'){
+    initPi();
+  }
+  if(!piReady || !window.Pi){ showStatus('Pi SDK hazır değil. Pi Browser üzerinden aç.','err'); return; }
   try{
     const auth=await Pi.authenticate(['username','payments'],payment=>{
       console.log('Bekleyen ödeme:',payment?.identifier);
@@ -251,6 +177,9 @@ $('login').addEventListener('click',async()=>{
 
 async function buyProduct(item){
   if(busyPurchase) return;
+  if(!piReady && window.Pi && typeof Pi.init==='function'){
+    initPi();
+  }
   if(!piReady || !window.Pi || typeof Pi.createPayment !== 'function'){
     showStatus('Pi SDK hazır değil. Lütfen Pi Browser üzerinden aç.','err');
     return;
@@ -260,8 +189,8 @@ async function buyProduct(item){
     return;
   }
 
-  const amount = Number(item[COLS.fiyat]);
-  const stock = Number(item[COLS.stok] ?? 0);
+  const amount = Number(item.fiyat);
+  const stock = Number(item.stok ?? 0);
   if(!Number.isFinite(amount) || amount <= 0){
     showStatus('Bu ürünün Pi fiyatı geçersiz.','err');
     return;
@@ -273,16 +202,24 @@ async function buyProduct(item){
 
   busyPurchase = true;
   render();
-  showStatus(`"${item[COLS.urun_adi] || 'Ürün'}" için ödeme penceresi açılıyor...`);
+  showStatus("${item.urun_adi || 'Ürün'}" için ödeme penceresi açılıyor...);
+
+  let settled = false;
+  const finishPurchase = () => {
+    if(settled) return;
+    settled = true;
+    busyPurchase = false;
+    render();
+  };
 
   try{
-    await Pi.createPayment(
+    const paymentPromise = Pi.createPayment(
       {
         amount: amount,
-        memo: `EKEN26 NEXUS TR: ${item[COLS.urun_adi] || 'Ürün'}`,
+        memo: EKEN26 NEXUS TR: ${item.urun_adi || 'Ürün'},
         metadata: {
-          productId: item[COLS.id] ?? null,
-          productName: item[COLS.urun_adi] || '',
+          productId: item.id ?? null,
+          productName: item.urun_adi || '',
           buyerUsername: piUser.username || ''
         }
       },
@@ -301,42 +238,54 @@ async function buyProduct(item){
             paymentId: paymentId,
             txid: txid
           });
-          await decreaseProductStock(item[COLS.id], stock);
+          await decreaseProductStock(item.id, stock);
           await loadProducts();
-          showStatus(`Ödeme tamamlandı! (${item[COLS.urun_adi] || 'Ürün'})`,'ok');
+          showStatus(Ödeme tamamlandı! (${item.urun_adi || 'Ürün'}),'ok');
+          finishPurchase();
         },
         onCancel: function(paymentId){
           console.log('Ödeme iptal edildi:', paymentId);
           showStatus('Ödeme işlemi iptal edildi.','err');
+          finishPurchase();
         },
         onError: function(error, payment){
           console.error('Ödeme hatası:', error, payment);
           showStatus('Ödeme hatası: '+(error?.message || 'İşlem tamamlanamadı.'),'err');
+          finishPurchase();
         }
       }
     );
+
+    if(paymentPromise && typeof paymentPromise.finally === 'function'){
+      paymentPromise.catch(e=>{
+        console.error(e);
+        showStatus('Ödeme başlatılamadı: '+(e?.message || e),'err');
+        finishPurchase();
+      });
+    }
   }catch(e){
     console.error(e);
     showStatus('Ödeme başlatılamadı: '+(e?.message || e),'err');
-  }finally{
-    busyPurchase = false;
-    render();
+    finishPurchase();
   }
 }
+
+// Dışarıdan veya özel tıklama kodlarından doğrudan çağrılabilmesi için alias
+window.satinAlPiIle = buyProduct;
 
 async function loadProducts(){
   showStatus('Ortak ürün listesi yükleniyor...');
   try{
-    const {data,error}=await db.from(TABLE_NAME)
+    const {data,error}=await db.from('urunlar')
       .select('*')
-      .order(COLS.created_at,{ascending:false});
+      .order('created_at',{ascending:false});
     if(error) throw error;
     items=data||[];
     render();
     showStatus('Supabase bağlantısı başarılı. Ürünler ortak listeden yüklendi.','ok');
   }catch(e){
     console.error(e);
-    showStatus('Ürünler yüklenemedi: '+formatSupabaseError(e),'err');
+    showStatus('Ürünler yüklenemedi: '+e.message,'err');
   }
 }
 
@@ -344,10 +293,10 @@ function render(){
   const query=$('search').value.trim().toLocaleLowerCase('tr');
   const category=$('filter').value;
   const filtered=items.filter(item=>{
-    const name=item[COLS.urun_adi]||'';
-    const desc=item[COLS.aciklama]||'';
-    const city=item[COLS.sehir]||'';
-    return (!category||item[COLS.kategori]===category) &&
+    const name=item.urun_adi||'';
+    const desc=item.aciklama||'';
+    const city=item.sehir||'';
+    return (!category||item.kategori===category) &&
       [name,desc,city].join(' ').toLocaleLowerCase('tr').includes(query);
   });
 
@@ -364,25 +313,25 @@ function render(){
     const card=document.createElement('article');
     card.className='card';
     const title=document.createElement('h3');
-    title.textContent=item[COLS.urun_adi]||'Ürün';
+    title.textContent=item.urun_adi||'Ürün';
     const desc=document.createElement('p');
-    desc.textContent=item[COLS.aciklama]||'';
+    desc.textContent=item.aciklama||'';
     const price=document.createElement('p');
     price.className='price';
-    price.textContent=(item[COLS.fiyat]??0)+' π';
+    price.textContent=(item.fiyat??0)+' π';
     const meta=document.createElement('p');
     meta.className='small';
-    meta.textContent=(item[COLS.kategori]||'Kategori belirtilmemiş')+(item[COLS.sehir]?' • '+item[COLS.sehir]:'');
+    meta.textContent=(item.kategori||'Kategori belirtilmemiş')+(item.sehir?' • '+item.sehir:'');
     const stock=document.createElement('p');
     stock.className='small';
-    const stockCount=Number(item[COLS.stok]??0);
+    const stockCount=Number(item.stok??0);
     stock.textContent='Stok: '+stockCount;
     card.append(title,desc,price,meta,stock);
 
-    if(item[COLS.resim_url]){
+    if(item.resim_url){
       const img=document.createElement('img');
-      img.src=item[COLS.resim_url];
-      img.alt=item[COLS.urun_adi]||'Ürün görseli';
+      img.src=item.resim_url;
+      img.alt=item.urun_adi||'Ürün görseli';
       img.loading='lazy';
       img.style.width='100%';
       img.style.borderRadius='10px';
@@ -390,6 +339,7 @@ function render(){
     }
 
     const payment=document.createElement('button');
+    payment.type='button';
     payment.textContent=stockCount>0?'Pi ile satın al':'Stokta yok';
     payment.disabled=busyPurchase || stockCount<=0;
     payment.addEventListener('click',()=>buyProduct(item));
@@ -401,44 +351,35 @@ function render(){
 $('search').addEventListener('input',render);
 $('filter').addEventListener('change',render);
 
-$('copySql').addEventListener('click',async()=>{
-  try{
-    await navigator.clipboard.writeText($('sqlBlock').textContent);
-    showStatus('SQL politikası panoya kopyalandı. Supabase SQL Editor içine yapıştırabilirsiniz.','ok');
-  }catch{
-    showStatus('Otomatik kopyalama engellendi; SQL kutusunu elle kopyalayabilirsiniz.','');
-  }
-});
-
 $('form').addEventListener('submit',async event=>{
   event.preventDefault();
   const product={
-    [COLS.urun_adi]:$('name').value.trim(),
-    [COLS.aciklama]:$('desc').value.trim(),
-    [COLS.fiyat]:Number($('price').value),
-    [COLS.stok]:Number($('stock').value),
-    [COLS.kategori]:$('category').value,
-    [COLS.sehir]:$('city').value.trim(),
-    [COLS.resim_url]:$('image').value.trim()||null
+    urun_adi:$('name').value.trim(),
+    aciklama:$('desc').value.trim(),
+    fiyat:Number($('price').value),
+    stok:Number($('stock').value),
+    kategori:$('category').value,
+    sehir:$('city').value.trim(),
+    resim_url:$('image').value.trim()||null
   };
 
-  if(!product[COLS.urun_adi]||!product[COLS.aciklama]||
-     !Number.isFinite(product[COLS.fiyat])||product[COLS.fiyat]<=0||
-     !Number.isInteger(product[COLS.stok])||product[COLS.stok]<0){
+  if(!product.urun_adi||!product.aciklama||
+     !Number.isFinite(product.fiyat)||product.fiyat<=0||
+     !Number.isInteger(product.stok)||product.stok<0){
     showStatus('Lütfen ürün bilgilerini kontrol et.','err');
     return;
   }
 
   showStatus('Ürün kaydediliyor...');
   try{
-    const {error}=await db.from(TABLE_NAME).insert(product);
+    const {error}=await db.from('urunlar').insert(product);
     if(error) throw error;
     $('form').reset();
     await loadProducts();
     showStatus('Ürün Supabase ortak tablosuna kaydedildi.','ok');
   }catch(e){
     console.error(e);
-    showStatus('Ürün kaydedilemedi: '+formatSupabaseError(e),'err');
+    showStatus('Ürün kaydedilemedi: '+e.message+' — Supabase RLS izinleri ve sütun adlarını kontrol et.','err');
   }
 });
 </script>
