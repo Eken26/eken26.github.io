@@ -34,7 +34,7 @@ a{color:#6d28d9}
 <span>Marketplace</span>
 </header>
 <main>
-<div id="status" class="status">Supabase bağlantısı kontrol ediliyor...</div>
+<div id="status" class="status">Sayfa başlatılıyor...</div>
 
 <section class="panel">
 <h2>Pi hesabı</h2>
@@ -81,7 +81,7 @@ a{color:#6d28d9}
 <input id="image" type="url" placeholder="https://...">
 <button type="submit">Ürünü ekle</button>
 </form>
-<p class="small">Ürünler Supabase ortak veritabanında saklanır. Yönetim yetkileri Supabase güvenlik politikalarıyla ayrıca sınırlandırılmalıdır.</p>
+<p class="small">Ürünler Supabase ortak veritabanında saklanır.</p>
 </section>
 
 <h2>Ürünler <span id="count">(0)</span></h2>
@@ -101,8 +101,8 @@ const SUPABASE_URL = 'https://lxbcjmwibocypmvqthok.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_EW3LqhVH9DTMKGfiztgymA_ASecu74m';
 const PI_FUNCTION_URL = 'https://lxbcjmwibocypmvqthok.supabase.co/functions/v1/pi-payment';
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
+let db = null;
 let piReady = false;
 let piUser = null;
 let items = [];
@@ -110,16 +110,23 @@ let busyPurchase = false;
 let compressedImageBase64 = null;
 
 function showStatus(message, type = '') {
-  $('status').textContent = message;
-  $('status').className = 'status ' + type;
+  const el = $('status');
+  if (!el) return;
+  el.textContent = message;
+  el.className = 'status ' + type;
 }
 
-function getItemTitle(item) {
-  return item?.urun_adi || item?.ad || 'Ürün';
-}
+window.addEventListener('error', function(e) {
+  showStatus('Sayfa hatası: ' + (e.message || 'Bilinmeyen hata'), 'err');
+});
 
-function getItemImage(item) {
-  return item?.resim_url || item?.gorsel_url || '';
+function ensureSupabaseClient() {
+  if (db) return db;
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    return db;
+  }
+  return null;
 }
 
 $('photoFile').addEventListener('change', e => {
@@ -168,9 +175,10 @@ async function callPiPaymentFunction(payload) {
 }
 
 async function decreaseProductStock(productId, currentStock) {
-  if (!productId || typeof currentStock !== 'number') return;
+  const client = ensureSupabaseClient();
+  if (!client || !productId || typeof currentStock !== 'number') return;
   const nextStock = Math.max(0, currentStock - 1);
-  const { error } = await db.from('urunler')
+  const { error } = await client.from('urunler')
     .update({ stok: nextStock })
     .eq('id', productId);
   if (error) {
@@ -191,11 +199,6 @@ function initPi(attempt = 0) {
     setTimeout(() => initPi(attempt + 1), 800);
   }
 }
-
-window.addEventListener('load', () => {
-  initPi();
-  loadProducts();
-});
 
 $('login').addEventListener('click', async () => {
   if (!piReady && window.Pi && typeof Pi.init === 'function') {
@@ -231,7 +234,7 @@ async function buyProduct(item) {
     return;
   }
 
-  const title = getItemTitle(item);
+  const title = item.urun_adi || item.ad || 'Ürün';
   const amount = Number(item.fiyat);
   const stock = Number(item.stok ?? 0);
   if (!Number.isFinite(amount) || amount <= 0) {
@@ -315,10 +318,21 @@ async function buyProduct(item) {
 
 window.satinAlPiIle = buyProduct;
 
-async function loadProducts() {
+async function loadProducts(retryCount = 0) {
+  const client = ensureSupabaseClient();
+  if (!client) {
+    if (retryCount < 10) {
+      showStatus('Supabase kütüphanesi yükleniyor...', '');
+      setTimeout(() => loadProducts(retryCount + 1), 600);
+      return;
+    }
+    showStatus('Supabase kütüphanesi yüklenemedi (CDN/ağ kontrol edin).', 'err');
+    return;
+  }
+
   showStatus('Ortak ürün listesi yükleniyor...');
   try {
-    const { data, error } = await db.from('urunler')
+    const { data, error } = await client.from('urunler')
       .select('*')
       .order('created_at', { ascending: false });
     if (error) throw error;
@@ -335,7 +349,7 @@ function render() {
   const query = $('search').value.trim().toLocaleLowerCase('tr');
   const category = $('filter').value;
   const filtered = items.filter(item => {
-    const name = getItemTitle(item);
+    const name = item.urun_adi || item.ad || '';
     const desc = item.aciklama || '';
     const city = item.sehir || '';
     return (!category || item.kategori === category) &&
@@ -352,8 +366,8 @@ function render() {
   }
 
   filtered.forEach(item => {
-    const titleText = getItemTitle(item);
-    const imgUrl = getItemImage(item);
+    const titleText = item.urun_adi || item.ad || 'Ürün';
+    const imgUrl = item.resim_url || item.gorsel_url || '';
     const card = document.createElement('article');
     card.className = 'card';
 
@@ -404,6 +418,12 @@ $('filter').addEventListener('change', render);
 
 $('form').addEventListener('submit', async event => {
   event.preventDefault();
+  const client = ensureSupabaseClient();
+  if (!client) {
+    showStatus('Supabase bağlantısı henüz hazır değil.', 'err');
+    return;
+  }
+
   const finalImage = compressedImageBase64 || $('image').value.trim() || null;
   const product = {
     urun_adi: $('name').value.trim(),
@@ -424,7 +444,7 @@ $('form').addEventListener('submit', async event => {
 
   showStatus('Ürün kaydediliyor...');
   try {
-    const { error } = await db.from('urunler').insert(product);
+    const { error } = await client.from('urunler').insert(product);
     if (error) throw error;
     $('form').reset();
     compressedImageBase64 = null;
@@ -433,8 +453,13 @@ $('form').addEventListener('submit', async event => {
     showStatus('Ürün Supabase ortak tablosuna kaydedildi.', 'ok');
   } catch (e) {
     console.error(e);
-    showStatus('Ürün kaydedilemedi: ' + e.message + ' — Supabase RLS izinleri ve sütun adlarını kontrol et.', 'err');
+    showStatus('Ürün kaydedilemedi: ' + e.message, 'err');
   }
+});
+
+window.addEventListener('load', () => {
+  initPi();
+  loadProducts();
 });
 </script>
 </body>
